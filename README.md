@@ -1,2 +1,3 @@
-# SmartHome-master
-# SmartHome-master
+### SmartHome-master
+
+ - 顾名思义：智能管家
