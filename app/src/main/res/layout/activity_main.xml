@@ -1,55 +1,107 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false">
+    android:clipChildren="false"
+    android:orientation="vertical">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
+    <!--底部导航栏-->
     <LinearLayout
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
+
         <RelativeLayout
+            android:id="@+id/all_one"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:layout_weight="1">
-            <ImageView
-                android:id="@+id/dd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@mipmap/ic_tab_home_normal" />
+
             <TextView
-                android:padding="2dp"
-                android:textSize="10sp"
-                android:layout_centerInParent="true"
-                android:text="首页"
+                android:id="@+id/iv_home_press"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/dd"/>
+                android:layout_centerInParent="true"
+                android:background="@mipmap/ic_tab_home_press" />
+
+            <TextView
+                android:id="@+id/iv_home_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@mipmap/ic_tab_home_normal" />
+
+            <TextView
+                android:id="@+id/tv_home_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_home_press"
+                android:layout_centerInParent="true"
+                android:padding="5dp"
+                android:text="首页"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/tv_home_press"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_home_press"
+                android:layout_centerInParent="true"
+                android:padding="2dp"
+                android:text="首页"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/all_two"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:layout_weight="1">
-            <ImageView
-                android:id="@+id/dd2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@mipmap/ic_tab_home_normal" />
+
             <TextView
-                android:padding="2dp"
-                android:textSize="10sp"
-                android:layout_centerInParent="true"
-                android:text="首页"
+                android:id="@+id/iv_fishpond_press"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/dd2"/>
+                android:layout_centerInParent="true"
+                android:background="@mipmap/ic_tab_fishpond_press" />
+
+            <TextView
+                android:id="@+id/iv_fishpond_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@mipmap/ic_tab_fishpond_normal" />
+
+            <TextView
+                android:id="@+id/tv_fishpond_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_fishpond_press"
+                android:layout_centerInParent="true"
+                android:padding="2dp"
+                android:text="设备"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/tv_fishpond_press"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_fishpond_press"
+                android:layout_centerInParent="true"
+                android:padding="2dp"
+                android:text="设备"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
@@ -59,67 +111,112 @@
             android:layout_gravity="bottom">
 
             <ImageView
-                android:id="@+id/dd5"
+                android:id="@+id/tvNull"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_centerInParent="true"
                 android:src="@mipmap/ic_tab_add" />
+
             <TextView
-                android:padding="2dp"
-                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvNull"
                 android:layout_centerInParent="true"
+                android:padding="2dp"
                 android:text="添加"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/dd5"/>
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/dd3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@mipmap/ic_tab_home_normal" />
-            <TextView
-                android:padding="2dp"
-                android:textSize="10sp"
-                android:layout_centerInParent="true"
-                android:text="首页"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/dd3"/>
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="10sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/all_three"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:layout_weight="1">
-            <ImageView
-                android:id="@+id/dd4"
+
+            <TextView
+                android:id="@+id/iv_message_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/ic_tab_home_normal" />
+                android:background="@mipmap/ic_tab_message_normal" />
+
             <TextView
-                android:padding="2dp"
-                android:textSize="10sp"
+                android:id="@+id/iv_message_press"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:background="@mipmap/ic_tab_message_press" />
+
+            <TextView
+                android:id="@+id/tv_message_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_message_normal"
+                android:layout_centerInParent="true"
+                android:padding="2dp"
+                android:text="情景"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/tv_message_press"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_message_normal"
+                android:layout_centerInParent="true"
+                android:padding="2dp"
+                android:text="情景"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/all_four"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/iv_mine_press"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@mipmap/ic_tab_mine_press" />
+
+            <TextView
+                android:id="@+id/iv_mine_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@mipmap/ic_tab_mine_normal" />
+
+
+            <TextView
+                android:id="@+id/tv_mine_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_mine_normal"
+                android:layout_centerInParent="true"
+                android:padding="2dp"
                 android:text="我的"
+                android:textSize="10sp" />
+            <TextView
+                android:id="@+id/tv_mine_press"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/dd4"/>
+                android:layout_below="@+id/iv_mine_normal"
+                android:layout_centerInParent="true"
+                android:padding="2dp"
+                android:text="我的"
+                android:textColor="@color/colorPrimary"
+                android:textSize="10sp" />
 
-        </RelativeLayout>>
+        </RelativeLayout>
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
