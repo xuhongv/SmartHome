@@ -19,7 +19,7 @@ import com.xuhong.smarthome.adapter.MainViewPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     private LinearLayout mLl_bottom;
