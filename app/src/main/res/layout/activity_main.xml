@@ -8,7 +8,7 @@
         android:id="@+id/mViewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2" />
+        android:layout_weight="1" />
     <!--底部导航栏-->
     <LinearLayout
         android:id="@+id/ll_bottom"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_home_press"
                 android:layout_centerInParent="true"
-                android:padding="5dp"
+                android:padding="2dp"
                 android:text="首页"
                 android:textSize="10sp" />
 
