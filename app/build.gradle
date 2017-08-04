@@ -26,6 +26,7 @@ dependencies {
     //沉浸式
     compile 'com.gyf.barlibrary:barlibrary:2.2.6'
     //轮播图
-    compile 'com.youth.banner:banner:1.4.9'
+    compile 'cn.bingoogolapple:bga-banner:2.1.7@aar'
+
 
 }
