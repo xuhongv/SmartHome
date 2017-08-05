@@ -27,6 +27,9 @@ dependencies {
     compile 'com.gyf.barlibrary:barlibrary:2.2.6'
     //轮播图
     compile 'cn.bingoogolapple:bga-banner:2.1.7@aar'
+    //图片加载
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 
 
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

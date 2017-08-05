@@ -62,15 +62,15 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        initData();
         if (isLazyLoad()) {
             mIsPrepare = true;
             mIsImmersion = true;
             onLazyLoad();
         } else {
-            initData();
+
             if (isImmersionBarEnabled())
                 initImmersionBar();
         }
@@ -105,7 +105,6 @@ public abstract class BaseFragment extends Fragment {
     private void onLazyLoad() {
         if (mIsVisible && mIsPrepare) {
             mIsPrepare = false;
-            initData();
         }
         if (mIsVisible && mIsImmersion && isImmersionBarEnabled()) {
             initImmersionBar();

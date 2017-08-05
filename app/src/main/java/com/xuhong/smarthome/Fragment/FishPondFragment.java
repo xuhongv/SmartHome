@@ -8,9 +8,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.xuhong.smarthome.R;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
+
+
 
 
 public class FishPondFragment extends BaseFragment {

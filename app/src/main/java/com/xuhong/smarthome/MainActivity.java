@@ -105,7 +105,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         iconSeletor(0);
     }
 
-
     /**
      * 显示哪个图标
      *
@@ -213,6 +212,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mTv_mine_press.setTextColor(Color.argb(0, 69, 192, 26));
     }
 
+
     @Override
     public void onClick(View v) {
         setTransparency();
@@ -246,4 +246,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         }
     }
+
+
 }
