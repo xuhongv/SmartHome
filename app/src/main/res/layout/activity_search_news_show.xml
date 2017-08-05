@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:padding="10dp">
 
         <ImageView
@@ -20,21 +20,32 @@
             android:background="@mipmap/icon_back" />
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/ivBack"
             android:background="@drawable/shape_search_show">
 
+            <SearchView
+                android:splitMotionEvents="true"
+                android:id="@+id/scrollView"
+                android:layout_toLeftOf="@+id/viewNull"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:paddingLeft="6dp" />
+
             <EditText
+                android:visibility="gone"
                 android:maxLines="1"
                 android:hint="搜索人物、事件"
                 android:layout_toLeftOf="@+id/viewNull"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:background="@null"
-                android:paddingLeft="6dp" />
+                android:paddingLeft="6dp"
+                />
 
             <View
                 android:id="@+id/viewNull"
@@ -43,7 +54,7 @@
                 android:background="@color/black0"
                 android:layout_toLeftOf="@+id/ivSearch"
                 android:layout_width="0.3dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="10dp"/>
 
             <ImageView
                 android:id="@+id/ivSearch"
