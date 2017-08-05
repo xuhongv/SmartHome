@@ -3,6 +3,8 @@ package com.xuhong.smarthome.Fragment;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
@@ -20,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.SearchNewsShowActivity;
 import com.xuhong.smarthome.adapter.mPagerAdapter;
+import com.xuhong.smarthome.adapter.mRecyclerViewCardAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +41,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private ScrollView mScrollView;
     private boolean isExpand = false;
     private Toolbar toolbar;
+    private RecyclerView mRecycleView_NewsIndex;
 
+
+    private mRecyclerViewCardAdapter adapter ;
 
 
 
@@ -59,6 +65,40 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         mScrollView = (ScrollView) view.findViewById(R.id.scrollView);
 
         mSearchLayout = (LinearLayout) view.findViewById(R.id.llSearch);
+
+
+
+        //新闻索引卡片
+        List<String> list =new ArrayList<>();
+        list.add("热点");
+        list.add("军事");
+        list.add("爱情");
+        list.add("人生");
+        list.add("国际");
+        list.add("国际");
+        list.add("国际");
+        list.add("国际");
+        list.add("国际");
+        list.add("国际");
+        list.add("国际");
+        list.add("国际");
+        list.add("国际");
+        list.add("国际");
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        adapter =new mRecyclerViewCardAdapter(getActivity(),list);
+
+        mRecycleView_NewsIndex= (RecyclerView) view.findViewById(R.id.mRecycleView_NewsIndex);
+        mRecycleView_NewsIndex.setLayoutManager(linearLayoutManager);
+        mRecycleView_NewsIndex.setAdapter(adapter);
+        adapter.setOnItemClickListener(new mRecyclerViewCardAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+
+            }
+        });
+
 
     }
 

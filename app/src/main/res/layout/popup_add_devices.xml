@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/iv_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:paddingBottom="100dp"
+            android:id="@+id/tvTaobao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="蓝牙设备"
+            android:textColor="@android:color/white"
+            android:layout_above="@+id/dd5"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="80dp" />
+
+        <TextView
+            android:id="@+id/tvPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/dd5"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:paddingBottom="100dp"
+            android:paddingLeft="80dp"
+            android:text="远程设备"
+            android:textColor="@android:color/white"
+            />
+
+        <ImageView
+            android:visibility="invisible"
+            android:id="@+id/iv_push_resale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_push_photo"
+            android:layout_above="@+id/tvPhoto"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="65dp" />
+
+        <ImageView
+
+            android:visibility="invisible"
+            android:id="@+id/iv_push_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_push_resale"
+            android:layout_above="@+id/tvTaobao"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="65dp" />
+
+        <ImageView
+            android:id="@+id/iv_push_photo_faker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/iv_push_resale_faker"
+            android:layout_alignTop="@+id/iv_push_resale_faker"
+            android:background="@mipmap/ic_push_resale"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_push_resale_faker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvnull"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/ic_push_photo"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/dd5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvnull"
+            android:src="@mipmap/ic_tab_add"
+
+            />
+
+        <TextView
+            android:id="@+id/tvnull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

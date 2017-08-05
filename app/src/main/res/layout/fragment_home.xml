@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/gray5"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -20,9 +21,11 @@
                     app:banner_transitionEffect="depth" />
 
                 <android.support.v7.widget.RecyclerView
+                    android:padding="5dp"
+                    android:id="@+id/mRecycleView_NewsIndex"
                     android:layout_below="@+id/banner_main_depth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"/>
+                    android:layout_height="wrap_content"/>
 
             </RelativeLayout>
 

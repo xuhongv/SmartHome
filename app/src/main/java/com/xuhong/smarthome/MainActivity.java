@@ -15,6 +15,7 @@ import com.xuhong.smarthome.Fragment.HomeFragment;
 import com.xuhong.smarthome.Fragment.MineFragment;
 import com.xuhong.smarthome.Fragment.FishPondFragment;
 import com.xuhong.smarthome.adapter.MainViewPagerAdapter;
+import com.xuhong.smarthome.view.AnimotionPopupWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
-    private LinearLayout mLl_bottom;
+    private RelativeLayout rlAddDevices;
     private TextView mIv_home_press;
     private TextView mIv_home_normal;
     private TextView mTv_home_normal;
@@ -66,7 +67,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         all_three = (RelativeLayout) findViewById(R.id.all_three);
         all_three.setOnClickListener(this);
         all_four = (RelativeLayout) findViewById(R.id.all_four);
+        rlAddDevices = (RelativeLayout) findViewById(R.id.rlAddDevices);
         all_four.setOnClickListener(this);
+        rlAddDevices.setOnClickListener(this);
 
         mIv_home_press = (TextView) findViewById(R.id.iv_home_press);
         mIv_home_normal = (TextView) findViewById(R.id.iv_home_normal);
@@ -242,6 +245,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mViewPager.setCurrentItem(3, false);
                 mIv_mine_press.getBackground().setAlpha(255);
                 mTv_mine_press.setTextColor(Color.argb(255, 153, 153, 153));
+                break;
+
+            case R.id.rlAddDevices:
+
+                AnimotionPopupWindow animotionPopupWindow =new AnimotionPopupWindow(MainActivity.this, new AnimotionPopupWindow.OnPopWindowClickListener() {
+                    @Override
+                    public void onPopWindowClickListener(View view) {
+
+                    }
+                });
+                animotionPopupWindow.show();
+
+
                 break;
 
         }

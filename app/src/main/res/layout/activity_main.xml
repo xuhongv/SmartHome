@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
+    android:background="@color/gray5"
     android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
@@ -106,6 +107,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rlAddDevices"
             android:layout_width="100dp"
             android:layout_height="90dp"
             android:layout_gravity="bottom">
