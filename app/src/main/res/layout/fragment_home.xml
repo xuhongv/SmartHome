@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/gray5"
     android:layout_height="match_parent"
+    android:background="@color/gray5"
     android:orientation="vertical">
 
     <ScrollView
@@ -11,23 +11,83 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none">
-            <RelativeLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="1500dp">
-                <cn.bingoogolapple.bgabanner.BGABanner
-                    android:id="@+id/banner_main_depth"
-                    style="@style/BannerDefaultStyle"
-                    app:banner_transitionEffect="depth" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:padding="5dp"
-                    android:id="@+id/mRecycleView_NewsIndex"
-                    android:layout_below="@+id/banner_main_depth"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1500dp"
+            android:orientation="vertical">
+
+            <cn.bingoogolapple.bgabanner.BGABanner
+                android:id="@+id/banner_main_depth"
+                style="@style/BannerDefaultStyle"
+                app:banner_transitionEffect="depth" />
+
+            <RelativeLayout
+                android:id="@+id/rlNull"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/banner_main_depth"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tvNull"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="|"
+                    android:textColor="@color/yellow0"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/tvNull"
+                    android:text="新闻分类" />
 
             </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mRecycleView_NewsIndex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlNull"
+                android:paddingTop="20dp"
+                android:paddingBottom="15dp"/>
+
+            <RelativeLayout
+                android:id="@+id/rlnull"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mRecycleView_NewsIndex"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tvnull"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="|"
+                    android:textColor="@color/yellow0"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/tvnull"
+                    android:text="热门新闻" />
+
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mRecycleView_NewsLists"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlnull"
+                android:paddingTop="20dp"
+                android:paddingBottom="15dp"/>
+
+        </RelativeLayout>
 
     </ScrollView>
 

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.SearchNewsShowActivity;
+import com.xuhong.smarthome.adapter.SpaceItemDecoration;
 import com.xuhong.smarthome.adapter.mPagerAdapter;
 import com.xuhong.smarthome.adapter.mRecyclerViewCardAdapter;
 
@@ -41,11 +42,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private ScrollView mScrollView;
     private boolean isExpand = false;
     private Toolbar toolbar;
-    private RecyclerView mRecycleView_NewsIndex;
+    //recyclerview
+    private RecyclerView mRecycleView_NewsIndex, mRecycleView_NewsLists;
 
+    //适配器
+    private mRecyclerViewCardAdapter adapter;
 
-    private mRecyclerViewCardAdapter adapter ;
-
+    //获取新闻频道的URL
 
 
     @Override
@@ -67,12 +70,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         mSearchLayout = (LinearLayout) view.findViewById(R.id.llSearch);
 
 
-
         //新闻索引卡片
-        List<String> list =new ArrayList<>();
-        list.add("热点");
-        list.add("军事");
-        list.add("爱情");
+        List<String> list = new ArrayList<>();
+        list.add("头条");
+        list.add("新闻");
+        list.add("财经");
         list.add("人生");
         list.add("国际");
         list.add("国际");
@@ -87,10 +89,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        adapter =new mRecyclerViewCardAdapter(getActivity(),list);
+        adapter = new mRecyclerViewCardAdapter(getActivity(), list);
 
-        mRecycleView_NewsIndex= (RecyclerView) view.findViewById(R.id.mRecycleView_NewsIndex);
+        mRecycleView_NewsIndex = (RecyclerView) view.findViewById(R.id.mRecycleView_NewsIndex);
         mRecycleView_NewsIndex.setLayoutManager(linearLayoutManager);
+        mRecycleView_NewsIndex.addItemDecoration(new SpaceItemDecoration(20));
         mRecycleView_NewsIndex.setAdapter(adapter);
         adapter.setOnItemClickListener(new mRecyclerViewCardAdapter.OnItemClickListener() {
             @Override
@@ -98,6 +101,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
             }
         });
+
+
+        mRecycleView_NewsLists= (RecyclerView) view.findViewById(R.id.mRecycleView_NewsLists);
+
 
 
     }

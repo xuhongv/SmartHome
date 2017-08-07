@@ -12,11 +12,14 @@ import com.xuhong.smarthome.R;
 
 import java.util.List;
 
+/**
+ * Created by Administrator on 2017/8/7 0007.
+ */
 
-public class mRecyclerViewCardAdapter extends RecyclerView.Adapter<mRecyclerViewCardAdapter.ViewHolder> {
+public class mRecyclerViewNewListAdapter extends RecyclerView.Adapter<mRecyclerViewNewListAdapter.ViewHolder> {
 
 
-    private OnItemClickListener onItemClickListener;
+    private mRecyclerViewNewListAdapter.OnItemClickListener onItemClickListener;
 
     private Context mContext;
 
@@ -26,25 +29,25 @@ public class mRecyclerViewCardAdapter extends RecyclerView.Adapter<mRecyclerView
 
 
 
-    public mRecyclerViewCardAdapter(Context mContext, List<String> mList) {
+    public mRecyclerViewNewListAdapter(Context mContext, List<String> mList) {
         this.mContext = mContext;
         this.mList = mList;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(mRecyclerViewNewListAdapter.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public mRecyclerViewNewListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.layout_index_item, null);
-        return new ViewHolder(view);
+        return new mRecyclerViewNewListAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(mRecyclerViewNewListAdapter.ViewHolder holder, final int position) {
         String showInf = mList.get(position);
         holder.tvShowNewsIndex.setText(showInf);
         holder.tvShow.setText(showInf);
@@ -81,3 +84,4 @@ public class mRecyclerViewCardAdapter extends RecyclerView.Adapter<mRecyclerView
     }
 
 }
+
