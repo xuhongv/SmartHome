@@ -1,14 +1,16 @@
 package com.xuhong.smarthome.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -18,18 +20,26 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.SearchNewsShowActivity;
 import com.xuhong.smarthome.adapter.SpaceItemDecoration;
-import com.xuhong.smarthome.adapter.mPagerAdapter;
 import com.xuhong.smarthome.adapter.mRecyclerViewCardAdapter;
+import com.xuhong.smarthome.bean.HomeNewsChannelBean;
+import com.xuhong.smarthome.constant.Constant;
+import com.xuhong.smarthome.utils.OkHttpUtils;
+import com.xuhong.smarthome.utils.ParseJson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
@@ -45,11 +55,27 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     //recyclerview
     private RecyclerView mRecycleView_NewsIndex, mRecycleView_NewsLists;
 
+    private HomeNewsChannelBean newsChannelBean;
+
     //适配器
     private mRecyclerViewCardAdapter adapter;
 
-    //获取新闻频道的URL
 
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 101) {
+                String tokenJson = (String) msg.obj;
+                newsChannelBean = ParseJson.getHomeNewsChannelBean(tokenJson, HomeNewsChannelBean.class);
+                for (int i = 0; i < newsChannelBean.getResult().size(); i++) {
+                    list.add(newsChannelBean.getResult().get(i));
+                }
+                adapter.notifyDataSetChanged();
+            }
+        }
+    };
+    private List<String> list  = new ArrayList<>();
 
     @Override
     protected int setLayoutId() {
@@ -69,23 +95,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         mSearchLayout = (LinearLayout) view.findViewById(R.id.llSearch);
 
-
+        getNewsChannel();
         //新闻索引卡片
-        List<String> list = new ArrayList<>();
-        list.add("头条");
-        list.add("新闻");
-        list.add("财经");
-        list.add("人生");
-        list.add("国际");
-        list.add("国际");
-        list.add("国际");
-        list.add("国际");
-        list.add("国际");
-        list.add("国际");
-        list.add("国际");
-        list.add("国际");
-        list.add("国际");
-        list.add("国际");
+
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -103,12 +116,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         });
 
 
-        mRecycleView_NewsLists= (RecyclerView) view.findViewById(R.id.mRecycleView_NewsLists);
-
+        mRecycleView_NewsLists = (RecyclerView) view.findViewById(R.id.mRecycleView_NewsLists);
 
 
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        getNewsChannel();
+    }
 
     @Override
     protected void initData() {
@@ -148,6 +165,28 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             }
         });
 
+
+    }
+
+    private void getNewsChannel() {
+        list.clear();
+        OkHttpUtils.getInstance().sendCommon(Constant.URL_GET_NEWS_CHANNEL, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String jsonStr = response.body().string();
+                    Message message = mHandler.obtainMessage();
+                    message.what = 101;
+                    message.obj = jsonStr;
+                    mHandler.sendMessage(message);
+                }
+
+            }
+        });
     }
 
     private void changeToolbarAlpha() {
@@ -162,7 +201,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         //设置透明度
         toolbar.getBackground().mutate().setAlpha((int) (radio * 0xFF));
     }
-
 
     private void expand() {
         //设置伸展状态时的布局
@@ -205,6 +243,5 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 break;
         }
     }
-
 
 }
