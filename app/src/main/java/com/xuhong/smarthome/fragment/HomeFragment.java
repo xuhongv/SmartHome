@@ -1,9 +1,12 @@
-package com.xuhong.smarthome.Fragment;
+package com.xuhong.smarthome.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,13 +23,15 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.SearchNewsShowActivity;
 import com.xuhong.smarthome.adapter.SpaceItemDecoration;
 import com.xuhong.smarthome.adapter.mRecyclerViewCardAdapter;
+import com.xuhong.smarthome.adapter.mRecyclerViewNewListAdapter;
+import com.xuhong.smarthome.bean.HomeNewListBean;
 import com.xuhong.smarthome.bean.HomeNewsChannelBean;
+import com.xuhong.smarthome.bean.HomeNewsListItemBean;
 import com.xuhong.smarthome.constant.Constant;
 import com.xuhong.smarthome.utils.OkHttpUtils;
 import com.xuhong.smarthome.utils.ParseJson;
@@ -34,6 +39,7 @@ import com.xuhong.smarthome.utils.ParseJson;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
@@ -52,30 +58,59 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private ScrollView mScrollView;
     private boolean isExpand = false;
     private Toolbar toolbar;
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     //recyclerview
     private RecyclerView mRecycleView_NewsIndex, mRecycleView_NewsLists;
 
     private HomeNewsChannelBean newsChannelBean;
+    private HomeNewListBean newListBean;
 
     //适配器
     private mRecyclerViewCardAdapter adapter;
+    private mRecyclerViewNewListAdapter adapterNewsList;
+
+    //bean
+    private List<HomeNewsListItemBean> homeNewsListItemBeanList;
+
+    //新闻索引频道
+    private String newsChannel;
+    private String newsList;
 
 
+    @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
+            //新闻索引
             if (msg.what == 101) {
-                String tokenJson = (String) msg.obj;
-                newsChannelBean = ParseJson.getHomeNewsChannelBean(tokenJson, HomeNewsChannelBean.class);
+                list.clear();
+                newsChannelBean = ParseJson.getHomeNewsChannelBean(newsChannel, HomeNewsChannelBean.class);
                 for (int i = 0; i < newsChannelBean.getResult().size(); i++) {
                     list.add(newsChannelBean.getResult().get(i));
                 }
                 adapter.notifyDataSetChanged();
             }
+
+            //新闻列表
+            if (msg.what == 102) {
+                newListBean = ParseJson.getHomeNewsListBean(newsList, HomeNewListBean.class);
+                for (int i = 0; i < newListBean.getResult().getList().size(); i++) {
+                    homeNewsListItemBeanList.add(new HomeNewsListItemBean(newListBean.getResult().getList().get(i).getTitle()
+                            , newListBean.getResult().getList().get(i).getTime()
+                            , newListBean.getResult().getList().get(i).getPic()
+                            , newListBean.getResult().getList().get(i).getSrc()));
+                }
+
+                adapterNewsList.notifyDataSetChanged();
+            }
+
+
         }
     };
-    private List<String> list  = new ArrayList<>();
+    private List<String> list = new ArrayList<>();
 
     @Override
     protected int setLayoutId() {
@@ -85,19 +120,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void initView(View view) {
 
-
         mBanner = (BGABanner) view.findViewById(R.id.banner_main_depth);
         llSearch = (LinearLayout) view.findViewById(R.id.llSearch);
         llSearch.setOnClickListener(this);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         tvSearch = (TextView) view.findViewById(R.id.tv_search);
         mScrollView = (ScrollView) view.findViewById(R.id.scrollView);
-
         mSearchLayout = (LinearLayout) view.findViewById(R.id.llSearch);
+        mSwipeRefreshLayout= (SwipeRefreshLayout) view.findViewById(R.id.mSwipeRefreshLayout);
 
-        getNewsChannel();
-        //新闻索引卡片
-
+        String[] stringArray = getResources().getStringArray(R.array.news_index);
+        Collections.addAll(list, stringArray);
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -116,8 +149,26 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         });
 
 
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity());
+        linearLayoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycleView_NewsLists = (RecyclerView) view.findViewById(R.id.mRecycleView_NewsLists);
+        homeNewsListItemBeanList = new ArrayList<>();
+        adapterNewsList = new mRecyclerViewNewListAdapter(getActivity(), homeNewsListItemBeanList);
+        mRecycleView_NewsLists.setLayoutManager(linearLayoutManager2);
+        mRecycleView_NewsLists.setAdapter(adapterNewsList);
+        //解决了嵌套在recyclerview手滑卡顿的问题
+        mRecycleView_NewsLists.setHasFixedSize(true);
+        mRecycleView_NewsLists.setNestedScrollingEnabled(false);
+        //设置分割线
+        mRecycleView_NewsLists.addItemDecoration(new DividerItemDecoration(
+                getActivity(), DividerItemDecoration.VERTICAL));
 
+        adapterNewsList.setOnItemClickListener(new mRecyclerViewNewListAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+
+            }
+        });
 
     }
 
@@ -129,6 +180,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initData() {
+        getNewsChannel();
+        getNewsList();
         mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
@@ -146,6 +199,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         //设置toolbar初始透明度为0
         toolbar.getBackground().mutate().setAlpha(0);
+
+
         //scrollview滚动状态监听
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
@@ -168,21 +223,52 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     }
 
+    private void getNewsList() {
+
+//        OkHttpUtils.getInstance().sendCommon("http://api.jisuapi.com/news/get?channel=头条&num=20&start=0&appkey=852f41031d9f70b8", new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.e("==w","错误："+e.toString());
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                if (response.isSuccessful()) {
+//                    newsList = response.body().string();
+//                    mHandler.sendEmptyMessage(102);
+//                }
+//            }
+//        });
+
+
+        OkHttpUtils.getInstance().getMyNewsList("头条", 0, 40, Constant.JUSU_APPKEY, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    newsList = response.body().string();
+                    mHandler.sendEmptyMessage(102);
+                }
+            }
+        });
+    }
+
     private void getNewsChannel() {
-        list.clear();
         OkHttpUtils.getInstance().sendCommon(Constant.URL_GET_NEWS_CHANNEL, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 
             }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    String jsonStr = response.body().string();
-                    Message message = mHandler.obtainMessage();
-                    message.what = 101;
-                    message.obj = jsonStr;
-                    mHandler.sendMessage(message);
+                    newsChannel = response.body().string();
+                    mHandler.sendEmptyMessage(101);
                 }
 
             }
@@ -224,7 +310,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         beginDelayedTransition(mSearchLayout);
     }
 
-    void beginDelayedTransition(ViewGroup view) {
+    private void beginDelayedTransition(ViewGroup view) {
         TransitionSet mSet = new AutoTransition();
         mSet.setDuration(300);
         TransitionManager.beginDelayedTransition(view, mSet);

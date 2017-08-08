@@ -3,4 +3,42 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">fragment1</string>
+
+    <string-array name="news_index">
+        <item>头条</item>
+        <item>新闻</item>
+        <item>财经</item>
+        <item>体育</item>
+        <item>娱乐</item>
+        <item>军事</item>
+        <item>教育</item>
+        <item>科技</item>
+        <item>NBA</item>
+        <item>股票</item>
+        <item>星座</item>
+        <item>女性</item>
+        <item>健康</item>
+        <item>育儿</item>
+    </string-array>
+
+    <integer-array name="news_index_color">
+        <item>@color/red1</item>
+        <item>@color/yellow0</item>
+        <item>@color/blue0</item>
+        <item>@color/line</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+        <item>@color/red1</item>
+    </integer-array>
 </resources>

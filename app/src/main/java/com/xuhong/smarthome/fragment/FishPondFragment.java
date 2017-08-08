@@ -1,11 +1,6 @@
-package com.xuhong.smarthome.Fragment;
+package com.xuhong.smarthome.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 
 import com.xuhong.smarthome.R;
 

@@ -1,4 +1,4 @@
-package com.xuhong.smarthome.Fragment;
+package com.xuhong.smarthome.fragment;
 
 import android.app.Activity;
 import android.content.Context;

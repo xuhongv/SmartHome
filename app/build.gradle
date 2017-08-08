@@ -34,7 +34,8 @@ dependencies {
     //卡片
     compile 'com.android.support:cardview-v7:25.3.1'
     //网络
-    compile 'com.alibaba:fastjson:1.2.35'
+    compile 'com.alibaba:fastjson:1.1.60.android'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
-
+    //picasso图片加载库
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

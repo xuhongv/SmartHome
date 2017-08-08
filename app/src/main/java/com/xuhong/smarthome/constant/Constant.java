@@ -13,8 +13,9 @@ public class Constant {
 
 
     //极速数据的AppKey
-    private final static String JUSU_APPKEY = "852f41031d9f70b8";
+    public static String JUSU_APPKEY = "852f41031d9f70b8";
 
     //获取新闻频道
-    public final static String URL_GET_NEWS_CHANNEL = "http://api.jisuapi.com/news/channel?appkey=" + JUSU_APPKEY;
+    public static String URL_GET_NEWS_CHANNEL = "http://api.jisuapi.com/news/channel?appkey=" + JUSU_APPKEY;
+
 }

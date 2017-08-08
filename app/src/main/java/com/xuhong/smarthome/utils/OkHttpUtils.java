@@ -64,20 +64,28 @@ public class OkHttpUtils {
         client.newCall(request).enqueue(callback);
     }
 
-    //提交注册所需的参数给服务器
-    public void postRegister(String jsonUrl, String username, String userpwd, String userpwd2, String deviceID, String referrer, Callback callback) {
-        Log.d("==w", "注册 提交账号密码: username:" + username);
+    /**
+     *
+     * 获取指定类型的新闻列表
+     *
+     * @param channel
+     * @param start
+     * @param num
+     * @param appkey
+     * @param callback
+     */
+
+    public void getMyNewsList(String channel, int start, int num, String appkey, Callback callback) {
 
         RequestBody requestBodyPost = new FormBody.Builder()
-                .add("username", username)//用户名
-                .add("password", userpwd)//密码
-                .add("password2", userpwd2)//确认密码
-                .add("device", deviceID)//设备号
-                .add("rec_user", referrer)//推荐人信息
+                .add("channel", channel)//要获取的新闻频道
+                .add("num",  Integer.toString(num))//每次请求的数目
+                .add("start", Integer.toString(start))//开始条目
+                .add("appkey", appkey)//appkey
                 .build();
 
         Request requestPost = new Request.Builder()
-                .url(jsonUrl)
+                .url("http://api.jisuapi.com/news/get")
                 .post(requestBodyPost)
                 .build();
         client.newCall(requestPost).enqueue(callback);

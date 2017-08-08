@@ -10,7 +10,7 @@ import com.xuhong.smarthome.bean.HomeNewsChannelBean;
 
 public class ParseJson {
 
-    //首页新闻列表的json解析
+    //首页新闻列表
     public static HomeNewListBean getHomeNewsListBean(String json, Class<HomeNewListBean> beanClass) {
         return JSON.parseObject(json, beanClass);
     }
