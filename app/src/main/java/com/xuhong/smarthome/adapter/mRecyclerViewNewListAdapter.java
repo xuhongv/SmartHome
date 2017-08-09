@@ -64,6 +64,12 @@ public class mRecyclerViewNewListAdapter extends RecyclerView.Adapter<mRecyclerV
         holder.tvCreatTime.setText(bean.getCreatTime());
         holder.tvTitle.setText(bean.getTitle());
         holder.tvFrom.setText(bean.getNewsFrom());
+        holder.tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onClick(position);
+            }
+        });
     }
 
 

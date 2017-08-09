@@ -1,140 +1,137 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mSwipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray5"
     android:orientation="vertical">
-    
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/mSwipeRefreshLayout"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-
-
-
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none">
-
-        <RelativeLayout
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="1500dp"
-            android:orientation="vertical">
-
-            <cn.bingoogolapple.bgabanner.BGABanner
-                android:id="@+id/banner_main_depth"
-                style="@style/BannerDefaultStyle"
-                app:banner_transitionEffect="depth" />
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
 
             <RelativeLayout
-                android:id="@+id/rlNull"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/banner_main_depth"
-                android:padding="5dp">
+                android:layout_height="1500dp"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvNull"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="|"
-                    android:textColor="@color/yellow0"
-                    android:textStyle="bold" />
+                <cn.bingoogolapple.bgabanner.BGABanner
+                    android:id="@+id/banner_main_depth"
+                    style="@style/BannerDefaultStyle"
+                    app:banner_transitionEffect="depth" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/rlNull"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toRightOf="@+id/tvNull"
-                    android:text="新闻分类" />
+                    android:layout_below="@+id/banner_main_depth"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvNull"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="|"
+                        android:textColor="@color/yellow0"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@+id/tvNull"
+                        android:text="新闻分类" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mRecycleView_NewsIndex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlNull"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="20dp" />
+
+                <RelativeLayout
+                    android:id="@+id/rlnull"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mRecycleView_NewsIndex"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvnull"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="|"
+                        android:textColor="@color/yellow0"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@+id/tvnull"
+                        android:text="热门新闻" />
+
+                </RelativeLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mRecycleView_NewsLists"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/rlnull"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="20dp" />
 
             </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/mRecycleView_NewsIndex"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rlNull"
-                android:paddingTop="20dp"
-                android:paddingBottom="15dp"/>
+        </ScrollView>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:fitsSystemWindows="true">
 
             <RelativeLayout
-                android:id="@+id/rlnull"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/mRecycleView_NewsIndex"
-                android:padding="5dp">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tvnull"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="|"
-                    android:textColor="@color/yellow0"
-                    android:textStyle="bold" />
+                <LinearLayout
+                    android:id="@+id/llSearch"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shape_bg"
+                    android:gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toRightOf="@+id/tvnull"
-                    android:text="热门新闻" />
-
+                    <TextView
+                        android:id="@+id/tv_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@mipmap/search_icon"
+                        android:gravity="center_vertical"
+                        android:text="搜索"
+                        android:textColor="#8A8A8A" />
+                </LinearLayout>
             </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </RelativeLayout>
 
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/mRecycleView_NewsLists"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/rlnull"
-                android:paddingTop="20dp"
-                android:paddingBottom="15dp"/>
+</android.support.v4.widget.SwipeRefreshLayout>
 
-        </RelativeLayout>
-
-    </ScrollView>
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:fitsSystemWindows="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/llSearch"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/shape_bg"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/tv_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@mipmap/search_icon"
-                    android:gravity="center_vertical"
-                    android:text="搜索"
-                    android:textColor="#8A8A8A" />
-            </LinearLayout>
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
-
-
-</RelativeLayout>

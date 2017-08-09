@@ -4,9 +4,11 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xuhong.smarthome.fragment.MessageFragment;
 import com.xuhong.smarthome.fragment.HomeFragment;
@@ -41,6 +43,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView mTv_mine_press;
     private ViewPager mViewPager;
 
+
+    public long exitTime = 0;
 
     private RelativeLayout all_one, all_two, all_three, all_four;
     private List<Fragment> fragmentList;
@@ -247,7 +251,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.rlAddDevices:
 
-                AnimotionPopupWindow animotionPopupWindow =new AnimotionPopupWindow(MainActivity.this, new AnimotionPopupWindow.OnPopWindowClickListener() {
+                AnimotionPopupWindow animotionPopupWindow = new AnimotionPopupWindow(MainActivity.this, new AnimotionPopupWindow.OnPopWindowClickListener() {
                     @Override
                     public void onPopWindowClickListener(View view) {
 
@@ -261,5 +265,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(this, "再按一次退出程序",
+                    Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+        }
+    }
 
 }
