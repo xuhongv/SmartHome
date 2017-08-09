@@ -24,6 +24,8 @@ public abstract class BaseFragment extends Fragment {
 
     protected View mRootView;
 
+    private boolean isImmersionBarEnabled = true;
+
     /**
      * 是否对用户可见
      */
@@ -71,7 +73,7 @@ public abstract class BaseFragment extends Fragment {
             onLazyLoad();
         } else {
 
-            if (isImmersionBarEnabled())
+            if (isImmersionBarEnabled)
                 initImmersionBar();
         }
 
@@ -91,8 +93,8 @@ public abstract class BaseFragment extends Fragment {
      *
      * @return the boolean
      */
-    protected boolean isImmersionBarEnabled() {
-        return true;
+    protected void setImmersionBarEnabled() {
+        isImmersionBarEnabled = false;
     }
 
     /**
@@ -106,7 +108,7 @@ public abstract class BaseFragment extends Fragment {
         if (mIsVisible && mIsPrepare) {
             mIsPrepare = false;
         }
-        if (mIsVisible && mIsImmersion && isImmersionBarEnabled()) {
+        if (mIsVisible && mIsImmersion && isImmersionBarEnabled) {
             initImmersionBar();
         }
     }
@@ -119,10 +121,13 @@ public abstract class BaseFragment extends Fragment {
      */
     protected abstract int setLayoutId();
 
+
+
     /**
      * view与数据绑定
      */
     protected abstract void initView(View view);
+
 
 
     /**
@@ -131,6 +136,7 @@ public abstract class BaseFragment extends Fragment {
     protected void initData() {
 
     }
+
 
     /**
      * 初始化沉浸式

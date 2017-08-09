@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
+import com.xuhong.smarthome.BaseActivity;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.adapter.mRecyclerViewNewListAdapter;
 import com.xuhong.smarthome.bean.HomeNewListBean;
@@ -37,7 +38,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class SearchNewsShowActivity extends AppCompatActivity {
+public class SearchNewsShowActivity extends BaseActivity {
 
 
     private SearchView mSearchView;

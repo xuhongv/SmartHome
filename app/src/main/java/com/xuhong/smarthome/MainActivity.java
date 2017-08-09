@@ -99,6 +99,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mViewPager = (ViewPager) findViewById(R.id.mViewPager);
         fragmentList = new ArrayList<>();
+
         fragmentList.add(new HomeFragment());
         fragmentList.add(new MessageFragment());
         fragmentList.add(new FishPondFragment());

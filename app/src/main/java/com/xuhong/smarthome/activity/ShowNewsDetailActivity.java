@@ -15,14 +15,17 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.gyf.barlibrary.ImmersionBar;
+import com.xuhong.smarthome.BaseActivity;
 import com.xuhong.smarthome.R;
 
 import java.lang.reflect.Method;
 
-public class ShowNewsDetailActivity extends AppCompatActivity {
+public class ShowNewsDetailActivity extends BaseActivity {
 
     private WebView mWebView;
     private String webUrl;
+    private Toolbar toolbar ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +38,22 @@ public class ShowNewsDetailActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(0);
 
 
+
         initData();
         initView();
     }
 
     private void initData() {
 
+
         Intent intent = this.getIntent();
         webUrl = intent.getStringExtra("_webUrl");
         String webTitle = intent.getStringExtra("_webTitle");
         //设置标题
         setTitle(webTitle);
+
+        toolbar= (Toolbar) findViewById(R.id.toolbar);
+        ImmersionBar.setTitleBar(this, toolbar);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
