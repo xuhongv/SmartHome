@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.BaseActivity;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.adapter.mRecyclerViewNewListAdapter;
@@ -87,16 +88,15 @@ public class SearchNewsShowActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_news_show);
         initView();
-
-
     }
 
     private void initView() {
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ImmersionBar.setTitleBar(this, toolbar);
 
         mSearchView = (SearchView) findViewById(R.id.mSearchView);
-        mSearchView.setQueryHint("搜索");
+        mSearchView.setQueryHint("搜索新闻、人物");
         //展开后提交按钮 mSearchView.setSubmitButtonEnabled(true);
         int magId = getResources().getIdentifier("android:id/search_mag_icon", null, null);
         ImageView magImage = (ImageView) mSearchView.findViewById(magId);

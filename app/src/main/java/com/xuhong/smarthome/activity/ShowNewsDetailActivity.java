@@ -25,19 +25,12 @@ public class ShowNewsDetailActivity extends BaseActivity {
 
     private WebView mWebView;
     private String webUrl;
-    private Toolbar toolbar ;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_news_detail);
-
-        //显示返回按钮
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //取消阴影
-        getSupportActionBar().setElevation(0);
-
-
 
         initData();
         initView();
@@ -50,10 +43,17 @@ public class ShowNewsDetailActivity extends BaseActivity {
         webUrl = intent.getStringExtra("_webUrl");
         String webTitle = intent.getStringExtra("_webTitle");
         //设置标题
-        setTitle(webTitle);
 
-        toolbar= (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImmersionBar.setTitleBar(this, toolbar);
+        toolbar.setTitle(webTitle);
+        toolbar.inflateMenu(R.menu.menu_news_detail);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -91,22 +91,22 @@ public class ShowNewsDetailActivity extends BaseActivity {
 
 
     //自定义菜单显示加载
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_news_detail, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_news_detail, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
 
     //自定义菜单和返回键的点击事件
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //如果点击了返回键，则关闭当前Activity
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        //如果点击了返回键，则关闭当前Activity
+//        if (item.getItemId() == android.R.id.home) {
+//            finish();
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     //让菜单显示图片

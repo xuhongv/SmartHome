@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/colorPrimary"
-        app:title="情景模式" />
+        app:navigationIcon="@mipmap/icon_back2" />
 
     <WebView
         android:id="@+id/mWebView"
