@@ -23,7 +23,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
-                android:background="@mipmap/icon_back" />
+                android:background="@mipmap/icon_back2" />
 
             <SearchView
                 android:id="@+id/mSearchView"
