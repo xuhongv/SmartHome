@@ -66,9 +66,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     //recyclerview
     private RecyclerView mRecycleView_NewsIndex, mRecycleView_NewsLists;
 
-    private HomeNewsChannelBean newsChannelBean;
-    private HomeNewListBean newListBean;
-
     //适配器
     private mRecyclerViewCardAdapter adapter;
     private mRecyclerViewNewListAdapter adapterNewsList;
@@ -76,8 +73,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     //bean
     private List<HomeNewsListItemBean> homeNewsListItemBeanList;
 
-    //存储网址的链接URL
-    private List<String> urlList ;
+    //存储网址的链接URL和标题
+    private List<String> urlList;
+    private List<String> titleList;
 
     //新闻索引频道
     private String newsChannel;
@@ -93,7 +91,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             //新闻索引
             if (msg.what == 101) {
                 list.clear();
-                newsChannelBean = ParseJson.getHomeNewsChannelBean(newsChannel, HomeNewsChannelBean.class);
+                HomeNewsChannelBean newsChannelBean = ParseJson.getHomeNewsChannelBean(newsChannel, HomeNewsChannelBean.class);
                 for (int i = 0; i < newsChannelBean.getResult().size(); i++) {
                     list.add(newsChannelBean.getResult().get(i));
                 }
@@ -102,15 +100,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
             //新闻列表
             if (msg.what == 102) {
-                newListBean = ParseJson.getHomeNewsListBean(newsList, HomeNewListBean.class);
-                urlList=new ArrayList<>();
+                HomeNewListBean newListBean = ParseJson.getHomeNewsListBean(newsList, HomeNewListBean.class);
+                urlList = new ArrayList<>();
+                titleList=new ArrayList<>();
 
                 for (int i = 0; i < newListBean.getResult().getList().size(); i++) {
                     homeNewsListItemBeanList.add(new HomeNewsListItemBean(newListBean.getResult().getList().get(i).getTitle()
                             , newListBean.getResult().getList().get(i).getTime()
                             , newListBean.getResult().getList().get(i).getPic()
                             , newListBean.getResult().getList().get(i).getSrc()));
-                    urlList.add(newListBean.getResult().getList().get(i).getWeburl());
+                    urlList.add(newListBean.getResult().getList().get(i).getUrl());
+                    titleList.add(newListBean.getResult().getList().get(i).getTitle());
                 }
 
                 adapterNewsList.notifyDataSetChanged();
@@ -173,9 +173,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         adapterNewsList.setOnItemClickListener(new mRecyclerViewNewListAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                Intent intent =new Intent();
-                intent.putExtra("_webUrl",urlList.get(position));
-                intent.setClass(getActivity(),ShowNewsDetailActivity.class);
+                Intent intent = new Intent();
+                intent.putExtra("_webUrl", urlList.get(position));
+                intent.putExtra("_webTitle", titleList.get(position));
+                intent.setClass(getActivity(), ShowNewsDetailActivity.class);
                 startActivity(intent);
             }
         });

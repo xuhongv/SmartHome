@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_share"
+        android:icon="@mipmap/ic_menu_share"
+        android:title="分享至朋友圈" />
+    <item
+        android:icon="@mipmap/ic_menu_share"
+        android:title="分享至新浪微博" />
+    <item
+        android:icon="@mipmap/ic_menu_share"
+        android:title="分享至微信好友" />
+    <item
+
+        android:icon="@mipmap/ic_menu_share"
+        android:title="分享至QQ" />
+    <item
+        android:id="@+id/menu_start"
+        android:icon="@mipmap/ic_menu_star"
+        android:title="收藏" />
+</menu>

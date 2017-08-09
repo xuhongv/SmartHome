@@ -91,4 +91,27 @@ public class OkHttpUtils {
         client.newCall(requestPost).enqueue(callback);
     }
 
+    /**
+     *
+     * 获取关键字的新闻列表
+     *
+     * @param key
+     * @param appkey
+     * @param callback
+     */
+
+    public void getKeyList(String key, String appkey, Callback callback) {
+
+        RequestBody requestBodyPost = new FormBody.Builder()
+                .add("keyword", key)//要获取的新闻频道
+                .add("appkey", appkey)//appkey
+                .build();
+
+        Request requestPost = new Request.Builder()
+                .url("http://api.jisuapi.com/news/search")
+                .post(requestBodyPost)
+                .build();
+        client.newCall(requestPost).enqueue(callback);
+    }
+
 }

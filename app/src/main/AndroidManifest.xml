@@ -20,8 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SearchNewsShowActivity" />
-        <activity android:name=".activity.ShowNewsDetailActivity"></activity>
+        <activity
+            android:name=".activity.SearchNewsShowActivity"
+            android:theme="@style/mAppThemeMyActionBar"></activity>
+        <activity
+            android:name=".activity.ShowNewsDetailActivity"
+            android:theme="@style/mAppTheme"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xuhong.smarthome.R;
@@ -64,7 +65,7 @@ public class mRecyclerViewNewListAdapter extends RecyclerView.Adapter<mRecyclerV
         holder.tvCreatTime.setText(bean.getCreatTime());
         holder.tvTitle.setText(bean.getTitle());
         holder.tvFrom.setText(bean.getNewsFrom());
-        holder.tvTitle.setOnClickListener(new View.OnClickListener() {
+        holder.all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onItemClickListener.onClick(position);
@@ -79,13 +80,15 @@ public class mRecyclerViewNewListAdapter extends RecyclerView.Adapter<mRecyclerV
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+     class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvTitle, tvCreatTime, tvFrom;
-        public ImageView ivNewsPic;
+         TextView tvTitle, tvCreatTime, tvFrom;
+         ImageView ivNewsPic;
+         RelativeLayout all;
 
-        public ViewHolder(View view) {
+         ViewHolder(View view) {
             super(view);
+            all = (RelativeLayout) view.findViewById(R.id.all);
             tvTitle = (TextView) view.findViewById(R.id.tvTitle);
             tvCreatTime = (TextView) view.findViewById(R.id.tvCreatTime);
             tvFrom = (TextView) view.findViewById(R.id.tvFrom);
