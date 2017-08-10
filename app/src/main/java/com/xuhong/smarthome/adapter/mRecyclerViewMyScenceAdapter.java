@@ -5,9 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.bean.ScencesListBean;
@@ -27,25 +27,57 @@ public class mRecyclerViewMyScenceAdapter extends RecyclerView.Adapter<mRecycler
 
     private List<ScencesListBean> beanList;
 
-    private Context mContext;
-
     private LayoutInflater inflater;
 
-    public mRecyclerViewMyScenceAdapter(List<ScencesListBean> beanList, Context mContext) {
+    //true 为宫格模式  false为列表模式
+    private boolean isGrilMode;
+
+    private OnLaunchClickListener launchOnClickListener;
+
+    private OnItemClickListener itemOnClickListener;
+
+    public mRecyclerViewMyScenceAdapter(List<ScencesListBean> beanList, boolean isGrilMode, Context mContext) {
+        this.isGrilMode = isGrilMode;
         this.beanList = beanList;
-        this.mContext = mContext;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.layout_item_scence, null);
+
+        View view = null;
+
+        if (isGrilMode) {
+            view = inflater.inflate(R.layout.layout_item_grid_mode_scence, null);
+        } else {
+            view = inflater.inflate(R.layout.layout_item_list_mode_scence, null);
+        }
+
         return new mRecyclerViewMyScenceAdapter.ViewHolder(view);
 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+
+        if (isGrilMode) {
+
+
+        } else {
+            holder.rlLaunch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RotateAnimation rotateAnimation = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+                    rotateAnimation.setDuration(2000);
+                    //rotateAnimation.setInterpolator(new BounceInterpolator());
+                    rotateAnimation.setFillAfter(true);
+                    holder.rlLaunch.startAnimation(rotateAnimation);
+                    if (launchOnClickListener != null) {
+                        launchOnClickListener.onClick(position);
+                    }
+                }
+            });
+        }
 
     }
 
@@ -57,10 +89,36 @@ public class mRecyclerViewMyScenceAdapter extends RecyclerView.Adapter<mRecycler
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        RelativeLayout rlLaunch;
+
         ViewHolder(View view) {
             super(view);
+            if (isGrilMode) {
+
+            } else {
+                rlLaunch = (RelativeLayout) view.findViewById(R.id.rlLaunch);
+            }
 
         }
+    }
+
+
+    public void setOnItemClickListener(mRecyclerViewMyScenceAdapter.OnItemClickListener itemOnClickListener) {
+        this.itemOnClickListener = itemOnClickListener;
+    }
+
+
+    public void setOnLaunchClickListener(mRecyclerViewMyScenceAdapter.OnLaunchClickListener itemOnClickListener) {
+        this.launchOnClickListener = itemOnClickListener;
+    }
+
+
+    public interface OnLaunchClickListener {
+        void onClick(int position);
+    }
+
+    public interface OnItemClickListener {
+        void onClick(int position);
     }
 
 

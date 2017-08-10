@@ -1,20 +1,31 @@
 package com.xuhong.smarthome.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.R;
+import com.xuhong.smarthome.adapter.mRecyclerViewMyScenceAdapter;
+import com.xuhong.smarthome.bean.ScencesListBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class MessageFragment extends BaseFragment {
+public class DevicesFragment extends BaseFragment {
 
 
     private Toolbar toolbarl;
 
     private RecyclerView rlMyScence, rVMyDevices;
+
+    private mRecyclerViewMyScenceAdapter mScenceAdapter;
+
+    private List<ScencesListBean> beanList;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -40,8 +51,15 @@ public class MessageFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         toolbarl = (Toolbar) view.findViewById(R.id.toolbar);
-        rlMyScence = (RecyclerView) view.findViewById(R.id.rVMyScence);
+        rlMyScence = (RecyclerView) view.findViewById(R.id.rVMyDevices);
         rVMyDevices = (RecyclerView) view.findViewById(R.id.rVMyDevices);
+    }
+
+    @Override
+    protected void initData() {
+
+
+
     }
 }
 

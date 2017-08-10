@@ -215,7 +215,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        getNewsChannel();
+        //getNewsChannel();
     }
 
     @Override
@@ -231,8 +231,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             }
         }, 3000);
 
-        getNewsChannel();
-        getNewsList();
+        //getNewsChannel();
+        //getNewsList();
         mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
@@ -293,6 +293,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void getNewsChannel() {
+
         OkHttpUtils.getInstance().sendCommon(Constant.URL_GET_NEWS_CHANNEL, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

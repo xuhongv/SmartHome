@@ -1,7 +1,6 @@
 package com.xuhong.smarthome;
 
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -11,10 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xuhong.smarthome.activity.BaseActivity;
-import com.xuhong.smarthome.fragment.MessageFragment;
+import com.xuhong.smarthome.fragment.DevicesFragment;
 import com.xuhong.smarthome.fragment.HomeFragment;
 import com.xuhong.smarthome.fragment.MineFragment;
-import com.xuhong.smarthome.fragment.LifeHelperFragment;
+import com.xuhong.smarthome.fragment.ScenceFragment;
 import com.xuhong.smarthome.adapter.MainViewPagerAdapter;
 import com.xuhong.smarthome.view.AnimotionPopupWindow;
 
@@ -48,7 +47,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public long exitTime = 0;
 
     private RelativeLayout all_one, all_two, all_three, all_four;
-    private List<Fragment> fragmentList;
+    private List<android.support.v4.app.Fragment> fragmentList;
 
     private MainViewPagerAdapter mAdapter;
 
@@ -102,8 +101,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         fragmentList = new ArrayList<>();
 
         fragmentList.add(new HomeFragment());
-        fragmentList.add(new MessageFragment());
-        fragmentList.add(new LifeHelperFragment());
+        fragmentList.add(new DevicesFragment());
+        fragmentList.add(new ScenceFragment());
         fragmentList.add(new MineFragment());
         mAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager.setAdapter(mAdapter);

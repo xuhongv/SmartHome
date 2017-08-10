@@ -3,80 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/ic_gb"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        app:navigationIcon="@drawable/ic_toolbar_devices_more">
+        app:contentInsetStart="0dp"
+        app:layout_collapseMode="pin"
+        app:navigationIcon="@drawable/ic_toolbar_devices_more"
+        app:title="">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:gravity="center"
             android:text="我的设备"
+            android:textColor="@color/black0"
             android:textSize="20sp" />
     </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
-        android:id="@+id/rlNull"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/banner_main_depth"
-        android:layout_marginTop="10dp"
-        android:padding="5dp">
-
-        <TextView
-            android:id="@+id/tvNull"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="|"
-            android:textColor="@color/yellow0"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/tvNull"
-            android:text="情景列表" />
-
-    </RelativeLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rVMyScence"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <RelativeLayout
-        android:id="@+id/rlNull1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/banner_main_depth"
-        android:padding="5dp">
-
-        <TextView
-            android:id="@+id/tvNull1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="|"
-            android:textColor="@color/yellow0"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/tvNull1"
-            android:text="设备列表" />
-
-    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rVMyDevices"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+
 
 </LinearLayout>

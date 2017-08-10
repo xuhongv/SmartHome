@@ -5,5 +5,5 @@
 
     <item android:title="添加蓝牙设备" />
 
-    <item android:title="添加情景模式" />
+    <item android:title="扫描添加设备" />
 </menu>
