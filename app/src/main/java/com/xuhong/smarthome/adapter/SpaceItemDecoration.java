@@ -23,8 +23,6 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
         outRect.left = mSpace;
         outRect.right = mSpace;
         outRect.bottom = mSpace;
-
-
     }
 
     public SpaceItemDecoration(int space) {

@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/yellow0">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -22,14 +23,14 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
-                android:background="@mipmap/icon_back2" />
+                android:background="@mipmap/icon_back2"
+                 />
 
             <SearchView
                 android:id="@+id/mSearchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:layout_marginStart="10dp"
                 android:layout_toEndOf="@+id/ivBack"
                 android:layout_toStartOf="@+id/ivSearch"
                 android:iconifiedByDefault="false" />

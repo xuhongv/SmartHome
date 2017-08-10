@@ -2,11 +2,9 @@ package com.xuhong.smarthome.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +14,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.gyf.barlibrary.ImmersionBar;
-import com.xuhong.smarthome.BaseActivity;
 import com.xuhong.smarthome.R;
 
 import java.lang.reflect.Method;
@@ -109,22 +106,22 @@ public class ShowNewsDetailActivity extends BaseActivity {
 //    }
 
 
-    //让菜单显示图片
-    @SuppressLint("RestrictedApi")
+
+    // 让菜单同时显示图标和文字
     @Override
-    protected boolean onPrepareOptionsPanel(View view, Menu menu) {
+    public boolean onMenuOpened(int featureId, Menu menu) {
         if (menu != null) {
-            if (menu.getClass() == MenuBuilder.class) {
+            if (menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")) {
                 try {
-                    Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
-                    m.setAccessible(true);
-                    m.invoke(menu, true);
+                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    method.setAccessible(true);
+                    method.invoke(menu, true);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
-        return super.onPrepareOptionsPanel(view, menu);
+        return super.onMenuOpened(featureId, menu);
     }
-
 
 }

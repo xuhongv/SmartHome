@@ -10,10 +10,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xuhong.smarthome.activity.BaseActivity;
 import com.xuhong.smarthome.fragment.MessageFragment;
 import com.xuhong.smarthome.fragment.HomeFragment;
 import com.xuhong.smarthome.fragment.MineFragment;
-import com.xuhong.smarthome.fragment.FishPondFragment;
+import com.xuhong.smarthome.fragment.LifeHelperFragment;
 import com.xuhong.smarthome.adapter.MainViewPagerAdapter;
 import com.xuhong.smarthome.view.AnimotionPopupWindow;
 
@@ -102,7 +103,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         fragmentList.add(new HomeFragment());
         fragmentList.add(new MessageFragment());
-        fragmentList.add(new FishPondFragment());
+        fragmentList.add(new LifeHelperFragment());
         fragmentList.add(new MineFragment());
         mAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager.setAdapter(mAdapter);

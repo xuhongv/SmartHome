@@ -9,8 +9,17 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        app:title="情景模式" />
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="生活助手"
+            android:textColor="@color/black0"
+            android:textSize="20sp" />
+
+    </android.support.v7.widget.Toolbar>
 
 
 </LinearLayout>

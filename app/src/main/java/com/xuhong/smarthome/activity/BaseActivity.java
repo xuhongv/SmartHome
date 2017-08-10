@@ -1,4 +1,4 @@
-package com.xuhong.smarthome;
+package com.xuhong.smarthome.activity;
 
 import android.database.ContentObserver;
 import android.os.Bundle;

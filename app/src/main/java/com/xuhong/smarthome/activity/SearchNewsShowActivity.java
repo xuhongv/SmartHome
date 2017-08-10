@@ -2,12 +2,10 @@ package com.xuhong.smarthome.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,9 +16,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
-import com.xuhong.smarthome.BaseActivity;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.adapter.mRecyclerViewNewListAdapter;
 import com.xuhong.smarthome.bean.HomeNewListBean;
@@ -42,17 +40,14 @@ import okhttp3.Response;
 public class SearchNewsShowActivity extends BaseActivity {
 
 
-    private SearchView mSearchView;
-
-    private RecyclerView mRecycleView_Search;
-
-    private String searchContent;
-
     private String newsList;
 
     //存储网址的链接URL和标题
     private List<String> urlList;
     private List<String> titleList;
+
+    //输入的关键字
+    private String tempContext;
 
 
     //bean
@@ -95,7 +90,7 @@ public class SearchNewsShowActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImmersionBar.setTitleBar(this, toolbar);
 
-        mSearchView = (SearchView) findViewById(R.id.mSearchView);
+        SearchView mSearchView = (SearchView) findViewById(R.id.mSearchView);
         mSearchView.setQueryHint("搜索新闻、人物");
         //展开后提交按钮 mSearchView.setSubmitButtonEnabled(true);
         int magId = getResources().getIdentifier("android:id/search_mag_icon", null, null);
@@ -122,19 +117,21 @@ public class SearchNewsShowActivity extends BaseActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+
                 getNewsList(s);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                tempContext = s;
                 return false;
             }
         });
 
         //RecyclerView
         homeNewsListItemBeanList = new ArrayList<>();
-        mRecycleView_Search = (RecyclerView) findViewById(R.id.mRecycleView_Search);
+        RecyclerView mRecycleView_Search = (RecyclerView) findViewById(R.id.mRecycleView_Search);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         adapterNewsList = new mRecyclerViewNewListAdapter(this, homeNewsListItemBeanList);
@@ -151,6 +148,29 @@ public class SearchNewsShowActivity extends BaseActivity {
                 intent.putExtra("_webTitle", titleList.get(position));
                 intent.setClass(SearchNewsShowActivity.this, ShowNewsDetailActivity.class);
                 startActivity(intent);
+            }
+        });
+
+
+        ImageView ivBack = (ImageView) findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        ImageView ivSearch = (ImageView) findViewById(R.id.ivSearch);
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("==w", "tempContext:" + tempContext);
+                if (tempContext != null &&  !tempContext.isEmpty()) {
+                    getNewsList(tempContext);
+                } else {
+                    Toast.makeText(SearchNewsShowActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -174,20 +194,4 @@ public class SearchNewsShowActivity extends BaseActivity {
     }
 
 
-    // 让菜单同时显示图标和文字
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        if (menu != null) {
-            if (menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")) {
-                try {
-                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
-                    method.setAccessible(true);
-                    method.invoke(menu, true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return super.onMenuOpened(featureId, menu);
-    }
 }

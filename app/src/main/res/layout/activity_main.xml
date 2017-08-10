@@ -160,7 +160,7 @@
                 android:layout_below="@+id/iv_message_normal"
                 android:layout_centerInParent="true"
                 android:padding="2dp"
-                android:text="情景"
+                android:text="生活"
                 android:textSize="10sp" />
 
             <TextView
@@ -170,7 +170,7 @@
                 android:layout_below="@+id/iv_message_normal"
                 android:layout_centerInParent="true"
                 android:padding="2dp"
-                android:text="情景"
+                android:text="生活"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="10sp" />
 

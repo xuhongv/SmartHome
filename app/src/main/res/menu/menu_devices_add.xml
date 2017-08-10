@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="添加远程设备" />
+
+    <item android:title="添加蓝牙设备" />
+
+    <item android:title="添加情景模式" />
+</menu>
