@@ -38,4 +38,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     //picasso图片加载库
     compile 'com.squareup.picasso:picasso:2.5.2'
+    //选项卡
+    compile 'com.lqr.optionitemview:library:1.0.7'
 }

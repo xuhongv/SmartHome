@@ -50,6 +50,10 @@
 
     <color name="black0">#000000</color>
     <color name="black1">#99000000</color>
+    <color name="black2">#99000000</color>
+    <color name="black3">#444</color>
+    <color name="black4">#666</color>
+    <color name="black5">#888</color>
     <color name="white">#ffffff</color>
 
     <color name="yellow0">#FFC51B</color>

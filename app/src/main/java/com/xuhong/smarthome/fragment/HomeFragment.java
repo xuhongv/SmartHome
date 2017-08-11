@@ -236,13 +236,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
-                Glide.with(getActivity())
-                        .load(model)
-                        .placeholder(R.mipmap.holder)
-                        .error(R.mipmap.holder)
-                        .centerCrop()
-                        .dontAnimate()
-                        .into(itemView);
+                if (getActivity()!=null){
+                    Glide.with(getActivity())
+                          .load(model)
+                          .placeholder(R.mipmap.holder)
+                          .error(R.mipmap.holder)
+                          .centerCrop()
+                          .dontAnimate()
+                          .into(itemView);
+                }
             }
         });
 

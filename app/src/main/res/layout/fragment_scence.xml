@@ -23,6 +23,7 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/rVMyScences"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
