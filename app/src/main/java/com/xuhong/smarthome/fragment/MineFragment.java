@@ -1,25 +1,29 @@
 package com.xuhong.smarthome.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.squareup.picasso.Picasso;
 import com.xuhong.smarthome.R;
+import com.xuhong.smarthome.view.BlurTransformation;
+import com.xuhong.smarthome.view.CircleTransform;
 
 
 public class MineFragment extends BaseFragment {
 
 
+    private RelativeLayout all;
 
-    private Toolbar toolbarl ;
+    private ImageView ivHeaderBg, ivmeIcon;
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImmersionBar.setTitleBar(getActivity(), toolbarl);
+        //ImmersionBar.setTitleBar(getActivity(), toolbarl);
     }
 
     @Override
@@ -29,6 +33,23 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        toolbarl= (Toolbar) view.findViewById(R.id.mToolbar);
+        all = (RelativeLayout) view.findViewById(R.id.all);
+        ivHeaderBg = (ImageView) view.findViewById(R.id.ivHeaderBg);
+        ivmeIcon = (ImageView) view.findViewById(R.id.ivIcon);
+
+        Picasso.with(getActivity())
+                .load(R.mipmap.me)
+                .transform(new BlurTransformation(getActivity()))
+                .fit()
+                .into(ivHeaderBg);
+
+
+        Picasso.with(getActivity())
+                .load(R.mipmap.me)
+                .transform(new CircleTransform())
+                .into(ivmeIcon);
+
+
+
     }
 }

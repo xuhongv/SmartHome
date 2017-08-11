@@ -2,11 +2,13 @@ package com.xuhong.smarthome.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.xuhong.smarthome.R;
@@ -36,6 +38,8 @@ public class mRecyclerViewMyScenceAdapter extends RecyclerView.Adapter<mRecycler
 
     private OnItemClickListener itemOnClickListener;
 
+    private OnItemLongClickListener longClickListener;
+
     public mRecyclerViewMyScenceAdapter(List<ScencesListBean> beanList, boolean isGrilMode, Context mContext) {
         this.isGrilMode = isGrilMode;
         this.beanList = beanList;
@@ -62,16 +66,57 @@ public class mRecyclerViewMyScenceAdapter extends RecyclerView.Adapter<mRecycler
 
         if (isGrilMode) {
 
+            holder.allGridMode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemOnClickListener != null) {
+                        itemOnClickListener.onClick(position);
+                    }
+                }
+            });
 
-        } else {
-            holder.rlLaunch.setOnClickListener(new View.OnClickListener() {
+            holder.allGridMode.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (longClickListener != null) {
+                        longClickListener.onClick(position);
+                    }
+                    return false;
+                }
+            });
+
+            holder.ivGridModeLaunch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     RotateAnimation rotateAnimation = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
                     rotateAnimation.setDuration(2000);
-                    //rotateAnimation.setInterpolator(new BounceInterpolator());
+                    holder.ivGridModeLaunch.startAnimation(rotateAnimation);
+                    if (launchOnClickListener != null) {
+                        launchOnClickListener.onClick(position);
+                    }
+                }
+            });
+
+
+        } else {
+
+            holder.allListMode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemOnClickListener != null) {
+                        itemOnClickListener.onClick(position);
+                    }
+                }
+            });
+
+            holder.allListModeLaunch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    RotateAnimation rotateAnimation = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+                    rotateAnimation.setDuration(2000);
                     rotateAnimation.setFillAfter(true);
-                    holder.rlLaunch.startAnimation(rotateAnimation);
+                    holder.ivListModeLaunch.startAnimation(rotateAnimation);
                     if (launchOnClickListener != null) {
                         launchOnClickListener.onClick(position);
                     }
@@ -81,22 +126,30 @@ public class mRecyclerViewMyScenceAdapter extends RecyclerView.Adapter<mRecycler
 
     }
 
-
     @Override
     public int getItemCount() {
         return beanList.size();
     }
 
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        RelativeLayout rlLaunch;
+        LinearLayout allListModeLaunch;
+
+        RelativeLayout allListMode, allGridMode;
+
+        ImageView ivListModeLaunch, ivGridModeLaunch;
+
 
         ViewHolder(View view) {
             super(view);
             if (isGrilMode) {
-
+                ivGridModeLaunch = (ImageView) view.findViewById(R.id.ivScence);
+                allGridMode = (RelativeLayout) view.findViewById(R.id.allGridMode);
             } else {
-                rlLaunch = (RelativeLayout) view.findViewById(R.id.rlLaunch);
+                allListMode = (RelativeLayout) view.findViewById(R.id.allListMode);
+                allListModeLaunch = (LinearLayout) view.findViewById(R.id.allLaunch);
+                ivListModeLaunch = (ImageView) view.findViewById(R.id.ivLaunch);
             }
 
         }
@@ -112,12 +165,20 @@ public class mRecyclerViewMyScenceAdapter extends RecyclerView.Adapter<mRecycler
         this.launchOnClickListener = itemOnClickListener;
     }
 
+    public void setOnLaunchClickListener(mRecyclerViewMyScenceAdapter.OnItemLongClickListener longClickListener) {
+        this.longClickListener = longClickListener;
+    }
+
 
     public interface OnLaunchClickListener {
         void onClick(int position);
     }
 
     public interface OnItemClickListener {
+        void onClick(int position);
+    }
+
+    public interface OnItemLongClickListener {
         void onClick(int position);
     }
 

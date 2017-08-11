@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/allListMode"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:background="@drawable/rv_touch_bg"
+    android:layout_height="100dp"
     android:padding="15dp">
 
     <ImageView
@@ -23,30 +26,33 @@
         android:text="回家模式"
         android:textSize="15sp" />
 
-    <RelativeLayout
-        android:id="@+id/rlLaunch"
+    <LinearLayout
+        android:id="@+id/allLaunch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:background="@drawable/selector_button_bg"
+        android:gravity="center"
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/ivLaunch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="25dp"
+            android:paddingEnd="5dp"
             android:src="@drawable/ic_launch" />
 
 
         <TextView
+            android:id="@+id/tvLaunch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivLaunch"
             android:text="启动"
             android:textColor="@color/black0"
             android:textSize="12sp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>

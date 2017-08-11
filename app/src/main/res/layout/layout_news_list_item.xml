@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/rv_touch_bg"
     android:id="@+id/all"
     android:layout_width="match_parent"
     android:layout_height="150dp"

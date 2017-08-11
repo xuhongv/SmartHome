@@ -55,11 +55,9 @@ public class ScenceFragment extends BaseFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_id_list_mode:
-                        Log.e("==w", "menu_id_list_mode");
                         rV_Mode(false);
                         break;
                     case R.id.menu_id_grid_mode:
-                        isGridMode = true;
                         rV_Mode(true);
                         mScenceAdapter.notifyDataSetChanged();
                         break;

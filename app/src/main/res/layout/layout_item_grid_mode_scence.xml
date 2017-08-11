@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/allGridMode"
+    android:background="@drawable/rv_touch_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:padding="15dp"
-    android:orientation="vertical">
+    android:padding="20dp">
 
     <ImageView
         android:id="@+id/ivScence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:src="@mipmap/noti_scene_back_home" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ivScence"
         android:layout_marginTop="10dp">
 
         <TextView
-            android:textColor="@color/black0"
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:text="回家模式"
+            android:textColor="@color/black0"
             android:textSize="15sp" />
 
         <ImageView
 
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
             android:layout_alignBaseline="@+id/tvName"
             android:layout_toRightOf="@+id/tvName"
             android:background="@drawable/ic_scene_item_go" />
@@ -38,6 +42,4 @@
     </RelativeLayout>
 
 
-
-
-</LinearLayout>
+</RelativeLayout>
