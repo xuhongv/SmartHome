@@ -232,7 +232,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }, 3000);
 
         //getNewsChannel();
-        //getNewsList();
+        getNewsList();
         mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {

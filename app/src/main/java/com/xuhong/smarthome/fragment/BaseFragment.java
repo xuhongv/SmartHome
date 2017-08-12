@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.gyf.barlibrary.ImmersionBar;
 
+import okhttp3.OkHttpClient;
+
 /**
  * Created by Administrator on 2017/8/4 0004.
  */

@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://D:\AndroidProject\Android_Pack\SmartHome-master\SmartHome.iml" filepath="D:\AndroidProject\Android_Pack\SmartHome-master\SmartHome.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SmartHome-master.iml" filepath="$PROJECT_DIR$/SmartHome-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SmartHome.iml" filepath="$PROJECT_DIR$/SmartHome.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

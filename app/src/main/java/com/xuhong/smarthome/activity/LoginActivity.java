@@ -28,9 +28,7 @@ public class LoginActivity extends BaseActivity {
     private void initView() {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //ImmersionBar.setTitleBar(this, toolbar);
-        //设置toolbar初始透明度为0
-        //toolbar.getBackground().mutate().setAlpha(0);
+        ImmersionBar.setTitleBar(this, toolbar);
         ImageView ivHeaderBg = (ImageView) findViewById(R.id.ivHeaderBg);
         ImageView ivmeIcon = (ImageView) findViewById(R.id.ivIcon);
         PullScrollView pullView = (PullScrollView) findViewById(R.id.pullView);

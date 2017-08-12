@@ -13,9 +13,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-/**
- * Created by admin on 2017/8/7.
- */
 
 public class OkHttpUtils {
 
