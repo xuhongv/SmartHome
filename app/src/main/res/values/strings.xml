@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">智能管家</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">fragment1</string>
-
     <string-array name="news_index">
         <item>头条</item>
         <item>新闻</item>
@@ -41,4 +38,5 @@
         <item>@color/red1</item>
         <item>@color/red1</item>
     </integer-array>
+
 </resources>

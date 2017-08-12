@@ -184,7 +184,7 @@
                 app:left_src="@mipmap/ic_location"
                 app:left_text="个人资料"
                 app:left_text_color="@color/black1"
-                app:right_src="@drawable/ic_next"
+                app:right_src="@mipmap/search_icon"
                 app:right_text="修改、查看"
                 app:right_text_color="@color/black1"
                 app:right_text_size="12sp" />

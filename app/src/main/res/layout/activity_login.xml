@@ -1,0 +1,133 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:title="@string/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary"
+        app:navigationIcon="@mipmap/icon_back" />
+
+    <com.xuhong.smarthome.view.PullScrollView
+        android:id="@+id/pullView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/email_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+            android:id="@+id/all"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/flNull"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivHeaderBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="245dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivIcon"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" />
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="欢迎使用智能管家"
+                        android:textColor="@color/black1"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <com.lqr.optionitemview.OptionItemView
+                        android:id="@+id/optionItemView"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/tvName"
+                        android:layout_marginTop="383dp"
+                        android:background="#fff"
+                        app:left_src="@mipmap/ic_location"
+                        app:left_text="关于软件"
+                        app:left_text_color="@color/black1"
+                        app:right_src="@drawable/ic_next" />
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:imeActionId="@+id/login"
+
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/email_sign_in_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+    </com.xuhong.smarthome.view.PullScrollView>
+
+
+</FrameLayout>
