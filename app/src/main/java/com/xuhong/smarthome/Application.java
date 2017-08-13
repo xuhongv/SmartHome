@@ -1,18 +1,16 @@
 package com.xuhong.smarthome;
 
+import com.xuhong.smarthome.constant.Constant;
 import cn.bmob.v3.Bmob;
 
-/**
- * Created by Administrator on 2017/8/12 0012.
- */
 
 public class Application extends android.app.Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        //bomb默认初始化
-        Bmob.initialize(this, "Your Application ID");
+        //bomb初始化
+        Bmob.initialize(this, Constant.BMOB_APPLICATION_ID);
 
 
     }

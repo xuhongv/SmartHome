@@ -232,7 +232,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }, 3000);
 
         //getNewsChannel();
-        getNewsList();
+        //getNewsList();
         mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
@@ -278,12 +278,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void getNewsList() {
+
         OkHttpUtils.getInstance().getMyNewsList("头条", 0, 40, Constant.JUSU_APPKEY, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {

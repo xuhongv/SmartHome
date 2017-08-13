@@ -12,14 +12,19 @@ import cn.bmob.v3.BmobUser;
 
 public class User extends BmobUser {
 
+    //昵称
     private String name;
 
+    //性别 1表示男 、2表示女 、3未知
     private int sex;
 
+    //个性签名
     private String remark;
 
+    //头像
     private String pic;
 
+    //云端唯一的用户标志
     private String token;
 
     public void setToken(String token) {
@@ -27,7 +32,6 @@ public class User extends BmobUser {
     }
 
     public String getToken() {
-
         return token;
     }
 

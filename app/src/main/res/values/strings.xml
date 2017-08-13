@@ -39,4 +39,6 @@
         <item>@color/red1</item>
     </integer-array>
 
+    <string name="text_terms">创建账号既代表你同意\n使用条款和隐私条约</string>
+
 </resources>
