@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/allLogin"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/ic_gb"
+    android:background="@mipmap/bg_login"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -12,73 +14,33 @@
         android:layout_height="?actionBarSize"
         app:contentInsetStart="0dp"
         app:layout_collapseMode="pin"
-        app:navigationIcon="@mipmap/icon_back2" />
+        app:navigationIcon="@drawable/ic_back_yellow" />
 
+
+    <!--logo标识-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="130dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
-            android:src="@drawable/ic_logo"
             android:id="@+id/ivIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-        <TextView
-            android:layout_marginTop="5dp"
-            android:text="智能管家"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_logo" />
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="invisible">
-
-            <View
-                android:layout_width="50dp"
-                android:layout_height="1dp"
-                android:background="@color/black0" />
-
-            <View
-                android:layout_width="50dp"
-                android:layout_height="3dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@color/black0" />
-
-            <com.romainpiel.shimmer.ShimmerTextView
-                android:id="@+id/shimmer_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="做最懂你的管家..."
-                android:textColor="@color/black0"
-                android:textStyle="italic" />
-
-
-            <View
-                android:layout_width="50dp"
-                android:layout_height="3dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@color/black0" />
-
-            <View
-                android:layout_width="50dp"
-                android:layout_height="1dp"
-                android:background="@color/black0" />
-
-        </LinearLayout>
-
-
+            android:padding="10dp"
+            android:text="登录智能管家账号"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 
@@ -88,121 +50,112 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
-        <!--用户名-->
-        <LinearLayout
+
+
+        <!--用户名/手机号码-->
+        <RelativeLayout
+            android:id="@+id/rlUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/edit_bg"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iv_user_icon"
-                android:layout_width="25dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:src="@mipmap/ic_perm_identity_black_24dp" />
+            android:background="@drawable/edit_bg">
 
             <android.support.design.widget.TextInputLayout
-                android:layout_width="310dp"
-                android:layout_height="wrap_content">
+                android:id="@+id/textInLayName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp">
 
                 <EditText
                     android:id="@+id/login_et_name"
                     android:layout_width="match_parent"
-                    android:layout_height="28dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
                     android:background="@null"
+                    android:drawableStart="@mipmap/ic_perm_identity_black_24dp"
                     android:hint="手机号码"
-                    android:textSize="12sp" />
+                    android:inputType="number"
+                    android:textColor="@color/black0"
+                    android:textColorHint="@color/black0"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
             </android.support.design.widget.TextInputLayout>
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/ivname_goneAll"
                 android:layout_width="20dp"
-                android:layout_height="50dp"
+                android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:src="@mipmap/ic_cancel_black_24dp" />
-        </LinearLayout>
+                android:src="@mipmap/ic_cancel_black_24dp"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
 
 
         <!--密码-->
-        <LinearLayout
+        <RelativeLayout
+
+            android:id="@+id/rlUserPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edit_bg"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iv_pass_icon"
-                android:layout_width="25dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:src="@mipmap/ic_lock_black_24dp" />
+            android:background="@drawable/edit_bg">
 
             <android.support.design.widget.TextInputLayout
-                android:layout_width="310dp"
-                android:layout_height="wrap_content">
+                android:id="@+id/textInLayPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp">
 
                 <EditText
                     android:id="@+id/login_et_password"
                     android:layout_width="match_parent"
-                    android:layout_height="28dp"
+                    android:layout_height="wrap_content"
                     android:background="@null"
+                    android:drawableStart="@mipmap/ic_lock_black_24dp"
                     android:hint="密码"
                     android:inputType="textPassword"
-                    android:textSize="12sp" />
+                    android:textColorHint="@color/black0"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
             </android.support.design.widget.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/eye_gone"
+            <CheckBox
+                android:visibility="invisible"
+                android:id="@+id/cb_eye_gone"
                 android:layout_width="20dp"
-                android:layout_height="50dp"
+                android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/eye_password_sele" />
-        </LinearLayout>
+                android:background="@drawable/selector_cb_eye_"
+                android:button="@null" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:visibility="invisible">
-
-            <CheckBox
-                android:id="@+id/check_kepp_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="记住密码" />
-
-            <CheckBox
-                android:id="@+id/check_auto_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="自动登录" />
-        </LinearLayout>
-
-        <com.romainpiel.shimmer.ShimmerButton
-            android:id="@+id/btn_login_shimmer"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button_bg"
-            android:text="登      录"
-            android:textColor="@color/color_white"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorPrimary"
+            android:text="登录"
+            android:textColor="@color/black0"
             android:textSize="13sp">
 
-        </com.romainpiel.shimmer.ShimmerButton>
+        </Button>
 
 
         <!--注册&忘记密码-->
         <RelativeLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -215,6 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="免费注册"
+                android:textColor="@color/black0"
                 android:textSize="@dimen/standard_textsize" />
 
             <TextView
@@ -223,32 +177,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="忘记密码"
+                android:textColor="@color/black0"
                 android:textSize="@dimen/standard_textsize" />
 
         </RelativeLayout>
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center_horizontal|bottom">
-
-        <!--免责声明-->
-        <TextView
-            android:id="@+id/login_terms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:lines="2"
-            android:padding="5dp"
-            android:text="@string/text_terms"
-            android:textSize="10sp" />
-
-    </LinearLayout>
 
 </LinearLayout>

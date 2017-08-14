@@ -14,6 +14,7 @@
         android:layout_toStartOf="@+id/ivNewsPic">
 
         <TextView
+            android:text="@string/app_name"
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,6 +23,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:text="@string/app_name"
             android:id="@+id/tvFrom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,6 +33,7 @@
             android:textSize="13sp" />
 
         <TextView
+            android:text="@string/app_name"
             android:id="@+id/tvCreatTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
