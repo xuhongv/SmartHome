@@ -26,6 +26,11 @@ import android.widget.Toast;
 import com.gyf.barlibrary.ImmersionBar;
 
 import com.xuhong.smarthome.R;
+import com.xuhong.smarthome.bean.User;
+
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -59,6 +64,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImmersionBar.setTitleBar(this, toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         //弹窗
         allLogin = (LinearLayout) findViewById(R.id.allLogin);
@@ -184,8 +195,31 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 if (!login_et_name.getText().toString().isEmpty() && !login_et_password.getText().toString().isEmpty()) {
 
+                   final User user = new User();
+                    user.setUsername(login_et_name.getText().toString());
+                    user.setPassword(login_et_password.getText().toString());
+                    user.login(new SaveListener<BmobUser>() {
+                        @Override
+                        public void done(BmobUser bmobUser, BmobException e) {
+                            Log.e("==w", "name:"+login_et_name.getText().toString());
+                            Log.e("==w", "password:"+login_et_password.getText().toString());
+                            if (e == null) {
+
+                                Log.e("==w", "登录成功:"+ user.getMobilePhoneNumber());
+
+                                //toast("登录成功:");
+                                //通过BmobUser user = BmobUser.getCurrentUser()获取登录成功后的本地用户信息
+                                //如果是自定义用户对象MyUser，可通过MyUser user = BmobUser.getCurrentUser(MyUser.class)获取自定义用户信息
+                            } else {
+                                //loge(e);
+                                Log.e("==w", "登录失败："+e);
+                            }
+                        }
+                    });
+
 
                 } else {
+
                     String flagEmpty = "";
                     if (login_et_name.getText().toString().isEmpty() && login_et_password.getText().toString().isEmpty()) {
                         flagEmpty = "请输入账号和密码！";

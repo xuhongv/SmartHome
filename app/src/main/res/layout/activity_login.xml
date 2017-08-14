@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/allLogin"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/allLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/bg_login"
@@ -48,6 +47,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -64,8 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp">
+                android:layout_marginStart="15dp"
+                android:layout_toStartOf="@+id/ivname_goneAll">
 
                 <EditText
                     android:id="@+id/login_et_name"
@@ -74,22 +74,21 @@
                     android:layout_marginEnd="15dp"
                     android:background="@null"
                     android:drawableStart="@mipmap/ic_perm_identity_black_24dp"
-                    android:hint="手机号码"
-                    android:inputType="number"
+                    android:hint="用户名"
                     android:textColor="@color/black0"
                     android:textColorHint="@color/black0"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
             </android.support.design.widget.TextInputLayout>
 
             <ImageView
                 android:id="@+id/ivname_goneAll"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="20dp"
                 android:src="@mipmap/ic_cancel_black_24dp"
                 android:visibility="invisible" />
 
@@ -109,8 +108,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp">
+                android:layout_marginStart="15dp"
+                android:layout_toStartOf="@+id/cb_eye_gone">
 
                 <EditText
                     android:id="@+id/login_et_password"
@@ -121,21 +120,23 @@
                     android:hint="密码"
                     android:inputType="textPassword"
                     android:textColorHint="@color/black0"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
             </android.support.design.widget.TextInputLayout>
 
+
             <CheckBox
-                android:visibility="invisible"
                 android:id="@+id/cb_eye_gone"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/selector_cb_eye_"
-                android:button="@null" />
+                android:button="@null"
+                android:visibility="invisible" />
+
 
         </RelativeLayout>
 
@@ -160,7 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="50dp">
 
             <TextView
                 android:id="@+id/login_registered"
