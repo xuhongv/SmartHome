@@ -12,6 +12,11 @@ package com.xuhong.smarthome.constant;
 public class Constant {
 
 
+    /**
+     * 正则：邮箱
+     */
+    public static final String REGEX_EMAIL = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
+
     //极速数据的AppKey
     public static String JUSU_APPKEY = "852f41031d9f70b8";
 

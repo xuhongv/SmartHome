@@ -20,11 +20,11 @@ import com.xuhong.smarthome.R;
 public class ToastUtils {
 
     /**
-     *   带有图片的Toast
+     * 带有图片的Toast
      *
      * @param mContext 上下文
-     * @param picID  左边图标的id
-     * @param title  标题
+     * @param picID    左边图标的id
+     * @param title    标题
      */
 
     public static void showPhotoToast(Context mContext, int picID, String title) {
@@ -45,9 +45,15 @@ public class ToastUtils {
             toast.setGravity(Gravity.TOP | Gravity.FILL_HORIZONTAL, 0, 0);
             toast.setMargin(0, 0);
             toast.show();
+
         } catch (Exception e) {
             //Caused by: java.lang.NullPointerException: Attempt to invoke virtual method 'android.content.res.Resources android.content.Context.getResources()' on a null object reference
             e.printStackTrace();
         }
+    }
+
+
+    public static void showToast(Context mContext, String title) {
+        Toast.makeText(mContext, title, Toast.LENGTH_SHORT).show();
     }
 }

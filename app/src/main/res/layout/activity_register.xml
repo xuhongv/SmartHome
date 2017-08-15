@@ -14,29 +14,30 @@
         app:navigationIcon="@drawable/ic_back_yellow">
 
         <TextView
-            android:textStyle="bold"
-            android:textSize="13sp"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="注册，开始美好之旅..."
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="13sp"
+            android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
     <!--拍照-->
     <FrameLayout
-        android:layout_marginTop="10dp"
         android:id="@+id/llCamera"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/ivCameraBg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
-            android:background="@drawable/shape_circle" />
+            android:src="@drawable/shape_circle" />
 
         <ImageView
+            android:id="@+id/ivNull"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -45,10 +46,10 @@
     </FrameLayout>
 
     <LinearLayout
-        android:layout_marginTop="20dp"
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -231,6 +232,15 @@
 
 
         </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="注册成功需要前往邮箱验证，否则无法登录哦！"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold" />
 
         <!--注册按钮-->
         <Button
