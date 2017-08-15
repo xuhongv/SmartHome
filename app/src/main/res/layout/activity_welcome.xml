@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg_login">
+    android:background="@mipmap/ic_newbg">
 
     <ImageView
         android:id="@+id/ivLogo"

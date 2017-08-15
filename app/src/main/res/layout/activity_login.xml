@@ -4,7 +4,7 @@
     android:id="@+id/allLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg_login"
+    android:background="@mipmap/ic_newbg"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -54,6 +54,8 @@
 
         <!--用户名/手机号码-->
         <RelativeLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:id="@+id/rlUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,21 +73,19 @@
                     android:id="@+id/login_et_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
                     android:background="@null"
                     android:drawableStart="@mipmap/ic_perm_identity_black_24dp"
                     android:hint="用户名"
                     android:textColor="@color/black0"
                     android:textColorHint="@color/black0"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
 
             </android.support.design.widget.TextInputLayout>
 
             <ImageView
                 android:id="@+id/ivname_goneAll"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
@@ -97,7 +97,8 @@
 
         <!--密码-->
         <RelativeLayout
-
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:id="@+id/rlUserPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -120,16 +121,15 @@
                     android:hint="密码"
                     android:inputType="textPassword"
                     android:textColorHint="@color/black0"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
 
             </android.support.design.widget.TextInputLayout>
 
 
             <CheckBox
                 android:id="@+id/cb_eye_gone"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
@@ -146,7 +146,7 @@
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/selector_button_bg_yellow"
             android:text="登录"
             android:textColor="@color/black0"
             android:textSize="13sp">
@@ -169,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="免费注册"
-                android:textColor="@color/black0"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/standard_textsize" />
 
             <TextView
@@ -178,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="忘记密码"
-                android:textColor="@color/black0"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/standard_textsize" />
 
         </RelativeLayout>

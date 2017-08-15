@@ -1,6 +1,7 @@
 package com.xuhong.smarthome.activity;
 
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -78,6 +79,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         TextView login_registered = (TextView) findViewById(R.id.login_registered);
         login_registered.setOnClickListener(this);
 
+        //忘记密码
+        TextView login_forget = (TextView) findViewById(R.id.login_forget);
+        login_forget.setOnClickListener(this);
+
         ivname_goneAll = (ImageView) findViewById(R.id.ivname_goneAll);
         ivname_goneAll.setOnClickListener(this);
 
@@ -90,9 +95,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_login.setOnClickListener(this);
 
-        btn_login.setAlpha(0.6f);
-        rlUserName.setAlpha(0.3f);
-        rlUserPassword.setAlpha(0.3f);
+        btn_login.setAlpha(0.7f);
+        rlUserName.setAlpha(0.5f);
+        rlUserPassword.setAlpha(0.5f);
 
         login_et_name = (EditText) findViewById(R.id.login_et_name);
         login_et_name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -185,6 +190,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
 
+            case R.id.login_forget:
+                startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
+                break;
+
             case R.id.ivname_goneAll:
                 //清空
                 login_et_name.setText("");
@@ -195,24 +204,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 if (!login_et_name.getText().toString().isEmpty() && !login_et_password.getText().toString().isEmpty()) {
 
-                   final User user = new User();
+                    final User user = new User();
                     user.setUsername(login_et_name.getText().toString());
                     user.setPassword(login_et_password.getText().toString());
                     user.login(new SaveListener<BmobUser>() {
                         @Override
                         public void done(BmobUser bmobUser, BmobException e) {
-                            Log.e("==w", "name:"+login_et_name.getText().toString());
-                            Log.e("==w", "password:"+login_et_password.getText().toString());
                             if (e == null) {
-
-                                Log.e("==w", "登录成功:"+ user.getMobilePhoneNumber());
-
-                                //toast("登录成功:");
-                                //通过BmobUser user = BmobUser.getCurrentUser()获取登录成功后的本地用户信息
-                                //如果是自定义用户对象MyUser，可通过MyUser user = BmobUser.getCurrentUser(MyUser.class)获取自定义用户信息
+                                Log.e("==w", "登录成功:" + user.getMobilePhoneNumber());
+                                //获取登录成功后的本地用户信息
+                                User user = BmobUser.getCurrentUser(User.class);
                             } else {
-                                //loge(e);
-                                Log.e("==w", "登录失败："+e);
+                                Log.e("==w", "登录失败：" + e);
                             }
                         }
                     });
@@ -241,6 +244,40 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 break;
         }
+    }
+
+    private void showForgetPw() {
+
+        View view = getLayoutInflater().inflate(R.layout.dialog_forget_password, null);
+
+        final AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
+                .setView(view)
+                .show();
+
+        final EditText forgetps_et = (EditText) view.findViewById(R.id.forgetps_et);
+        Button tv_cancel = (Button) view.findViewById(R.id.tv_cancel);
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        Button tv_sure = (Button) view.findViewById(R.id.tv_sure);
+        tv_sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(LoginActivity.this, "ddd", Toast.LENGTH_LONG).show();
+                String string = forgetps_et.getText().toString();
+
+                Log.e("==w", "xiaojianpan:" + string);
+                dialog.dismiss();
+            }
+        });
+
+
     }
 }
 
