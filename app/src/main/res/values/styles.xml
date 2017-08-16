@@ -65,9 +65,10 @@
         <item name="banner_placeholderDrawable">@mipmap/holder</item>
     </style>
 
-    <style name="TextInputLayoutError" parent="Widget.Design.TextInputLayout">
-      <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">bold</item>
+
+    <style name="dialog_style" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="@android:windowExitAnimation">@anim/dialog_exit</item>
     </style>
 
 </resources>

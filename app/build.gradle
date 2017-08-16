@@ -49,5 +49,6 @@ dependencies {
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
     //文字闪动
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    //权限
+    compile 'com.lovedise:permissiongen:0.0.6'
 }
