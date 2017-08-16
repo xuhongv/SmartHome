@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="注册，开始美好之旅..."
+            android:text="修改个人资料"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="13sp"
             android:textStyle="bold" />
@@ -33,20 +33,10 @@
             android:id="@+id/ivCameraBg"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@drawable/shape_circle" />
-
-        <ImageView
-            android:id="@+id/ivNull"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@mipmap/icon_camera_userinfo" />
-
+            android:layout_gravity="center"/>
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -63,7 +53,6 @@
             android:focusableInTouchMode="true">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInLayName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -84,7 +73,6 @@
             </android.support.design.widget.TextInputLayout>
 
             <ImageView
-
                 android:id="@+id/ivname_goneAll"
                 android:layout_width="23dp"
                 android:layout_height="23dp"
@@ -94,100 +82,6 @@
                 android:src="@mipmap/ic_cancel_black_24dp" />
 
         </RelativeLayout>
-
-        <!--密码-->
-        <RelativeLayout
-            android:id="@+id/rlUserPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_bg"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInLayPass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
-                android:layout_toStartOf="@+id/cb_eye_gone">
-
-                <EditText
-                    android:id="@+id/register_et_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:drawableStart="@mipmap/ic_lock_black_24dp"
-                    android:hint="密码"
-                    android:inputType="textPassword"
-                    android:textColorHint="@color/black0"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-            </android.support.design.widget.TextInputLayout>
-
-
-            <CheckBox
-                android:id="@+id/cb_eye_gone"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="18sp"
-                android:background="@drawable/selector_cb_eye_"
-                android:button="@null"
-                android:visibility="invisible" />
-
-
-        </RelativeLayout>
-
-
-        <!--确认密码-->
-        <RelativeLayout
-            android:id="@+id/rlUserPasswordComfir"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_bg"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInLayPass2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
-                android:layout_toStartOf="@+id/cb_eye_gone2">
-
-                <EditText
-                    android:id="@+id/register_et_password_again"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:drawableStart="@mipmap/ic_lock_black_24dp"
-                    android:hint="确认密码"
-                    android:inputType="textPassword"
-                    android:textColorHint="@color/black0"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-            </android.support.design.widget.TextInputLayout>
-
-
-            <CheckBox
-                android:id="@+id/cb_eye_gone2"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/selector_cb_eye_"
-                android:button="@null"
-                android:visibility="invisible" />
-
-
-        </RelativeLayout>
-
 
         <!--邮箱-->
         <RelativeLayout
@@ -234,40 +128,18 @@
         </RelativeLayout>
 
 
-        <!--注册按钮-->
+        <!--修改按钮-->
         <Button
             android:id="@+id/btn_register"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/selector_button_bg_yellow"
-            android:text="注册"
+            android:text="修改"
             android:textColor="@color/black0"
             android:textSize="13sp" />
 
-
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center_horizontal|bottom">
-
-        <!--免责声明-->
-        <TextView
-            android:textColor="@color/colorPrimaryDark"
-            android:id="@+id/login_terms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:lines="2"
-            android:text="@string/text_terms"
-            android:textSize="10sp"/>
-
-    </LinearLayout>
 
 </LinearLayout>

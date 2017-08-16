@@ -51,4 +51,5 @@ dependencies {
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     //权限
     compile 'com.lovedise:permissiongen:0.0.6'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

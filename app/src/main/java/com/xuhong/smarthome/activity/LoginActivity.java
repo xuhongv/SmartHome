@@ -28,6 +28,7 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.bean.User;
+import com.xuhong.smarthome.utils.ToastUtils;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -211,11 +212,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         @Override
                         public void done(BmobUser bmobUser, BmobException e) {
                             if (e == null) {
-                                Log.e("==w", "登录成功:" + user.getMobilePhoneNumber());
-                                //获取登录成功后的本地用户信息
-                                User user = BmobUser.getCurrentUser(User.class);
+                                finish();
                             } else {
                                 Log.e("==w", "登录失败：" + e);
+                                switch (e.getErrorCode()) {
+                                    case 101:
+                                        ToastUtils.showToast(LoginActivity.this, "用户名或密码不正确哦！");
+                                        break;
+                                    default:
+                                        ToastUtils.showToast(LoginActivity.this, "出了点小问题，请重试！错误码：" + e.getErrorCode());
+                                        break;
+                                }
                             }
                         }
                     });

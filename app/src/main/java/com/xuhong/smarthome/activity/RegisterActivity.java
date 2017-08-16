@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,19 +19,16 @@ import android.widget.RelativeLayout;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.squareup.picasso.Picasso;
-import com.xuhong.smarthome.MainActivity;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.bean.User;
 import com.xuhong.smarthome.utils.PhotoSelectUtils;
-import com.xuhong.smarthome.utils.PicassoUtils;
 import com.xuhong.smarthome.utils.RegexUtils;
 import com.xuhong.smarthome.utils.ToastUtils;
 import com.xuhong.smarthome.view.CircleTransform;
-import com.xuhong.smarthome.view.mPopupWindow;
+import com.xuhong.smarthome.view.SelectPopupWindow;
 
 import java.io.File;
 
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
@@ -40,6 +36,8 @@ import cn.bmob.v3.listener.UploadFileListener;
 import kr.co.namee.permissiongen.PermissionFail;
 import kr.co.namee.permissiongen.PermissionGen;
 import kr.co.namee.permissiongen.PermissionSuccess;
+
+import static com.xuhong.smarthome.view.SelectPopupWindow.TYPE_SELECT_PIC;
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
@@ -109,7 +107,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onFinish(File outputFile, Uri outputUri) {
                 mFile = outputFile;
-                Log.e("==w", "成功");
                 ivCameraBg.setAlpha(1f);
                 Picasso.with(RegisterActivity.this).load(outputFile).transform(new CircleTransform()).into(ivCameraBg);
                 ivNull.setVisibility(View.INVISIBLE);
@@ -120,9 +117,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.llCamera:
-                mPopupWindow mPopupWindow = new mPopupWindow(RegisterActivity.this, new mPopupWindow.OnPopWindowClickListener() {
+                SelectPopupWindow SelectPopupWindow = new SelectPopupWindow(RegisterActivity.this, new SelectPopupWindow.OnPopWindowClickListener() {
                     @Override
                     public void onPopWindowClickListener(View view) {
                         switch (view.getId()) {
@@ -144,8 +140,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                 break;
                         }
                     }
-                });
-                mPopupWindow.show();
+                },TYPE_SELECT_PIC);
+                SelectPopupWindow.show();
                 break;
 
             case R.id.btn_register:
@@ -164,57 +160,54 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         return;
                     }
 
-                    if (mFile != null) {
-                        final BmobFile bmobFile = new BmobFile(mFile);
-                        bmobFile.uploadblock(new UploadFileListener() {
-
-                            @Override
-                            public void done(BmobException e) {
-                                if (e == null) {
-                                    //bmobFile.getFileUrl()--返回的上传文件的完整地址
-                                    photoFileURL = bmobFile.getFileUrl();
-                                    Log.e("==w", "相片：" + photoFileURL);
-                                    User user = new User();
-                                    user.setUsername(register_et_name.getText().toString());
-                                    user.setEmail(register_et_email.getText().toString());
-                                    user.setPassword(register_et_password.getText().toString());
-                                    user.setNick(photoFileURL);
-                                    user.setText("xuhong");
-                                    user.signUp(new SaveListener<User>() {
-                                        @Override
-                                        public void done(User user, BmobException e) {
-                                            if (e == null) {
-                                                ToastUtils.showPhotoToast(RegisterActivity.this, R.drawable.ic_warning, "注册成功！");
-
-                                            } else {
-                                                Log.e("==w", e + "");
-                                                switch (e.getErrorCode()) {
-                                                    case 202:
-                                                        ToastUtils.showToast(RegisterActivity.this, "注册失败！该名字已注册，请尝试换个名字！");
-                                                        break;
-                                                    case 203:
-                                                        ToastUtils.showToast(RegisterActivity.this, "注册失败！该邮箱已注册，请尝试换个邮箱！");
-                                                        break;
-                                                    case 9610:
-                                                        ToastUtils.showToast(RegisterActivity.this, "请检查您的网络状态！");
-                                                        break;
-
-                                                }
-                                            }
-                                        }
-                                    });
-
-                                }
-                            }
-
-                            @Override
-                            public void onProgress(Integer value) {
-                                // 返回的上传进度（百分比）
-                            }
-                        });
+                    if (mFile == null) {
+                        ToastUtils.showPhotoToast(RegisterActivity.this, R.drawable.ic_warning, "请上传您的头像！");
+                        return;
                     }
 
 
+                    final BmobFile bmobFile = new BmobFile(mFile);
+                    bmobFile.uploadblock(new UploadFileListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                photoFileURL = bmobFile.getFileUrl();
+                                User user = new User();
+                                user.setUsername(register_et_name.getText().toString());
+                                user.setEmail(register_et_email.getText().toString());
+                                user.setPassword(register_et_password.getText().toString());
+                                user.setNick(photoFileURL);
+                                user.signUp(new SaveListener<User>() {
+                                    @Override
+                                    public void done(User user, BmobException e) {
+                                        if (e == null) {
+                                            ToastUtils.showPhotoToast(RegisterActivity.this, R.drawable.ic_warning, "注册成功！");
+                                             finish();
+                                        } else {
+                                            switch (e.getErrorCode()) {
+                                                case 202:
+                                                    ToastUtils.showToast(RegisterActivity.this, "注册失败！该名字已注册，请尝试换个名字！");
+                                                    break;
+                                                case 203:
+                                                    ToastUtils.showToast(RegisterActivity.this, "注册失败！该邮箱已注册，请尝试换个邮箱！");
+                                                    break;
+                                                case 9610:
+                                                    ToastUtils.showToast(RegisterActivity.this, "请检查您的网络状态！");
+                                                    break;
+
+                                            }
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+
+                        @Override
+                        public void onProgress(Integer value) {
+                            // 返回的上传进度（百分比）
+                        }
+                    });
 
 
                 } else {
@@ -245,13 +238,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     @PermissionFail(requestCode = PhotoSelectUtils.REQ_TAKE_PHOTO)
     private void showTip1() {
-        //        Toast.makeText(getApplicationContext(), "不给我权限是吧，那就别玩了", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "不给我权限是吧，那就别玩了", Toast.LENGTH_SHORT).show();
         showDialog();
     }
 
     @PermissionFail(requestCode = PhotoSelectUtils.REQ_SELECT_PHOTO)
     private void showTip2() {
-        //        Toast.makeText(getApplicationContext(), "不给我权限是吧，那就别玩了", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "不给我权限是吧，那就别玩了", Toast.LENGTH_SHORT).show();
         showDialog();
     }
 
