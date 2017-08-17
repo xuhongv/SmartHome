@@ -37,12 +37,7 @@ public class PhotoSelectUtils {
     private File mInputFile;
     private File mOutputFile = null;
 
-    //剪裁图片宽高比
-    private int mAspectX = 1;
-    private int mAspectY = 1;
-    //剪裁图片大小
-    private int mOutputX = 800;
-    private int mOutputY = 480;
+
     PhotoSelectListener mListener;
 
     /**
@@ -67,17 +62,10 @@ public class PhotoSelectUtils {
      *
      * @param activity 上下文
      * @param listener 选取图片监听
-     * @param aspectX  图片裁剪时的宽度比例
-     * @param aspectY  图片裁剪时的高度比例
-     * @param outputX  图片裁剪后的宽度
-     * @param outputY  图片裁剪后的高度
      */
-    public PhotoSelectUtils(Activity activity, PhotoSelectListener listener, int aspectX, int aspectY, int outputX, int outputY) {
+    public PhotoSelectUtils(Activity activity, PhotoSelectListener listener) {
         this(activity, listener, true);
-        mAspectX = aspectX;
-        mAspectY = aspectY;
-        mOutputX = outputX;
-        mOutputY = outputY;
+
     }
 
     /**

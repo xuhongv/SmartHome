@@ -1,5 +1,6 @@
 package com.xuhong.smarthome;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -15,7 +16,8 @@ import com.xuhong.smarthome.fragment.HomeFragment;
 import com.xuhong.smarthome.fragment.MineFragment;
 import com.xuhong.smarthome.fragment.ScenceFragment;
 import com.xuhong.smarthome.adapter.MainViewPagerAdapter;
-import com.xuhong.smarthome.view.AnimotionPopupWindow;
+import com.xuhong.smarthome.utils.L;
+import com.xuhong.smarthome.view.AnimotionPopupAddDevicesWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -252,21 +254,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.rlAddDevices:
 
-                AnimotionPopupWindow animotionPopupWindow = new AnimotionPopupWindow(MainActivity.this, new AnimotionPopupWindow.OnPopWindowClickListener() {
+                AnimotionPopupAddDevicesWindow animotionPopupAddDevicesWindow = new AnimotionPopupAddDevicesWindow(MainActivity.this, new AnimotionPopupAddDevicesWindow.OnPopWindowClickListener() {
                     @Override
                     public void onPopWindowClickListener(View view) {
 
                     }
                 });
-                animotionPopupWindow.show();
+                animotionPopupAddDevicesWindow.show();
 
 
                 break;
 
         }
     }
-
-
 
 
     @Override
@@ -290,5 +290,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             finish();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        L.e("Main code:" + requestCode);
+    }
+
 
 }

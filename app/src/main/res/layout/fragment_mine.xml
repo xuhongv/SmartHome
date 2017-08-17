@@ -184,7 +184,7 @@
                 app:left_src="@mipmap/ic_location"
                 app:left_text="个人资料"
                 app:left_text_color="@color/black1"
-                app:right_src="@mipmap/search_icon"
+                app:right_src="@mipmap/ic_next"
                 app:right_text="修改、查看"
                 app:right_text_color="@color/black1"
                 app:right_text_size="12sp" />
@@ -198,7 +198,7 @@
                 app:left_src="@mipmap/ic_location"
                 app:left_text="我的收藏"
                 app:left_text_color="@color/black1"
-                app:right_src="@drawable/ic_next" />
+                app:right_src="@mipmap/ic_next" />
 
             <com.lqr.optionitemview.OptionItemView
 
@@ -208,7 +208,7 @@
                 app:left_src="@mipmap/ic_location"
                 app:left_text="菜谱大全"
                 app:left_text_color="@color/black1"
-                app:right_src="@drawable/ic_next" />
+                app:right_src="@mipmap/ic_next" />
 
             <com.lqr.optionitemview.OptionItemView
                 android:layout_width="match_parent"
@@ -217,7 +217,7 @@
                 app:left_src="@mipmap/ic_location"
                 app:left_text="驾考题库"
                 app:left_text_color="@color/black1"
-                app:right_src="@drawable/ic_next" />
+                app:right_src="@mipmap/ic_next" />
 
             <com.lqr.optionitemview.OptionItemView
                 android:layout_width="match_parent"
@@ -226,7 +226,7 @@
                 app:left_src="@mipmap/ic_location"
                 app:left_text="每日一笑"
                 app:left_text_color="@color/black1"
-                app:right_src="@drawable/ic_next" />
+                app:right_src="@mipmap/ic_next" />
 
             <com.lqr.optionitemview.OptionItemView
                 android:layout_marginTop="10dp"

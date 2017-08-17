@@ -50,6 +50,19 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.ForgetPasswordActivity" />
         <activity android:name=".activity.AlterUserInfActivity"></activity>
+
+
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <!--元数据-->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

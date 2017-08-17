@@ -24,10 +24,12 @@ import com.xuhong.smarthome.bean.User;
 import com.xuhong.smarthome.utils.PhotoSelectUtils;
 import com.xuhong.smarthome.utils.RegexUtils;
 import com.xuhong.smarthome.utils.ToastUtils;
+import com.xuhong.smarthome.view.AnimotionPopupWindow;
 import com.xuhong.smarthome.view.CircleTransform;
-import com.xuhong.smarthome.view.SelectPopupWindow;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
@@ -36,8 +38,6 @@ import cn.bmob.v3.listener.UploadFileListener;
 import kr.co.namee.permissiongen.PermissionFail;
 import kr.co.namee.permissiongen.PermissionGen;
 import kr.co.namee.permissiongen.PermissionSuccess;
-
-import static com.xuhong.smarthome.view.SelectPopupWindow.TYPE_SELECT_PIC;
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
@@ -111,38 +111,44 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 Picasso.with(RegisterActivity.this).load(outputFile).transform(new CircleTransform()).into(ivCameraBg);
                 ivNull.setVisibility(View.INVISIBLE);
             }
-        }, 1, 1, 350, 350);
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llCamera:
-                SelectPopupWindow SelectPopupWindow = new SelectPopupWindow(RegisterActivity.this, new SelectPopupWindow.OnPopWindowClickListener() {
+                List<String> list = new ArrayList<>();
+                list.add("相册");
+                list.add("相机");
+                AnimotionPopupWindow mAnimotionPopupWindow = new AnimotionPopupWindow(RegisterActivity.this, list);
+                mAnimotionPopupWindow.show();
+                mAnimotionPopupWindow.setAnimotionPopupWindowOnClickListener(new AnimotionPopupWindow.AnimotionPopupWindowOnClickListener() {
                     @Override
-                    public void onPopWindowClickListener(View view) {
-                        switch (view.getId()) {
-                            case R.id.btnTakePhoto:
-                                // 3、调用拍照方法
-                                PermissionGen.with(RegisterActivity.this)
-                                        .addRequestCode(PhotoSelectUtils.REQ_TAKE_PHOTO)
-                                        .permissions(Manifest.permission.READ_EXTERNAL_STORAGE,
-                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                                Manifest.permission.CAMERA
-                                        ).request();
-                                break;
-                            case R.id.btnAlum:
+                    public void onPopWindowClickListener(int position) {
+                        switch (position){
+                            case 0:
                                 PermissionGen.needPermission(RegisterActivity.this,
                                         PhotoSelectUtils.REQ_SELECT_PHOTO,
                                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                                                 Manifest.permission.WRITE_EXTERNAL_STORAGE}
                                 );
                                 break;
+                            case 1:
+
+                                PermissionGen.with(RegisterActivity.this)
+                                        .addRequestCode(PhotoSelectUtils.REQ_TAKE_PHOTO)
+                                        .permissions(Manifest.permission.READ_EXTERNAL_STORAGE,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                Manifest.permission.CAMERA
+                                        ).request();
+
+                                break;
                         }
                     }
-                },TYPE_SELECT_PIC);
-                SelectPopupWindow.show();
+                });
                 break;
+
 
             case R.id.btn_register:
                 if (!register_et_name.getText().toString().isEmpty()
