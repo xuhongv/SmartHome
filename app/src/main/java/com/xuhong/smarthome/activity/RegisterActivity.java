@@ -2,8 +2,10 @@ package com.xuhong.smarthome.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -21,13 +23,18 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.squareup.picasso.Picasso;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.bean.User;
+import com.xuhong.smarthome.utils.FileUtils;
 import com.xuhong.smarthome.utils.PhotoSelectUtils;
 import com.xuhong.smarthome.utils.RegexUtils;
+import com.xuhong.smarthome.utils.TakePictureManager;
 import com.xuhong.smarthome.utils.ToastUtils;
 import com.xuhong.smarthome.view.AnimotionPopupWindow;
 import com.xuhong.smarthome.view.CircleTransform;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,11 +57,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private float BgAlpha = 0.5f;
     private float ButtonAlpha = 0.7f;
 
+    //拍照
+    private TakePictureManager takePictureManager;
+
 
     private EditText register_et_name, register_et_email, register_et_password, register_et_password_again;
-
-    //选取相册
-    private PhotoSelectUtils photoSelectUtils;
     private ImageView ivCameraBg, ivNull;
 
     private File mFile;
@@ -102,16 +109,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         llCamera = (FrameLayout) findViewById(R.id.llCamera);
         llCamera.setOnClickListener(this);
 
-        //拍照回调
-        photoSelectUtils = new PhotoSelectUtils(this, new PhotoSelectUtils.PhotoSelectListener() {
-            @Override
-            public void onFinish(File outputFile, Uri outputUri) {
-                mFile = outputFile;
-                ivCameraBg.setAlpha(1f);
-                Picasso.with(RegisterActivity.this).load(outputFile).transform(new CircleTransform()).into(ivCameraBg);
-                ivNull.setVisibility(View.INVISIBLE);
-            }
-        });
     }
 
     @Override
@@ -126,23 +123,51 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 mAnimotionPopupWindow.setAnimotionPopupWindowOnClickListener(new AnimotionPopupWindow.AnimotionPopupWindowOnClickListener() {
                     @Override
                     public void onPopWindowClickListener(int position) {
-                        switch (position){
+                        switch (position) {
                             case 0:
-                                PermissionGen.needPermission(RegisterActivity.this,
-                                        PhotoSelectUtils.REQ_SELECT_PHOTO,
-                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                                                Manifest.permission.WRITE_EXTERNAL_STORAGE}
-                                );
+                                takePictureManager = new TakePictureManager(RegisterActivity.this);
+                                //开启裁剪 比例 1:3 宽高 350 350  (默认不裁剪)
+                                takePictureManager.setTailor(1, 1, 350, 350);
+                                //拍照方式
+                                takePictureManager.startTakeWayByAlbum();
+                                //回调
+                                takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
+                                    @Override
+                                    public void successful(boolean isTailor, File outFile, Uri filePath) {
+                                        mFile = outFile;
+                                        ivCameraBg.setAlpha(1f);
+                                        Picasso.with(RegisterActivity.this).load(outFile).transform(new CircleTransform()).into(ivCameraBg);
+                                        ivNull.setVisibility(View.INVISIBLE);
+                                    }
+
+                                    @Override
+                                    public void failed(int errorCode, List<String> deniedPermissions) {
+
+                                    }
+                                });
                                 break;
                             case 1:
 
-                                PermissionGen.with(RegisterActivity.this)
-                                        .addRequestCode(PhotoSelectUtils.REQ_TAKE_PHOTO)
-                                        .permissions(Manifest.permission.READ_EXTERNAL_STORAGE,
-                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                                Manifest.permission.CAMERA
-                                        ).request();
+                                takePictureManager = new TakePictureManager(RegisterActivity.this);
+                                //开启裁剪 比例 1:3 宽高 350 350  (默认不裁剪)
+                                takePictureManager.setTailor(1, 1, 350, 350);
+                                //拍照方式
+                                takePictureManager.startTakeWayByCarema();
+                                //回调
+                                takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
+                                    @Override
+                                    public void successful(boolean isTailor, File outFile, Uri filePath) {
+                                        mFile = outFile;
+                                        ivCameraBg.setAlpha(1f);
+                                        Picasso.with(RegisterActivity.this).load(outFile).transform(new CircleTransform()).into(ivCameraBg);
+                                        ivNull.setVisibility(View.INVISIBLE);
+                                    }
 
+                                    @Override
+                                    public void failed(int errorCode, List<String> deniedPermissions) {
+
+                                    }
+                                });
                                 break;
                         }
                     }
@@ -188,7 +213,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                     public void done(User user, BmobException e) {
                                         if (e == null) {
                                             ToastUtils.showPhotoToast(RegisterActivity.this, R.drawable.ic_warning, "注册成功！");
-                                             finish();
+                                            finish();
                                         } else {
                                             switch (e.getErrorCode()) {
                                                 case 202:
@@ -232,76 +257,20 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    @PermissionSuccess(requestCode = PhotoSelectUtils.REQ_TAKE_PHOTO)
-    private void takePhoto() {
-        photoSelectUtils.takePhoto();
-    }
-
-    @PermissionSuccess(requestCode = PhotoSelectUtils.REQ_SELECT_PHOTO)
-    private void selectPhoto() {
-        photoSelectUtils.selectPhoto();
-    }
-
-    @PermissionFail(requestCode = PhotoSelectUtils.REQ_TAKE_PHOTO)
-    private void showTip1() {
-        //Toast.makeText(getApplicationContext(), "不给我权限是吧，那就别玩了", Toast.LENGTH_SHORT).show();
-        showDialog();
-    }
-
-    @PermissionFail(requestCode = PhotoSelectUtils.REQ_SELECT_PHOTO)
-    private void showTip2() {
-        //Toast.makeText(getApplicationContext(), "不给我权限是吧，那就别玩了", Toast.LENGTH_SHORT).show();
-        showDialog();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        PermissionGen.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-    }
-
+    //把本地的onActivityResult()方法回调绑定到对象
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // 2、在Activity中的onActivityResult()方法里与LQRPhotoSelectUtils关联
-        photoSelectUtils.attachToActivityForResult(requestCode, resultCode, data);
+        takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
     }
 
-    public void showDialog() {
-
-        //创建对话框创建器
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //设置对话框显示小图标
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        //设置标题
-        builder.setTitle("权限申请");
-        //设置正文
-        builder.setMessage("在设置-应用-虎嗅-权限 中开启相机、存储权限，才能正常使用拍照或图片选择功能");
-
-        //添加确定按钮点击事件
-        builder.setPositiveButton("去设置", new DialogInterface.OnClickListener() {//点击完确定后，触发这个事件
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //这里用来跳到手机设置页，方便用户开启权限
-                Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                intent.setData(Uri.parse("package:" + RegisterActivity.this.getPackageName()));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
-
-        //添加取消按钮点击事件
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-
-        //使用构建器创建出对话框对象
-        AlertDialog dialog = builder.create();
-        dialog.show();//显示对话框
+    //onRequestPermissionsResult()方法权限回调绑定到对象
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        takePictureManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 
 
 }

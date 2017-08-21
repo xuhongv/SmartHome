@@ -202,8 +202,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.btn_login:
-
-
                 if (!login_et_name.getText().toString().isEmpty() && !login_et_password.getText().toString().isEmpty()) {
 
                     final User user = new User();
@@ -215,7 +213,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             if (e == null) {
                                 finish();
                             } else {
-                                Log.e("==w", "登录失败：" + e);
                                 switch (e.getErrorCode()) {
                                     case 101:
                                         ToastUtils.showToast(LoginActivity.this, "用户名或密码不正确哦！");
