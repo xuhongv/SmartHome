@@ -28,6 +28,7 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.bean.User;
+import com.xuhong.smarthome.utils.SharePreUtils;
 import com.xuhong.smarthome.utils.ToastUtils;
 
 import cn.bmob.v3.BmobUser;
@@ -52,6 +53,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextInputLayout textInLayPass;
     private EditText login_et_name;
     private Button btn_login;
+
+    //用户账号名字
+    private String userName;
+    //用户密码
+    private String userPw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +131,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
 
 
+        getUserAccount();
         login_et_name.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -181,6 +188,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
 
 
+    }
+
+    //获取账号名字密码
+    private void getUserAccount() {
+        userName = SharePreUtils.getString(this, "userName", null);
+        userPw = SharePreUtils.getString(this, "userPw", null);
+        if (userName != null && userPw != null) {
+            login_et_name.setText(userName);
+            login_et_password.setText(userPw);
+        }
+
+    }
+
+    //保存账号账号密码
+    private void saveUserAccount() {
+        SharePreUtils.putString(this, "userName", login_et_name.getText().toString().intern());
+        SharePreUtils.putString(this, "userPw", login_et_password.getText().toString().intern());
 
     }
 
@@ -211,6 +235,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         @Override
                         public void done(BmobUser bmobUser, BmobException e) {
                             if (e == null) {
+                                saveUserAccount();
                                 finish();
                             } else {
                                 switch (e.getErrorCode()) {

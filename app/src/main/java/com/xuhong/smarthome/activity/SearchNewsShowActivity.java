@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +28,6 @@ import com.xuhong.smarthome.utils.ParseJson;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,7 +144,7 @@ public class SearchNewsShowActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.putExtra("_webUrl", urlList.get(position));
                 intent.putExtra("_webTitle", titleList.get(position));
-                intent.setClass(SearchNewsShowActivity.this, ShowNewsDetailActivity.class);
+                intent.setClass(SearchNewsShowActivity.this, WebViewActivity.class);
                 startActivity(intent);
             }
         });

@@ -34,7 +34,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.SearchNewsShowActivity" />
-        <activity android:name=".activity.ShowNewsDetailActivity" />
+        <activity android:name=".activity.WebViewActivity" />
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden" />

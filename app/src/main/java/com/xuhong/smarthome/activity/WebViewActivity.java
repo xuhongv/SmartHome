@@ -3,10 +3,8 @@ package com.xuhong.smarthome.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -15,10 +13,11 @@ import android.webkit.WebView;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.R;
+import com.xuhong.smarthome.utils.L;
 
 import java.lang.reflect.Method;
 
-public class ShowNewsDetailActivity extends BaseActivity {
+public class WebViewActivity extends BaseActivity {
 
     private WebView mWebView;
     private String webUrl;
@@ -27,7 +26,7 @@ public class ShowNewsDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_news_detail);
+        setContentView(R.layout.activity_webview);
 
         initData();
         initView();
@@ -39,6 +38,7 @@ public class ShowNewsDetailActivity extends BaseActivity {
         Intent intent = this.getIntent();
         webUrl = intent.getStringExtra("_webUrl");
         String webTitle = intent.getStringExtra("_webTitle");
+        L.e("_webUrl"+webUrl);
         //设置标题
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -56,10 +56,11 @@ public class ShowNewsDetailActivity extends BaseActivity {
     @SuppressLint("SetJavaScriptEnabled")
     private void initView() {
         mWebView = (WebView) findViewById(R.id.mWebView);
-        WebSettings webSettings = mWebView.getSettings();
+        //支持JS
+        mWebView.getSettings().setJavaScriptEnabled(true);
         //支持缩放
-        webSettings.setSupportZoom(true);
-        webSettings.setBuiltInZoomControls(true);
+        mWebView.getSettings().setSupportZoom(true);
+        mWebView.getSettings().setBuiltInZoomControls(true);
         //接口回调
         mWebView.setWebChromeClient(new WebViewClient());
         mWebView.loadUrl(webUrl);
@@ -85,25 +86,6 @@ public class ShowNewsDetailActivity extends BaseActivity {
             super.onProgressChanged(view, newProgress);
         }
     }
-
-
-    //自定义菜单显示加载
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_news_detail, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
-
-    //自定义菜单和返回键的点击事件
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        //如果点击了返回键，则关闭当前Activity
-//        if (item.getItemId() == android.R.id.home) {
-//            finish();
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
 
 

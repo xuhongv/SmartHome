@@ -8,6 +8,7 @@
         android:id="@+id/pullView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:orientation="vertical"
         android:scrollbars="none">
 
@@ -50,19 +51,6 @@
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
-                    <com.lqr.optionitemview.OptionItemView
-                        android:id="@+id/optionItemView"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/tvName"
-                        android:layout_marginTop="383dp"
-                        android:background="#fff"
-                        app:left_src="@mipmap/ic_location"
-                        app:left_text="关于软件"
-                        app:left_text_color="@color/black1"
-                        app:right_src="@drawable/ic_next" />
-
                 </RelativeLayout>
 
                 <LinearLayout
@@ -80,7 +68,7 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/tv_home_normal"
+                            android:id="@+id/tvDevices"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/iv_home_press"
@@ -116,10 +104,9 @@
                         android:layout_weight="1">
 
                         <TextView
-
+                            android:id="@+id/tvShareDevices"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/iv_home_press"
                             android:layout_centerInParent="true"
                             android:padding="2dp"
                             android:text="设备共享"
@@ -146,8 +133,6 @@
                             />
 
 
-
-
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -158,9 +143,9 @@
                         android:layout_weight="1">
 
                         <TextView
+                            android:id="@+id/tvDevicesLog"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/iv_home_press"
                             android:layout_centerInParent="true"
                             android:padding="2dp"
                             android:text="设备日志"
@@ -177,10 +162,10 @@
             </FrameLayout>
 
             <com.lqr.optionitemview.OptionItemView
-                android:id="@+id/OVLocation"
+                android:id="@+id/OVUserInf"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#fff"
+                android:background="@drawable/selector_optionview"
                 app:left_src="@mipmap/ic_location"
                 app:left_text="个人资料"
                 app:left_text_color="@color/black1"
@@ -194,49 +179,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
-                android:background="#fff"
+                android:background="@drawable/selector_optionview"
                 app:left_src="@mipmap/ic_location"
                 app:left_text="我的收藏"
                 app:left_text_color="@color/black1"
                 app:right_src="@mipmap/ic_next" />
 
             <com.lqr.optionitemview.OptionItemView
-
+                android:id="@+id/OVVegetable"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#fff"
+                android:background="@drawable/selector_optionview"
                 app:left_src="@mipmap/ic_location"
                 app:left_text="菜谱大全"
                 app:left_text_color="@color/black1"
                 app:right_src="@mipmap/ic_next" />
 
             <com.lqr.optionitemview.OptionItemView
+                android:id="@+id/OVCarText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#fff"
+                android:background="@drawable/selector_optionview"
                 app:left_src="@mipmap/ic_location"
                 app:left_text="驾考题库"
                 app:left_text_color="@color/black1"
                 app:right_src="@mipmap/ic_next" />
 
             <com.lqr.optionitemview.OptionItemView
+                android:id="@+id/OVDayHappy"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#fff"
+                android:background="@drawable/selector_optionview"
                 app:left_src="@mipmap/ic_location"
                 app:left_text="每日一笑"
                 app:left_text_color="@color/black1"
                 app:right_src="@mipmap/ic_next" />
 
             <com.lqr.optionitemview.OptionItemView
-                android:layout_marginTop="10dp"
+                android:id="@+id/OVAbout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#fff"
-                app:left_src="@drawable/ic_about"
-                app:left_text="关于"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/selector_optionview"
+                app:left_src="@mipmap/ic_location"
+                app:left_text="关于软件"
                 app:left_text_color="@color/black1"
-                app:right_src="@drawable/ic_next" />
+                app:right_src="@mipmap/ic_next"  />
 
         </LinearLayout>
 

@@ -26,4 +26,6 @@ public class Constant {
     //获取新闻频道
     public static String URL_GET_NEWS_CHANNEL = "http://api.jisuapi.com/news/channel?appkey=" + JUSU_APPKEY;
 
+    //版本获取
+    public static String GET_APP_VERSION = "http://smarthomesample.oss-cn-hongkong.aliyuncs.com/appVersion.txt";
 }

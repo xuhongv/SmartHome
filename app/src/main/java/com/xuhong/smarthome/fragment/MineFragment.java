@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lqr.optionitemview.OptionItemView;
 import com.squareup.picasso.Picasso;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.AlterUserInfActivity;
@@ -58,13 +59,16 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private ImageView ivHeaderBg;
     private ImageView ivmeIcon;
     private PullScrollView pullView;
-
     private TextView tvName;
-
-    //临时的上传图片的文件
-    private File photoFile;
-
-
+    private TextView mTvDevices;
+    private TextView mTvShareDevices;
+    private TextView mTvDevicesLog;
+    private com.lqr.optionitemview.OptionItemView mOVUserInf;
+    private com.lqr.optionitemview.OptionItemView mOVCollect;
+    private com.lqr.optionitemview.OptionItemView mOVCarText;
+    private com.lqr.optionitemview.OptionItemView mOVDayHappy;
+    private com.lqr.optionitemview.OptionItemView mOVAbout;
+    private com.lqr.optionitemview.OptionItemView OVVegetable;
     //上传图片用到
     private TakePictureManager takePictureManager;
     //拍照完图片保存的路径
@@ -77,12 +81,31 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void initView(View view) {
 
+        mTvDevices = (TextView) view.findViewById(R.id.tvDevices);
+        mTvShareDevices = (TextView) view.findViewById(R.id.tvShareDevices);
+        mTvDevicesLog = (TextView) view.findViewById(R.id.tvDevicesLog);
+        mOVUserInf = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVUserInf);
+        mOVUserInf.setOnClickListener(this);
+        mOVCollect = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVCollect);
+        mOVCollect.setOnClickListener(this);
+        mOVCarText = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVCarText);
+        mOVCarText.setOnClickListener(this);
+        mOVDayHappy = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVDayHappy);
+        mOVDayHappy.setOnClickListener(this);
+        mOVAbout = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVAbout);
+        OVVegetable = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVVegetable);
+        mOVAbout.setOnClickListener(this);
+        OVVegetable.setOnClickListener(this);
+
+
         ivHeaderBg = (ImageView) view.findViewById(R.id.ivHeaderBg);
         ivmeIcon = (ImageView) view.findViewById(R.id.ivIcon);
         tvName = (TextView) view.findViewById(R.id.tvName);
         ivmeIcon.setOnClickListener(this);
         pullView = (PullScrollView) view.findViewById(R.id.pullView);
         pullView.setZoomView(ivHeaderBg);
+
+
         getUserInf();
 
     }
@@ -104,7 +127,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 } else {
                     List<String> list = new ArrayList<>();
                     list.add("更改头像");
-                    list.add("修改名字");
                     list.add("切换账号");
                     list.add("退出登录");
                     AnimotionPopupWindow popupWindow = new AnimotionPopupWindow(getActivity(), list);
@@ -117,24 +139,36 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                                 case 0:
                                     changeMyIcon();
                                     break;
-                                //修改名字
-                                case 1:
-
-                                    break;
                                 //切换账号
-                                case 2:
+                                case 1:
                                     startActivity(new Intent(getActivity(), AlterUserInfActivity.class));
                                     break;
                                 //退出登录
-                                case 3:
+                                case 2:
                                     User.logOut();
                                     ToastUtils.showToast(getActivity(), "退出成功！");
                                     getUserInf();
                                     break;
+
                             }
                         }
                     });
                 }
+                break;
+
+            case R.id.OVUserInf:
+               startActivity(new Intent(getActivity(),AlterUserInfActivity.class));
+                break;
+            case R.id.OVCollect:
+                L.d("OVCollect");
+                break;
+            case R.id.OVCarText:
+                break;
+            case R.id.OVDayHappy:
+
+                break;
+
+            case R.id.OVVegetable:
                 break;
         }
     }
@@ -192,7 +226,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                         openCamera();
                         break;
                     case 1:
-                       openAlbun();
+                        openAlbun();
                         break;
                 }
             }
@@ -207,7 +241,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
             @Override
             public void successful(boolean isTailor, File outFile, Uri filePath) {
-                photoFile=outFile;
                 updataMyicon(outFile);
             }
 
@@ -227,7 +260,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
             @Override
             public void successful(boolean isTailor, File outFile, Uri filePath) {
-                photoFile=outFile;
                 updataMyicon(outFile);
             }
 
@@ -240,37 +272,33 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
-    private void updataMyicon(final File outFile){
-
-
+    private void updataMyicon(final File outFile) {
         final User userInfo = BmobUser.getCurrentUser(User.class);
-
-
         //删除当前文件
         BmobFile file = new BmobFile();
         file.setUrl(userInfo.getNick());//此url是上传文件成功之后通过bmobFile.getUrl()方法获取的。
         file.delete(new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                if(e==null){
+                if (e == null) {
                     final BmobFile bmobFile = new BmobFile(outFile);
                     bmobFile.uploadblock(new UploadFileListener() {
                         @Override
                         public void done(BmobException e) {
-                            if(e==null){
+                            if (e == null) {
                                 userInfo.setNick(bmobFile.getFileUrl());
                                 userInfo.update(new UpdateListener() {
                                     @Override
                                     public void done(BmobException e) {
-                                        if (e==null){
-                                            ToastUtils.showToast(getActivity(),"更新用户信息成功:");
+                                        if (e == null) {
+                                            ToastUtils.showToast(getActivity(), "更新用户信息成功:");
                                             getUserInf();
                                         }
                                     }
                                 });
 
-                            }else{
-                                ToastUtils.showToast(getActivity(),"上传文件失败：" + e.getMessage());
+                            } else {
+                                ToastUtils.showToast(getActivity(), "上传文件失败：" + e.getMessage());
                             }
 
                         }
@@ -280,8 +308,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                             // 返回的上传进度（百分比）
                         }
                     });
-                }else{
-                    ToastUtils.showToast(getActivity(),"失败："+e.getErrorCode()+","+e.getMessage());
+                } else {
+                    ToastUtils.showToast(getActivity(), "失败：" + e.getErrorCode() + "," + e.getMessage());
                 }
             }
         });
@@ -296,6 +324,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
-        }
+    }
 
 }

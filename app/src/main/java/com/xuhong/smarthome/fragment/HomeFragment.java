@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -23,12 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.SearchNewsShowActivity;
-import com.xuhong.smarthome.activity.ShowNewsDetailActivity;
+import com.xuhong.smarthome.activity.WebViewActivity;
 import com.xuhong.smarthome.adapter.SpaceItemDecoration;
 import com.xuhong.smarthome.adapter.mRecyclerViewCardAdapter;
 import com.xuhong.smarthome.adapter.mRecyclerViewNewListAdapter;
@@ -36,6 +34,7 @@ import com.xuhong.smarthome.bean.HomeNewListBean;
 import com.xuhong.smarthome.bean.HomeNewsChannelBean;
 import com.xuhong.smarthome.bean.HomeNewsListItemBean;
 import com.xuhong.smarthome.constant.Constant;
+import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.OkHttpUtils;
 import com.xuhong.smarthome.utils.ParseJson;
 
@@ -133,6 +132,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         llSearch = (LinearLayout) view.findViewById(R.id.llSearch);
         llSearch.setOnClickListener(this);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ImmersionBar.setTitleBar(getActivity(), toolbar);
         tvSearch = (TextView) view.findViewById(R.id.tv_search);
         mScrollView = (ScrollView) view.findViewById(R.id.scrollView);
         mSearchLayout = (LinearLayout) view.findViewById(R.id.llSearch);
@@ -176,7 +176,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 Intent intent = new Intent();
                 intent.putExtra("_webUrl", urlList.get(position));
                 intent.putExtra("_webTitle", titleList.get(position));
-                intent.setClass(getActivity(), ShowNewsDetailActivity.class);
+                intent.setClass(getActivity(), WebViewActivity.class);
                 startActivity(intent);
             }
         });
@@ -231,8 +231,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             }
         }, 3000);
 
-        //getNewsChannel();
-        //getNewsList();
+        getNewsChannel();
+        getNewsList();
         mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {

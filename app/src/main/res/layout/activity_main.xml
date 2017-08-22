@@ -1,15 +1,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
     android:background="@color/gray5"
+    android:clipChildren="false"
     android:orientation="vertical">
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/mViewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+
     <!--底部导航栏-->
     <LinearLayout
         android:id="@+id/ll_bottom"
@@ -207,6 +211,7 @@
                 android:padding="2dp"
                 android:text="我的"
                 android:textSize="10sp" />
+
             <TextView
                 android:id="@+id/tv_mine_press"
                 android:layout_width="wrap_content"
