@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/menu_share"
-        android:icon="@mipmap/ic_menu_share"
-        android:title="分享至朋友圈" />
-    <item
+        android:id="@+id/menu_share_sina"
         android:icon="@mipmap/ic_menu_share"
         android:title="分享至新浪微博" />
+
+
     <item
+        android:id="@+id/menu_shareweichatCircle"
+        android:icon="@mipmap/ic_menu_share"
+        android:title="分享至朋友圈" />
+
+    <item
+        android:id="@+id/menu_share_weichatfriend"
         android:icon="@mipmap/ic_menu_share"
         android:title="分享至微信好友" />
     <item
-
+        android:id="@+id/menu_shareQQ"
         android:icon="@mipmap/ic_menu_share"
         android:title="分享至QQ" />
     <item
-        android:id="@+id/menu_start"
+        android:id="@+id/menu_shareCollection"
         android:icon="@mipmap/ic_menu_star"
         android:title="收藏" />
 </menu>

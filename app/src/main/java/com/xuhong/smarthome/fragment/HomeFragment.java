@@ -128,11 +128,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void initView(View view) {
 
+
+
         mBanner = (BGABanner) view.findViewById(R.id.banner_main_depth);
         llSearch = (LinearLayout) view.findViewById(R.id.llSearch);
         llSearch.setOnClickListener(this);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ImmersionBar.setTitleBar(getActivity(), toolbar);
         tvSearch = (TextView) view.findViewById(R.id.tv_search);
         mScrollView = (ScrollView) view.findViewById(R.id.scrollView);
         mSearchLayout = (LinearLayout) view.findViewById(R.id.llSearch);
@@ -326,11 +327,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void expand() {
+
+
         //设置伸展状态时的布局
         tvSearch.setText("搜索你想要的人或事");
         RelativeLayout.LayoutParams LayoutParams = (RelativeLayout.LayoutParams) mSearchLayout.getLayoutParams();
         LayoutParams.width = LayoutParams.MATCH_PARENT;
-        LayoutParams.setMargins(dip2px(10), dip2px(10), dip2px(10), dip2px(10));
+        LayoutParams.setMargins(dip2px(10), dip2px(20), dip2px(10), dip2px(10));
         mSearchLayout.setLayoutParams(LayoutParams);
         //开始动画
         beginDelayedTransition(mSearchLayout);
@@ -341,7 +344,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         tvSearch.setText("搜索");
         RelativeLayout.LayoutParams LayoutParams = (RelativeLayout.LayoutParams) mSearchLayout.getLayoutParams();
         LayoutParams.width = dip2px(80);
-        LayoutParams.setMargins(dip2px(10), dip2px(10), dip2px(10), dip2px(10));
+        LayoutParams.setMargins(dip2px(10), dip2px(20), dip2px(10), dip2px(10));
         mSearchLayout.setLayoutParams(LayoutParams);
         //开始动画
         beginDelayedTransition(mSearchLayout);

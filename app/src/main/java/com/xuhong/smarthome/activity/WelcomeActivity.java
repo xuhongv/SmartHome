@@ -1,6 +1,9 @@
 package com.xuhong.smarthome.activity;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
@@ -19,6 +26,7 @@ import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.constant.Constant;
 import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.OkHttpUtils;
+import com.xuhong.smarthome.utils.UtilTools;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,10 +63,35 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        initView();
+
+        getCurrentVersion();
+    }
+
+    private void initView() {
+
+        //字体设置
         Shimmer shimmer = new Shimmer();
         ShimmerTextView shimmer_login = (ShimmerTextView) findViewById(R.id.shimmer_login);
+        UtilTools.setFont(this,shimmer_login);
         shimmer.start(shimmer_login);
-        getCurrentVersion();
+
+        //动画设置
+        RelativeLayout all = (RelativeLayout) findViewById(R.id.all);
+        ValueAnimator animator = ObjectAnimator.ofFloat(all, "translationY", 0.0f,100.0f);
+        animator.setDuration(3000);
+        animator.setInterpolator(new BounceInterpolator());
+
+        ValueAnimator mAnimatorScaleX = ObjectAnimator.ofFloat(all, "scaleX", 0f,1.5f);
+        mAnimatorScaleX.setDuration(3000);
+
+        ValueAnimator mAnimatorScaleY = ObjectAnimator.ofFloat(all, "scaleY", 0f,1.5f);
+        mAnimatorScaleY.setDuration(3000);
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.setDuration(3000);
+        animSet.playTogether(animator,mAnimatorScaleX,mAnimatorScaleY);
+        animSet.start();
     }
 
     //获取最新版本号
@@ -67,7 +100,7 @@ public class WelcomeActivity extends AppCompatActivity {
         OkHttpUtils.getInstance().sendCommon(Constant.GET_APP_VERSION, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                mHandler.sendEmptyMessageDelayed(101, 3000);
+                mHandler.sendEmptyMessageDelayed(101, 3200);
             }
 
             @Override
@@ -76,13 +109,13 @@ public class WelcomeActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(response.body().string());
                         lasterVersion = jsonObject.getString("appVersion");
-                        mHandler.sendEmptyMessageDelayed(101, 3000);
+                        mHandler.sendEmptyMessageDelayed(101, 3500);
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        mHandler.sendEmptyMessageDelayed(101, 3000);
+                        mHandler.sendEmptyMessageDelayed(101, 3500);
                     }
                 } else {
-                    mHandler.sendEmptyMessageDelayed(101, 3000);
+                    mHandler.sendEmptyMessageDelayed(101, 3500);
                 }
             }
         });

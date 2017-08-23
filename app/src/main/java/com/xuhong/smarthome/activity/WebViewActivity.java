@@ -4,18 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.utils.L;
-
-import java.lang.reflect.Method;
 
 public class WebViewActivity extends BaseActivity {
 
@@ -38,7 +35,7 @@ public class WebViewActivity extends BaseActivity {
         Intent intent = this.getIntent();
         webUrl = intent.getStringExtra("_webUrl");
         String webTitle = intent.getStringExtra("_webTitle");
-        L.e("_webUrl"+webUrl);
+        L.e("_webUrl" + webUrl);
         //设置标题
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -49,6 +46,25 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_share_sina:
+                        break;
+                    case R.id.menu_shareweichatCircle:
+                        break;
+                    case R.id.menu_share_weichatfriend:
+                        break;
+                    case R.id.menu_shareQQ:
+                        break;
+                    case R.id.menu_shareCollection:
+                        break;
+
+                }
+                return true;
             }
         });
     }
@@ -87,23 +103,5 @@ public class WebViewActivity extends BaseActivity {
         }
     }
 
-
-
-    // 让菜单同时显示图标和文字
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        if (menu != null) {
-            if (menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")) {
-                try {
-                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
-                    method.setAccessible(true);
-                    method.invoke(menu, true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return super.onMenuOpened(featureId, menu);
-    }
 
 }

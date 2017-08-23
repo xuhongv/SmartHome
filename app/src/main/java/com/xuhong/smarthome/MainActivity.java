@@ -60,6 +60,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //设置为黑色的状态栏
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true, 0.2f)
+                .init();
+
         if (getIntent().getBooleanExtra("isLastVersion", false)){
 
 
@@ -302,7 +307,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        L.e("Main code:" + requestCode);
     }
 
 

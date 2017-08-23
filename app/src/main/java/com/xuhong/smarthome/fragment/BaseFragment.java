@@ -50,10 +50,10 @@ public abstract class BaseFragment extends Fragment {
         mActivity = (Activity) context;
     }
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRootView = inflater.inflate(setLayoutId(), container, false);
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
+        mRootView = inflater.inflate(setLayoutId(), null);
         initView(mRootView);
         return mRootView;
     }
