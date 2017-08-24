@@ -1,5 +1,6 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ViewPagerTitle="http://schemas.android.com/tools"
     android:id="@+id/mSwipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,6 +29,7 @@
                     app:banner_transitionEffect="depth" />
 
                 <RelativeLayout
+
                     android:id="@+id/rlNull"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -52,6 +54,7 @@
                 </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
+
                     android:id="@+id/mRecycleView_NewsIndex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -60,6 +63,7 @@
                     android:paddingTop="20dp" />
 
                 <RelativeLayout
+
                     android:id="@+id/rlnull"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,7 +86,6 @@
                         android:text="热门新闻" />
 
                 </RelativeLayout>
-
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/mRecycleView_NewsLists"

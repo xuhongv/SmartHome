@@ -3,22 +3,40 @@ package com.xuhong.smarthome.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.squareup.picasso.Picasso;
 import com.xuhong.smarthome.R;
-import com.xuhong.smarthome.utils.L;
+import com.xuhong.smarthome.bean.CollectionUrl;
+import com.xuhong.smarthome.bean.User;
+import com.xuhong.smarthome.utils.PicassoUtils;
+import com.xuhong.smarthome.utils.ToastUtils;
+
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+
 
 public class WebViewActivity extends BaseActivity {
 
-    private WebView mWebView;
+
     private String webUrl;
     private Toolbar toolbar;
+
+    private WebView mWebView;
+
+    private ImageView ivImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +44,7 @@ public class WebViewActivity extends BaseActivity {
         setContentView(R.layout.activity_webview);
 
         initData();
-        initView();
+        initWebView();
     }
 
     private void initData() {
@@ -35,9 +53,9 @@ public class WebViewActivity extends BaseActivity {
         Intent intent = this.getIntent();
         webUrl = intent.getStringExtra("_webUrl");
         String webTitle = intent.getStringExtra("_webTitle");
-        L.e("_webUrl" + webUrl);
-        //设置标题
+        String picTitle = intent.getStringExtra("_picTitle");
 
+        //设置标题
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImmersionBar.setTitleBar(this, toolbar);
         toolbar.setTitle(webTitle);
@@ -61,16 +79,55 @@ public class WebViewActivity extends BaseActivity {
                     case R.id.menu_shareQQ:
                         break;
                     case R.id.menu_shareCollection:
+                        doActionCollection();
                         break;
 
                 }
                 return true;
             }
         });
+        mWebView= (WebView) findViewById(R.id.mWebView);
+        ivImage= (ImageView) findViewById(R.id.ivImage);
+        //如果图片为null，则显示默认的图片
+        if (picTitle.isEmpty()){
+            PicassoUtils.loadImageViewFromLocal(this,R.mipmap.ic_webview_bg,ivImage);
+        }else {
+            Picasso.with(this).load(picTitle).error(R.mipmap.ic_webview_bg).into(ivImage);
+        }
+
+    }
+
+    private void doActionCollection() {
+
+        User userInfo = BmobUser.getCurrentUser(User.class);
+        if (userInfo != null) {
+            CollectionUrl collectionUrl =new CollectionUrl();
+            collectionUrl.setUri(webUrl);
+            collectionUrl.setUser(userInfo);
+            collectionUrl.save(new SaveListener<String>() {
+
+                @Override
+                public void done(String objectId,BmobException e) {
+                    if(e==null){
+                        ToastUtils.showToast(WebViewActivity.this,"收藏成功！");
+
+                    }else{
+                        ToastUtils.showToast(WebViewActivity.this,"收藏失败！"+e);
+
+                    }
+                }
+            });
+        }else {
+            ToastUtils.showToast(this,"未登录！不能收藏哦！");
+        }
+
+
+
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void initView() {
+    private void initWebView() {
         mWebView = (WebView) findViewById(R.id.mWebView);
         //支持JS
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -89,8 +146,6 @@ public class WebViewActivity extends BaseActivity {
             }
         });
     }
-
-
     public class WebViewClient extends WebChromeClient {
 
         //进度变化的监听

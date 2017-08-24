@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,9 +24,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.R;
-import com.xuhong.smarthome.activity.SearchNewsShowActivity;
+import com.xuhong.smarthome.activity.SearchNewsActivity;
 import com.xuhong.smarthome.activity.WebViewActivity;
 import com.xuhong.smarthome.adapter.SpaceItemDecoration;
 import com.xuhong.smarthome.adapter.mRecyclerViewCardAdapter;
@@ -34,7 +34,6 @@ import com.xuhong.smarthome.bean.HomeNewListBean;
 import com.xuhong.smarthome.bean.HomeNewsChannelBean;
 import com.xuhong.smarthome.bean.HomeNewsListItemBean;
 import com.xuhong.smarthome.constant.Constant;
-import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.OkHttpUtils;
 import com.xuhong.smarthome.utils.ParseJson;
 
@@ -48,6 +47,7 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import xu.viewpagerflextitle.ViewPagerTitle;
 
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
@@ -75,6 +75,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     //存储网址的链接URL和标题
     private List<String> urlList;
     private List<String> titleList;
+    private List<String> picList;
 
     //新闻索引频道
     private String newsChannel;
@@ -102,6 +103,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 HomeNewListBean newListBean = ParseJson.getHomeNewsListBean(newsList, HomeNewListBean.class);
                 urlList = new ArrayList<>();
                 titleList=new ArrayList<>();
+                picList=new ArrayList<>();
 
                 for (int i = 0; i < newListBean.getResult().getList().size(); i++) {
                     homeNewsListItemBeanList.add(new HomeNewsListItemBean(newListBean.getResult().getList().get(i).getTitle()
@@ -110,6 +112,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                             , newListBean.getResult().getList().get(i).getSrc()));
                     urlList.add(newListBean.getResult().getList().get(i).getUrl());
                     titleList.add(newListBean.getResult().getList().get(i).getTitle());
+                    picList.add(newListBean.getResult().getList().get(i).getPic());
                 }
 
                 adapterNewsList.notifyDataSetChanged();
@@ -177,6 +180,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 Intent intent = new Intent();
                 intent.putExtra("_webUrl", urlList.get(position));
                 intent.putExtra("_webTitle", titleList.get(position));
+                intent.putExtra("_picTitle", picList.get(position));
                 intent.setClass(getActivity(), WebViewActivity.class);
                 startActivity(intent);
             }
@@ -209,6 +213,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 }, 3000);
             }
         });
+
 
 
     }
@@ -365,7 +370,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llSearch:
-                startActivity(new Intent(getActivity(), SearchNewsShowActivity.class));
+                startActivity(new Intent(getActivity(), SearchNewsActivity.class));
                 break;
         }
     }

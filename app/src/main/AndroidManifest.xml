@@ -33,7 +33,7 @@
             android:name=".MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.SearchNewsShowActivity" />
+        <activity android:name=".activity.SearchNewsActivity" />
         <activity android:name=".activity.WebViewActivity" />
         <activity
             android:name=".activity.LoginActivity"
@@ -49,20 +49,22 @@
         </activity>
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.ForgetPasswordActivity" />
-        <activity android:name=".activity.AlterUserInfActivity"></activity>
+        <activity android:name=".activity.AlterUserInfActivity" />
 
-
-        <!--此处兼容安卓7.0拍照-->
+        <!-- 此处兼容安卓7.0拍照 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <!--元数据-->
+
+            <!-- 元数据 -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
         </provider>
+
+        <activity android:name=".activity.MyCollectionActivity"></activity>
     </application>
 
 </manifest>

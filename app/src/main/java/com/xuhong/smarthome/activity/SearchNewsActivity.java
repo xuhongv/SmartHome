@@ -23,6 +23,7 @@ import com.xuhong.smarthome.adapter.mRecyclerViewNewListAdapter;
 import com.xuhong.smarthome.bean.HomeNewListBean;
 import com.xuhong.smarthome.bean.HomeNewsListItemBean;
 import com.xuhong.smarthome.constant.Constant;
+import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.OkHttpUtils;
 import com.xuhong.smarthome.utils.ParseJson;
 
@@ -35,7 +36,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class SearchNewsShowActivity extends BaseActivity {
+public class SearchNewsActivity extends BaseActivity {
 
 
     private String newsList;
@@ -43,6 +44,7 @@ public class SearchNewsShowActivity extends BaseActivity {
     //存储网址的链接URL和标题
     private List<String> urlList;
     private List<String> titleList;
+    private List<String> picList;
 
     //输入的关键字
     private String tempContext;
@@ -57,10 +59,10 @@ public class SearchNewsShowActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 103) {
-                Log.e("==w", newsList.toString());
                 HomeNewListBean newListBean = ParseJson.getHomeNewsListBean(newsList, HomeNewListBean.class);
                 urlList = new ArrayList<>();
                 titleList = new ArrayList<>();
+                picList = new ArrayList<>();
 
                 for (int i = 0; i < newListBean.getResult().getList().size(); i++) {
                     homeNewsListItemBeanList.add(new HomeNewsListItemBean(newListBean.getResult().getList().get(i).getTitle()
@@ -69,7 +71,11 @@ public class SearchNewsShowActivity extends BaseActivity {
                             , newListBean.getResult().getList().get(i).getSrc()));
                     urlList.add(newListBean.getResult().getList().get(i).getUrl());
                     titleList.add(newListBean.getResult().getList().get(i).getTitle());
+                    picList.add(newListBean.getResult().getList().get(i).getPic());
                 }
+                L.e("之前picTitle" + picList.toString());
+                L.e("之前urlList" + urlList.toString());
+                L.e("之前titleList" + titleList.toString());
                 adapterNewsList.notifyDataSetChanged();
             }
         }
@@ -136,7 +142,7 @@ public class SearchNewsShowActivity extends BaseActivity {
         mRecycleView_Search.setLayoutManager(linearLayoutManager);
         mRecycleView_Search.setAdapter(adapterNewsList);
         mRecycleView_Search.addItemDecoration(new DividerItemDecoration(
-                SearchNewsShowActivity.this, DividerItemDecoration.VERTICAL));
+                SearchNewsActivity.this, DividerItemDecoration.VERTICAL));
 
         adapterNewsList.setOnItemClickListener(new mRecyclerViewNewListAdapter.OnItemClickListener() {
             @Override
@@ -144,7 +150,9 @@ public class SearchNewsShowActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.putExtra("_webUrl", urlList.get(position));
                 intent.putExtra("_webTitle", titleList.get(position));
-                intent.setClass(SearchNewsShowActivity.this, WebViewActivity.class);
+                intent.putExtra("_picTitle", picList.get(position));
+
+                intent.setClass(SearchNewsActivity.this, WebViewActivity.class);
                 startActivity(intent);
             }
         });
@@ -166,7 +174,7 @@ public class SearchNewsShowActivity extends BaseActivity {
                 if (tempContext != null &&  !tempContext.isEmpty()) {
                     getNewsList(tempContext);
                 } else {
-                    Toast.makeText(SearchNewsShowActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SearchNewsActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
                 }
 
             }

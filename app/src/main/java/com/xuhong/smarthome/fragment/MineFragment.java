@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.AlterUserInfActivity;
 import com.xuhong.smarthome.activity.LoginActivity;
+import com.xuhong.smarthome.activity.MyCollectionActivity;
 import com.xuhong.smarthome.activity.RegisterActivity;
 import com.xuhong.smarthome.bean.User;
 import com.xuhong.smarthome.listener.PermissionListener;
@@ -160,7 +161,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                startActivity(new Intent(getActivity(),AlterUserInfActivity.class));
                 break;
             case R.id.OVCollect:
-                L.d("OVCollect");
+                startActivity(new Intent(getActivity(),MyCollectionActivity.class));
                 break;
             case R.id.OVCarText:
                 break;
