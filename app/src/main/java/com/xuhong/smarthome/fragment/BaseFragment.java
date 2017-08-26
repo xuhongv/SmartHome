@@ -3,19 +3,23 @@ package com.xuhong.smarthome.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.gizwits.gizwifisdk.api.GizWifiDevice;
+import com.gizwits.gizwifisdk.api.GizWifiSDK;
+import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
+import com.gizwits.gizwifisdk.listener.GizWifiDeviceListener;
+import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
 import com.gyf.barlibrary.ImmersionBar;
+import com.xuhong.smarthome.utils.L;
 
-import okhttp3.OkHttpClient;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by Administrator on 2017/8/4 0004.
- */
 
 public abstract class BaseFragment extends Fragment {
 
@@ -55,6 +59,7 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         mRootView = inflater.inflate(setLayoutId(), null);
         initView(mRootView);
+        initData();
         return mRootView;
     }
 
@@ -68,7 +73,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initData();
+
         if (isLazyLoad()) {
             mIsPrepare = true;
             mIsImmersion = true;
@@ -138,7 +143,6 @@ public abstract class BaseFragment extends Fragment {
     protected void initData() {
 
     }
-
 
     /**
      * 初始化沉浸式

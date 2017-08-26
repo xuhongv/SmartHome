@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +23,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.gizwits.gizwifisdk.api.GizWifiDevice;
+import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.SearchNewsActivity;
 import com.xuhong.smarthome.activity.WebViewActivity;
@@ -34,6 +35,7 @@ import com.xuhong.smarthome.bean.HomeNewListBean;
 import com.xuhong.smarthome.bean.HomeNewsChannelBean;
 import com.xuhong.smarthome.bean.HomeNewsListItemBean;
 import com.xuhong.smarthome.constant.Constant;
+import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.OkHttpUtils;
 import com.xuhong.smarthome.utils.ParseJson;
 
@@ -47,7 +49,6 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import xu.viewpagerflextitle.ViewPagerTitle;
 
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
@@ -237,8 +238,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             }
         }, 3000);
 
-        getNewsChannel();
-        getNewsList();
+        //getNewsChannel();
+        //getNewsList();
         mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
@@ -374,5 +375,4 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 break;
         }
     }
-
 }

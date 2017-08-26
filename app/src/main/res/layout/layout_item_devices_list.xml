@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/all"
+    android:background="@drawable/shape_bg_scence_click"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/ivDevicesIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/tvDevicesName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="15dp"
+        android:layout_toEndOf="@+id/ivDevicesIcon"
+        android:maxLines="1"
+        android:textSize="20sp" />
+
+
+    <TextView
+        android:id="@+id/tvDevicesStutas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_toStartOf="@+id/ivNext"
+        android:maxLines="1"
+        android:text="局域网在线"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/ivNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/ic_next" />
+
+
+</RelativeLayout>

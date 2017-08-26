@@ -7,9 +7,20 @@ import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import com.gizwits.gizwifisdk.api.GizWifiDevice;
+import com.gizwits.gizwifisdk.api.GizWifiSDK;
+import com.gizwits.gizwifisdk.enumration.GizEventType;
+import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
+import com.gizwits.gizwifisdk.listener.GizWifiDeviceListener;
+import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OSUtils;
+import com.xuhong.smarthome.utils.SharePreUtils;
+
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Administrator on 2017/7/25 0025.
@@ -34,7 +45,6 @@ public class BaseActivity extends AppCompatActivity {
                     (NAVIGATIONBAR_IS_MIN), true, mNavigationStatusObserver);
         }
     }
-
 
     private void initImmersionBar() {
         //在BaseActivity里初始化

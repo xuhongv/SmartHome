@@ -3,14 +3,17 @@ package com.xuhong.smarthome.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.gizwits.gizwifisdk.api.GizWifiSDK;
 import com.gyf.barlibrary.ImmersionBar;
 import com.squareup.picasso.Picasso;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.bean.User;
+import com.xuhong.smarthome.utils.SharePreUtils;
 import com.xuhong.smarthome.view.CircleTransform;
 
 import cn.bmob.v3.BmobUser;
@@ -40,6 +43,25 @@ public class AlterUserInfActivity extends BaseActivity {
                 finish();
             }
         });
+
+
+        String uid = SharePreUtils.getString(AlterUserInfActivity.this, "_uid", null);
+        String token = SharePreUtils.getString(AlterUserInfActivity.this, "_token", null);
+
+        Log.e("==w","uid:"+uid+",token;"+token);
+
+        if (uid != null && token != null) {
+
+            GizWifiSDK.sharedInstance().bindDevice(
+                    uid
+                    , token
+                    ,"NLQHBidgAzcauF8r4GSH9s"
+                    ,"123456"
+                    ,null);
+        }
+
+
+
 
 
         ImageView ivCameraBg = (ImageView) findViewById(R.id.ivCameraBg);

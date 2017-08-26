@@ -78,9 +78,6 @@ public class WebViewActivity extends BaseActivity {
                         break;
                     case R.id.menu_shareQQ:
                         break;
-                    case R.id.menu_shareCollection:
-                        doActionCollection();
-                        break;
 
                 }
                 return true;
@@ -97,34 +94,6 @@ public class WebViewActivity extends BaseActivity {
 
     }
 
-    private void doActionCollection() {
-
-        User userInfo = BmobUser.getCurrentUser(User.class);
-        if (userInfo != null) {
-            CollectionUrl collectionUrl =new CollectionUrl();
-            collectionUrl.setUri(webUrl);
-            collectionUrl.setUser(userInfo);
-            collectionUrl.save(new SaveListener<String>() {
-
-                @Override
-                public void done(String objectId,BmobException e) {
-                    if(e==null){
-                        ToastUtils.showToast(WebViewActivity.this,"收藏成功！");
-
-                    }else{
-                        ToastUtils.showToast(WebViewActivity.this,"收藏失败！"+e);
-
-                    }
-                }
-            });
-        }else {
-            ToastUtils.showToast(this,"未登录！不能收藏哦！");
-        }
-
-
-
-
-    }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {

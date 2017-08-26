@@ -23,6 +23,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // jni重定向
+    sourceSets.main {
+        jniLibs.srcDir 'libs' // 指的是工程目录下的libs目录不是jni目录下的，jni目录下的固定为jniLibs，ndk编译出来的放在jni下的libs目录
+        jni.srcDirs = [] // 取消自动调用NDK编译(设置jni源文件为空)
+    }
 }
 
 dependencies {
@@ -52,5 +58,17 @@ dependencies {
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     //权限
     compile 'com.lovedise:permissiongen:0.0.6'
+    //机智云相关
+    compile files('libs/BLEasyConfig.jar')
+    compile files('libs/easylink2.0.jar')
+    compile files('libs/GizWifiSDK.jar')
+    compile files('libs/hiflying-iots-android-smartlink7.0.2.jar')
+    compile files('libs/Lark7618SDK_noudp1606031910_0101.jar')
+    compile files('libs/libEsptouch_v0.3.3.4_3.jar')
+    compile files('libs/libForEElink.jar')
+    compile files('libs/LSFSK_1.0.jar')
+    compile files('libs/OneShotConfig.jar')
+    compile files('libs/simpleconfigwizardlib.jar')
+    compile files('libs/zxing.jar')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

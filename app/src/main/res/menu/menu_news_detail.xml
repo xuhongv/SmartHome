@@ -20,8 +20,4 @@
         android:id="@+id/menu_shareQQ"
 
         android:title="分享至QQ" />
-    <item
-        android:id="@+id/menu_shareCollection"
-
-        android:title="收藏" />
 </menu>

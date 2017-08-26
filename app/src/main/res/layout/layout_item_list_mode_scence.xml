@@ -3,7 +3,7 @@
     android:id="@+id/allListMode"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/rv_touch_bg"
+    android:background="@drawable/shape_bg_scence_click"
     android:layout_height="100dp"
     android:padding="15dp">
 

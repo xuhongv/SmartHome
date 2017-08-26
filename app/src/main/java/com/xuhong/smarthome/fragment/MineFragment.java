@@ -21,19 +21,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lqr.optionitemview.OptionItemView;
+import com.gizwits.gizwifisdk.api.GizWifiDevice;
+import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.squareup.picasso.Picasso;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.AlterUserInfActivity;
 import com.xuhong.smarthome.activity.LoginActivity;
-import com.xuhong.smarthome.activity.MyCollectionActivity;
-import com.xuhong.smarthome.activity.RegisterActivity;
 import com.xuhong.smarthome.bean.User;
-import com.xuhong.smarthome.listener.PermissionListener;
-import com.xuhong.smarthome.utils.FileUtils;
-import com.xuhong.smarthome.utils.ImageTools;
 import com.xuhong.smarthome.utils.L;
-import com.xuhong.smarthome.utils.PhotoSelectUtils;
 import com.xuhong.smarthome.utils.TakePictureManager;
 import com.xuhong.smarthome.utils.ToastUtils;
 import com.xuhong.smarthome.view.AnimotionPopupWindow;
@@ -65,7 +60,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private TextView mTvShareDevices;
     private TextView mTvDevicesLog;
     private com.lqr.optionitemview.OptionItemView mOVUserInf;
-    private com.lqr.optionitemview.OptionItemView mOVCollect;
     private com.lqr.optionitemview.OptionItemView mOVCarText;
     private com.lqr.optionitemview.OptionItemView mOVDayHappy;
     private com.lqr.optionitemview.OptionItemView mOVAbout;
@@ -87,8 +81,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mTvDevicesLog = (TextView) view.findViewById(R.id.tvDevicesLog);
         mOVUserInf = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVUserInf);
         mOVUserInf.setOnClickListener(this);
-        mOVCollect = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVCollect);
-        mOVCollect.setOnClickListener(this);
         mOVCarText = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVCarText);
         mOVCarText.setOnClickListener(this);
         mOVDayHappy = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVDayHappy);
@@ -159,9 +151,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
             case R.id.OVUserInf:
                startActivity(new Intent(getActivity(),AlterUserInfActivity.class));
-                break;
-            case R.id.OVCollect:
-                startActivity(new Intent(getActivity(),MyCollectionActivity.class));
                 break;
             case R.id.OVCarText:
                 break;

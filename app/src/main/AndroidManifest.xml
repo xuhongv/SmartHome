@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xuhong.smarthome">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+
     <!-- 允许联网 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 获取GSM（2g）、WCDMA（联通3g）等网络状态的信息 -->
@@ -64,7 +69,7 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
 
-        <activity android:name=".activity.MyCollectionActivity"></activity>
+        <activity android:name=".activity.DevicesControlActivity.SmartSocketActivity"></activity>
     </application>
 
 </manifest>

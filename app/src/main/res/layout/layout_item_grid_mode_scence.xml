@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     android:id="@+id/allGridMode"
-    android:background="@drawable/rv_touch_bg"
+    android:background="@drawable/shape_bg_scence_click"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

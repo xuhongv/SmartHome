@@ -133,7 +133,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     private void iconSeletor(int position) {
         mViewPager.setCurrentItem(position, false);
-
     }
 
 
