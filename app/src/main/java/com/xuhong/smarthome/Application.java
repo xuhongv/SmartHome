@@ -46,8 +46,6 @@ public class Application extends android.app.Application {
         @Override
         public void didNotifyEvent(GizEventType eventType, Object eventSource, GizWifiErrorCode eventID, String eventMessage) {
             if (eventType == GizEventType.GizEventSDK) {
-                // SDK的事件通知
-                Log.i("==w", "匿名登录");
                 //匿名登录
                 GizWifiSDK.sharedInstance().userLoginAnonymous();
             }
@@ -57,7 +55,6 @@ public class Application extends android.app.Application {
         public void didUserLogin(GizWifiErrorCode result, String uid, String token) {
             super.didUserLogin(result, uid, token);
             if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {
-                Log.i("==w", "匿名登录成功：uid:" + uid + ",token:" + token);
                 SharePreUtils.putString(getContext(), "_uid", uid);
                 SharePreUtils.putString(getContext(), "_token", token);
             }

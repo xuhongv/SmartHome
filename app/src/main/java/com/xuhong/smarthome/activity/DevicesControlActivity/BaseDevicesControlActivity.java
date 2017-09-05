@@ -1,16 +1,115 @@
 package com.xuhong.smarthome.activity.DevicesControlActivity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AlertDialogLayout;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
+import android.widget.TextView;
+
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.gizwits.gizwifisdk.listener.GizWifiDeviceListener;
+import com.gyf.barlibrary.ImmersionBar;
+import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.BaseActivity;
 
 
 public abstract class BaseDevicesControlActivity extends BaseActivity {
 
 
-   GizWifiDeviceListener gizWifiDeviceListener = new GizWifiDeviceListener() {
+    //设备不可控弹窗
+    private AlertDialog dialog;
+
+
+    //设备
+    public GizWifiDevice mDevice;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getLayoutId());
+        bindView();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        TextView tvName = (TextView) toolbar.findViewById(R.id.tvName);
+        ImmersionBar.setTitleBar(this, toolbar);
+        Intent intent = getIntent();
+        mDevice = intent.getParcelableExtra("GizWifiDevice");
+        mDevice.setListener(gizWifiDeviceListener);
+        //tvName.setText(mDevice.getAlias() == null ? mDevice.getProductName() : mDevice.getAlias());
+        tvName.setText("智能插座");
+
+
+    }
+
+
+    public void showAlerDialog( GizWifiDeviceNetStatus netStatus){
+
+        String mTitle =null;
+
+        if (netStatus==GizWifiDeviceNetStatus.GizDeviceControlled){
+            return;
+        }
+
+        if (netStatus==GizWifiDeviceNetStatus.GizDeviceOffline){
+            mTitle="设备已离线！";
+        }
+
+        if (netStatus==GizWifiDeviceNetStatus.GizDeviceUnavailable){
+            mTitle="设备不可控！";
+        }
+
+
+
+        final View view = getLayoutInflater().inflate(R.layout.dialog_alert, null);
+
+        new AlertDialog.Builder(this)
+                .setCancelable(false)//屏幕外点击无效
+                .setView(view)
+                .show();
+
+//        RotateAnimation rotateAnimation = new RotateAnimation(0, 90, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+//        rotateAnimation.setDuration(300);
+//        rotateAnimation.setInterpolator(new BounceInterpolator());
+//        view.startAnimation(rotateAnimation);
+
+
+//        ProgressDialog dialog =new ProgressDialog(this);
+//        dialog.setView(view);
+//        dialog.setMessage("设备已经离线");
+//        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        dialog.show();
+
+
+    }
+
+
+
+    /**
+     * this activity layout res
+     * 设置layout布局,在子类重写该方法.
+     *
+     * @return res layout xml id
+     */
+    protected abstract int getLayoutId();
+
+    protected abstract void bindView();
+
+
+    GizWifiDeviceListener gizWifiDeviceListener = new GizWifiDeviceListener() {
 
         /** 用于设备订阅 */
         public void didSetSubscribe(GizWifiErrorCode result, GizWifiDevice device, boolean isSubscribed) {

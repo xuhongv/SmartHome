@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="25dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="25dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp">
+
+        <ProgressBar
+            android:id="@+id/pbNull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/pbNull"
+            android:text="设备已经离线！"
+            android:textColor="#666666"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/tv_exit"
+            android:layout_width="110dp"
+            android:layout_height="34dp"
+            android:background="@drawable/corner_common_border_gray"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/red0"
+            android:textSize="14sp" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

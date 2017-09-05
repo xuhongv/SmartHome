@@ -1,28 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/ic_gb"
     android:orientation="vertical">
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        app:navigationIcon="@drawable/ic_back_white">
+        app:navigationIcon="@drawable/ic_back_black">
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textColor="@color/black0"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name" />
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:focusableInTouchMode="false"
+                android:button="@null"
+                android:id="@+id/cbStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_plug_status" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="插头已开启"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <RelativeLayout
+                android:id="@+id/all_one"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="1">
+
+                <CheckBox
+                    android:id="@+id/cbSwitch"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/selector_plug_power"
+                    android:button="@null" />
+
+                <TextView
+                    android:id="@+id/tvSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cbSwitch"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp"
+                    android:text="开关"
+                    android:textColor="#ed0909"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="1">
+
+
+                <ImageView
+                    android:id="@+id/ivTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_timer" />
+
+                <TextView
+                    android:id="@+id/tvShareDevices"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivTimer"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="15dp"
+                    android:text="定时"
+                    android:textColor="#444"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/ivCountDowm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_count_dowm" />
+
+                <TextView
+                    android:id="@+id/tvDevicesLog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivCountDowm"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="15dp"
+                    android:text="倒计时"
+                    android:textColor="#444"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
