@@ -2,12 +2,17 @@ package com.xuhong.smarthome.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.api.GizWifiSDK;
@@ -17,13 +22,21 @@ import com.gizwits.gizwifisdk.listener.GizWifiDeviceListener;
 import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
 import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.R;
+import com.xuhong.smarthome.activity.AlterUserInfActivity;
+import com.xuhong.smarthome.activity.ConfigActivity.ScanAddDevicesActivity;
 import com.xuhong.smarthome.activity.DevicesControlActivity.SmartSocketActivity;
 import com.xuhong.smarthome.adapter.DevicesListAdapter;
 import com.xuhong.smarthome.utils.L;
+import com.xuhong.smarthome.utils.SharePreUtils;
 import com.xuhong.smarthome.utils.ToastUtils;
+import com.xuhong.smarthome.view.AnimotionPopupWindow;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.github.xudaojie.qrcodelib.CaptureActivity;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class DevicesFragment extends BaseFragment {
@@ -37,11 +50,27 @@ public class DevicesFragment extends BaseFragment {
     private DevicesListAdapter adapter;
 
     private boolean isFirstBind = false;
-
+    //扫描回调码
+    public static final int REQUEST_QR_CODE = 105;
+    //扫描之后返回的参数
+    private String product_key;
+    private String did;
+    private String passcode;
 
 
     //设备列表
     private List<GizWifiDevice> deviceslist = new ArrayList<>();
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+        }
+    };
+    private String uid;
+    private String token;
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -49,10 +78,22 @@ public class DevicesFragment extends BaseFragment {
         ImmersionBar.setTitleBar(getActivity(), toolbarl);
         toolbarl.inflateMenu(R.menu.menu_devices_add);
         toolbarl.setOverflowIcon(getActivity().getResources().getDrawable(R.drawable.ic_toolbar_devices_add));
-        toolbarl.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        toolbarl.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_id_scanAddDevices:
+                        Intent i = new Intent(getActivity(), CaptureActivity.class);
+                        startActivityForResult(i, REQUEST_QR_CODE);
+                        break;
+                    case R.id.menu_id_handAddDevices:
+                        break;
+                    default:
+                        break;
+                }
+                return false;
             }
         });
 
@@ -109,6 +150,7 @@ public class DevicesFragment extends BaseFragment {
             @Override
             public void onClick(GizWifiDevice mGizWifiDevice) {
 
+                GizWifiSDK.sharedInstance().unbindDevice(uid, token,mGizWifiDevice.getDid());
             }
         });
     }
@@ -125,6 +167,22 @@ public class DevicesFragment extends BaseFragment {
         // 每次返回都要注册一次sdk监听器，保证sdk状态能正确回调
         GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
     }
+
+
+    private String getParamFomeUrl(String url, String param) {
+        String product_key = "";
+        int startindex = url.indexOf(param + "=");
+        startindex += (param.length() + 1);
+        String subString = url.substring(startindex);
+        int endindex = subString.indexOf("&");
+        if (endindex == -1) {
+            product_key = subString;
+        } else {
+            product_key = subString.substring(0, endindex);
+        }
+        return product_key;
+    }
+
     private GizWifiSDKListener gizWifiSDKListener = new GizWifiSDKListener() {
 
         /** 用于设备列表 */
@@ -139,14 +197,17 @@ public class DevicesFragment extends BaseFragment {
 
         /** 用于设备解绑 */
         public void didUnbindDevice(GizWifiErrorCode result, java.lang.String did) {
+            Toast.makeText(getActivity(), "删除成功！", Toast.LENGTH_SHORT).show();
         }
 
         /** 用于设备绑定 */
         public void didBindDevice(GizWifiErrorCode result, java.lang.String did) {
+            Toast.makeText(getActivity(), "恭喜，绑定成功！", Toast.LENGTH_SHORT).show();
         }
 
         /** 用于设备绑定（旧） */
         public void didBindDevice(int error, String errorMessage, String did) {
+            Toast.makeText(getActivity(), "恭喜，绑定成功！", Toast.LENGTH_SHORT).show();
         }
 
         /** 用于绑定推送 */
@@ -155,18 +216,58 @@ public class DevicesFragment extends BaseFragment {
 
     };
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_QR_CODE && data != null) {
+            String text = data.getStringExtra("result");
+            if (text.contains("product_key=") && text.contains("did=") && text.contains("passcode=")) {
+                product_key = getParamFomeUrl(text, "product_key");
+                did = getParamFomeUrl(text, "did");
+                passcode = getParamFomeUrl(text, "passcode");
+                startBindDevices(did,passcode);
+                L.e("product_key:" + product_key + ",did:" + did + ",passcode:" + passcode);
+            } else {
+                Toast.makeText(getActivity(), "请确认是我们的产品二维码哦亲~", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
+
+    private void startBindDevices(String did, String passcode) {
+
+        uid = SharePreUtils.getString(getActivity(), "_uid", null);
+        token = SharePreUtils.getString(getActivity(), "_token", null);
+        Log.e("==w", "uid:" + uid + ",token;" + token);
+        if (uid != null && token != null) {
+            GizWifiSDK.sharedInstance().bindDevice(
+                    uid
+                    , token
+                    , did
+                    , passcode
+                    , null);
+        }
+
+
+    }
+
+
+
     private GizWifiDeviceListener gizWifiDeviceListener = new GizWifiDeviceListener() {
+
         @Override
         public void didSetSubscribe(GizWifiErrorCode result, GizWifiDevice device, boolean isSubscribed) {
 //            L.e("isFirstBind:"+isFirstBind);
 //            L.e("isFirstBind:"+device.getNetStatus());
 //            L.e("isFirstBind:"+GizWifiErrorCode.GIZ_SDK_SUCCESS);
 //
-            if (GizWifiDeviceNetStatus.GizDeviceOffline == device.getNetStatus()){
+            if (GizWifiDeviceNetStatus.GizDeviceOffline == device.getNetStatus()) {
                 return;
             }
 
-            if (isFirstBind  && GizWifiErrorCode.GIZ_SDK_SUCCESS == result) {
+            if (isFirstBind && GizWifiErrorCode.GIZ_SDK_SUCCESS == result) {
                 Intent intent = new Intent(getActivity(), SmartSocketActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("GizWifiDevice", device);

@@ -28,7 +28,6 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
     //设备不可控弹窗
     private AlertDialog dialog;
 
-
     //设备
     public GizWifiDevice mDevice;
 

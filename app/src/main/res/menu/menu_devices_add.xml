@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="手动添加设备" />
+    <item android:title="手动添加设备" android:id="@+id/menu_id_handAddDevices"/>
 
-    <item android:title="扫码添加设备" />
+    <item android:title="扫码添加设备" android:id="@+id/menu_id_scanAddDevices" />
 </menu>

@@ -18,7 +18,6 @@
             android:layout_height="?attr/actionBarSize"
             app:contentInsetStart="0dp"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIcon="@drawable/ic_toolbar_devices_more"
             app:title="">
 
             <TextView

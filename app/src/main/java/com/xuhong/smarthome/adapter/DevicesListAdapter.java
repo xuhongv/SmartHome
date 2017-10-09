@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
 import com.xuhong.smarthome.R;
+import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.PicassoUtils;
 
 import java.util.List;
@@ -72,18 +73,16 @@ public class DevicesListAdapter extends RecyclerView.Adapter<DevicesListAdapter.
                 PicassoUtils.loadImageViewFromLocal(mContext, R.drawable.device_list_light, holder.ivDevicesIcon);
                 break;
         }
-        PicassoUtils.loadImageViewFromLocal(mContext, R.drawable.device_list_socket, holder.ivDevicesIcon);
-
-
-
+        L.e("Alias:" + mGizWifiDevice.getAlias());
         //设置名字
-        if (mGizWifiDevice.getAlias() == null) {
+        if (mGizWifiDevice.getAlias() == null|| mGizWifiDevice.getAlias().isEmpty()) {
+            L.e("Alias:" + mGizWifiDevice.getProductName() + mGizWifiDevice.getMacAddress().substring(0, 3));
             holder.tvDevicesName.setText(mGizWifiDevice.getProductName() + mGizWifiDevice.getMacAddress().substring(0, 3));
+
         } else {
+            L.e("Alias:" + mGizWifiDevice.getAlias());
             holder.tvDevicesName.setText(mGizWifiDevice.getAlias());
         }
-
-        holder.tvDevicesName.setText("智能插座");
 
         if (mGizWifiDevice.isLAN()) {
             holder.tvDevicesStutas.setText("局域网在线");

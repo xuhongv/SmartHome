@@ -69,6 +69,7 @@ dependencies {
     compile files('libs/LSFSK_1.0.jar')
     compile files('libs/OneShotConfig.jar')
     compile files('libs/simpleconfigwizardlib.jar')
-    compile files('libs/zxing.jar')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    //二维码
+    compile 'com.github.XuDaojie:QRCode-Android:v0.4.2'
 }

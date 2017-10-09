@@ -44,26 +44,6 @@ public class AlterUserInfActivity extends BaseActivity {
             }
         });
 
-
-        String uid = SharePreUtils.getString(AlterUserInfActivity.this, "_uid", null);
-        String token = SharePreUtils.getString(AlterUserInfActivity.this, "_token", null);
-
-        Log.e("==w","uid:"+uid+",token;"+token);
-
-        if (uid != null && token != null) {
-
-            GizWifiSDK.sharedInstance().bindDevice(
-                    uid
-                    , token
-                    ,"NLQHBidgAzcauF8r4GSH9s"
-                    ,"123456"
-                    ,null);
-        }
-
-
-
-
-
         ImageView ivCameraBg = (ImageView) findViewById(R.id.ivCameraBg);
         User userInfo = BmobUser.getCurrentUser(User.class);
         if (userInfo != null) {
