@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    >
+
+    <TextView
+        android:textSize="20sp"
+        android:textColor="#444"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="重命名操作"
+        android:id="@+id/dialog_rename_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_edittext"
+        android:layout_gravity="center"
+        android:hint="在此输入新的名字"
+        android:id="@+id/rename_et"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:textColor="#666666"
+        android:textSize="18sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/tv_cancel_rename"
+            android:layout_width="110dp"
+            android:layout_height="34dp"
+            android:background="@drawable/corner_common_border_gray"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/gray2"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/tv_sure_rename"
+            android:layout_width="110dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/corner_common_border_gray"
+            android:gravity="center"
+            android:text="确认"
+            android:textColor="@color/black0"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>

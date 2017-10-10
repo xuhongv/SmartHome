@@ -1,6 +1,9 @@
 package com.xuhong.smarthome.fragment;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,11 +12,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flyco.animation.Attention.Swing;
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.utils.CornerUtils;
+import com.flyco.dialog.widget.ActionSheetDialog;
+import com.flyco.dialog.widget.base.BaseDialog;
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.api.GizWifiSDK;
 import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
@@ -22,14 +35,9 @@ import com.gizwits.gizwifisdk.listener.GizWifiDeviceListener;
 import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
 import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.R;
-import com.xuhong.smarthome.activity.AlterUserInfActivity;
-import com.xuhong.smarthome.activity.ConfigActivity.ScanAddDevicesActivity;
 import com.xuhong.smarthome.activity.DevicesControlActivity.SmartSocketActivity;
 import com.xuhong.smarthome.adapter.DevicesListAdapter;
-import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.SharePreUtils;
-import com.xuhong.smarthome.utils.ToastUtils;
-import com.xuhong.smarthome.view.AnimotionPopupWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +45,7 @@ import java.util.List;
 import io.github.xudaojie.qrcodelib.CaptureActivity;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 
 public class DevicesFragment extends BaseFragment {
@@ -75,6 +84,7 @@ public class DevicesFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         ImmersionBar.setTitleBar(getActivity(), toolbarl);
         toolbarl.inflateMenu(R.menu.menu_devices_add);
         toolbarl.setOverflowIcon(getActivity().getResources().getDrawable(R.drawable.ic_toolbar_devices_add));
@@ -113,6 +123,10 @@ public class DevicesFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+
+        uid = SharePreUtils.getString(getActivity(), "_uid", null);
+        token = SharePreUtils.getString(getActivity(), "_token", null);
+
         dividerItemDecoration = new DividerItemDecoration(
                 getActivity(), DividerItemDecoration.VERTICAL);
         deviceslist = GizWifiSDK.sharedInstance().getDeviceList();
@@ -131,6 +145,8 @@ public class DevicesFragment extends BaseFragment {
         rVMyDevices.setLayoutManager(linearLayoutManager);
         rVMyDevices.addItemDecoration(dividerItemDecoration);
         rVMyDevices.setAdapter(adapter);
+
+        //设备点击事件
         adapter.setOnItemClickListener(new DevicesListAdapter.OnItemClickListener() {
             @Override
             public void onClick(GizWifiDevice mGizWifiDevice) {
@@ -146,11 +162,12 @@ public class DevicesFragment extends BaseFragment {
 
             }
         });
+
+        //设备长按弹窗
         adapter.setOnItemLongClickListener(new DevicesListAdapter.OnItemLongClickListener() {
             @Override
             public void onClick(GizWifiDevice mGizWifiDevice) {
-
-                GizWifiSDK.sharedInstance().unbindDevice(uid, token,mGizWifiDevice.getDid());
+                showDevicesInfDialog(mGizWifiDevice);
             }
         });
     }
@@ -225,8 +242,8 @@ public class DevicesFragment extends BaseFragment {
                 product_key = getParamFomeUrl(text, "product_key");
                 did = getParamFomeUrl(text, "did");
                 passcode = getParamFomeUrl(text, "passcode");
-                startBindDevices(did,passcode);
-                L.e("product_key:" + product_key + ",did:" + did + ",passcode:" + passcode);
+                startBindDevices(did, passcode);
+                // L.e("product_key:" + product_key + ",did:" + did + ",passcode:" + passcode);
             } else {
                 Toast.makeText(getActivity(), "请确认是我们的产品二维码哦亲~", Toast.LENGTH_SHORT).show();
             }
@@ -235,11 +252,13 @@ public class DevicesFragment extends BaseFragment {
         }
     }
 
-
+    /**
+     * 扫描二维码后开始绑定设备
+     *
+     * @param did      设备的did
+     * @param passcode 设备的passcode
+     */
     private void startBindDevices(String did, String passcode) {
-
-        uid = SharePreUtils.getString(getActivity(), "_uid", null);
-        token = SharePreUtils.getString(getActivity(), "_token", null);
         Log.e("==w", "uid:" + uid + ",token;" + token);
         if (uid != null && token != null) {
             GizWifiSDK.sharedInstance().bindDevice(
@@ -249,20 +268,136 @@ public class DevicesFragment extends BaseFragment {
                     , passcode
                     , null);
         }
-
-
     }
 
 
+    private void showDevicesInfDialog(final GizWifiDevice mGizWifiDevice) {
 
+        final String[] stringItems = {"解绑此设备", "重命名设备", "查看设备信息"};
+        final ActionSheetDialog sheetDialog = new ActionSheetDialog(getActivity(), stringItems, null);
+        sheetDialog.itemTextColor(getResources().getColor(R.color.black0));
+        sheetDialog.isTitleShow(false).show();
+        sheetDialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        new CustomBaseDialog(getActivity(), mGizWifiDevice).show();
+                        break;
+                    case 1:
+                        renameDevicesDialog(mGizWifiDevice);
+                        break;
+                    case 2:
+
+                        break;
+                    default:
+                        break;
+                }
+                sheetDialog.dismiss();
+            }
+        });
+    }
+
+    //删除弹窗振动
+    private class CustomBaseDialog extends BaseDialog<CustomBaseDialog> {
+
+        private GizWifiDevice mGizWifiDevice;
+        private TextView mTvCancel, mTvSure, dialog_title, delete_content;
+
+        CustomBaseDialog(Context context, GizWifiDevice mGizWifiDevice) {
+            super(context);
+            this.mGizWifiDevice = mGizWifiDevice;
+        }
+
+        @Override
+        public View onCreateView() {
+            widthScale(0.85f);
+            showAnim(new Swing());
+            View view = View.inflate(getActivity(), R.layout.dialog_delete, null);
+            mTvCancel = (TextView) view.findViewById(R.id.tv_cancel);
+            mTvSure = (TextView) view.findViewById(R.id.tv_exit);
+            dialog_title = (TextView) view.findViewById(R.id.dialog_title);
+            delete_content = (TextView) view.findViewById(R.id.delete_content);
+
+            dialog_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
+
+            if (mGizWifiDevice.getAlias().isEmpty()) {
+                delete_content.setText("确定要解绑此设备“" + mGizWifiDevice.getProductName() + "”吗？");
+            } else {
+                delete_content.setText("确定要解绑此设备“" + mGizWifiDevice.getAlias() + "”吗？");
+            }
+
+            view.setBackgroundDrawable(
+                    CornerUtils.cornerDrawable(Color.parseColor("#ffffff"), dp2px(5)));
+            return view;
+        }
+
+
+        @Override
+        public void setUiBeforShow() {
+            mTvCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+            mTvSure.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GizWifiSDK.sharedInstance().unbindDevice(uid, token, mGizWifiDevice.getDid());
+                    dismiss();
+                }
+            });
+        }
+    }
+
+    //重命名
+    private void renameDevicesDialog(final GizWifiDevice mGizWifiDevice) {
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_rename, null);
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setView(view)
+                .show();
+        final EditText rename_et = (EditText) dialog.findViewById(R.id.rename_et);
+
+        dialog.findViewById(R.id.tv_cancel_rename).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.findViewById(R.id.tv_sure_rename).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = rename_et.getText().toString();
+                if (name.isEmpty()) {
+                    Toast.makeText(getActivity(), "输入不能为空!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    return;
+                }
+                mGizWifiDevice.setCustomInfo(null, name);
+                hideKeyBoard();
+                dialog.dismiss();
+
+            }
+        });
+    }
+
+    protected void hideKeyBoard() {
+        // 隐藏键盘
+        ((InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+
+    /**
+     * 设备绑定时间监听
+     */
     private GizWifiDeviceListener gizWifiDeviceListener = new GizWifiDeviceListener() {
 
         @Override
         public void didSetSubscribe(GizWifiErrorCode result, GizWifiDevice device, boolean isSubscribed) {
-//            L.e("isFirstBind:"+isFirstBind);
-//            L.e("isFirstBind:"+device.getNetStatus());
-//            L.e("isFirstBind:"+GizWifiErrorCode.GIZ_SDK_SUCCESS);
-//
+
             if (GizWifiDeviceNetStatus.GizDeviceOffline == device.getNetStatus()) {
                 return;
             }

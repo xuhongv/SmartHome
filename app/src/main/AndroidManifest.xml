@@ -39,10 +39,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
+        <!--主界面-->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity android:name=".activity.SearchNewsActivity" />
         <activity android:name=".activity.WebViewActivity" />
         <activity
@@ -76,7 +78,7 @@
 
         <activity android:name=".activity.DevicesControlActivity.SmartSocketActivity" />
         <activity android:name=".activity.ConfigActivity.ScanAddDevicesActivity"></activity>
-        <activity android:name="io.github.xudaojie.qrcodelib.CaptureActivity"/>
+        <activity android:name="io.github.xudaojie.qrcodelib.CaptureActivity" />
     </application>
 
 </manifest>

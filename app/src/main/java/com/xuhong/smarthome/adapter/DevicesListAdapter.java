@@ -73,14 +73,14 @@ public class DevicesListAdapter extends RecyclerView.Adapter<DevicesListAdapter.
                 PicassoUtils.loadImageViewFromLocal(mContext, R.drawable.device_list_light, holder.ivDevicesIcon);
                 break;
         }
-        L.e("Alias:" + mGizWifiDevice.getAlias());
+        PicassoUtils.loadImageViewFromLocal(mContext, R.drawable.device_list_socket, holder.ivDevicesIcon);
         //设置名字
         if (mGizWifiDevice.getAlias() == null|| mGizWifiDevice.getAlias().isEmpty()) {
-            L.e("Alias:" + mGizWifiDevice.getProductName() + mGizWifiDevice.getMacAddress().substring(0, 3));
+            //L.e("Alias:" + mGizWifiDevice.getProductName() + mGizWifiDevice.getMacAddress().substring(0, 3));
             holder.tvDevicesName.setText(mGizWifiDevice.getProductName() + mGizWifiDevice.getMacAddress().substring(0, 3));
 
         } else {
-            L.e("Alias:" + mGizWifiDevice.getAlias());
+            //L.e("Alias:" + mGizWifiDevice.getAlias());
             holder.tvDevicesName.setText(mGizWifiDevice.getAlias());
         }
 
