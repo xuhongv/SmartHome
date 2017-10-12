@@ -2,6 +2,7 @@ package com.xuhong.smarthome.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,11 +16,11 @@ public class mPagerAdapter extends PagerAdapter {
 
 
     private List<View> mList;
-    private List<String> mListTitle;
 
-    public mPagerAdapter(List<View> mList,List<String> mListTitle) {
+
+    public mPagerAdapter(List<View> mList) {
         this.mList = mList;
-        this.mListTitle=mListTitle;
+
     }
 
     @Override
@@ -43,8 +44,6 @@ public class mPagerAdapter extends PagerAdapter {
         ((ViewPager) container).removeView(mList.get(position));
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mListTitle.get(position);
-    }
+
+
 }

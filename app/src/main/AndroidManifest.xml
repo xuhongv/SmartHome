@@ -38,15 +38,16 @@
         android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
+        tools:replace="android:allowBackup,android:icon">
         <!--主界面-->
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+            android:launchMode="singleTask" />
+
         <activity android:name=".activity.SearchNewsActivity" />
+
         <activity android:name=".activity.WebViewActivity" />
+
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden" />
@@ -77,7 +78,8 @@
         </provider>
 
         <activity android:name=".activity.DevicesControlActivity.SmartSocketActivity" />
-        <activity android:name=".activity.ConfigActivity.ScanAddDevicesActivity"></activity>
+        <!--airlink配网模式-->
+        <activity android:name=".activity.ConfigActivity.AirLinkAddDevicesActivity"/>
         <activity android:name="io.github.xudaojie.qrcodelib.CaptureActivity" />
     </application>
 

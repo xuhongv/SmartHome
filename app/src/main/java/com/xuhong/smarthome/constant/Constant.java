@@ -28,4 +28,33 @@ public class Constant {
 
     //版本获取
     public static String GET_APP_VERSION = "http://smarthomesample.oss-cn-hongkong.aliyuncs.com/appVersion.txt";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /** 存储器默认名称 */
+    public static final String SPF_Name = "set";
+
+    //wifi名字
+    public static final String WIFI_NAME ="wifiName";
+
+    //wifi密码
+    public static final String WIFI_PW = "wifiPw";
+
+    /** 设备热点默认密码 */
+    public static final String SoftAP_PSW = "123456789";
+
+    /** 设备热点默认前缀 */
+    public static final String SoftAP_Start = "XPG-GAgent";
+
 }

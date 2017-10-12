@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private List<android.support.v4.app.Fragment> fragmentList;
 
     private MainViewPagerAdapter mAdapter;
+    private AnimotionPopupAddDevicesWindow animotionPopupAddDevicesWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .statusBarDarkFont(true, 0.2f)
                 .init();
 
-        if (getIntent().getBooleanExtra("isLastVersion", false)){
+        if (getIntent().getBooleanExtra("isLastVersion", false)) {
 
 
         }
@@ -266,9 +267,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.rlAddDevices:
 
-                AnimotionPopupAddDevicesWindow animotionPopupAddDevicesWindow = new AnimotionPopupAddDevicesWindow(MainActivity.this, new AnimotionPopupAddDevicesWindow.OnPopWindowClickListener() {
+                animotionPopupAddDevicesWindow = new AnimotionPopupAddDevicesWindow(MainActivity.this, new AnimotionPopupAddDevicesWindow.OnPopWindowClickListener() {
                     @Override
-                    public void onPopWindowClickListener(View view) {
+                    public void onPopWindowClickListener(View v) {
+                        switch (v.getId()) {
+                            case R.id.iv_push_photo:
+                                L.e("==w", "taobao");
+                                animotionPopupAddDevicesWindow.dismiss();
+                                break;
+                            case R.id.iv_push_resale:
+                                L.e("==w", "photo");
+                                animotionPopupAddDevicesWindow.dismiss();
+                                break;
+                        }
 
                     }
                 });

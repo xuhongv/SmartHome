@@ -72,6 +72,23 @@
     </style>
 
 
+
+    <style name="ButtonStyle">
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@drawable/img_bg_shape</item>
+        <item name="android:textColor">@color/black0</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+
+    <style name="Widget_GifView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/gifview_background</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

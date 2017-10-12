@@ -35,9 +35,11 @@ import com.gizwits.gizwifisdk.listener.GizWifiDeviceListener;
 import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
 import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.R;
+import com.xuhong.smarthome.activity.ConfigActivity.AirLinkAddDevicesActivity;
 import com.xuhong.smarthome.activity.DevicesControlActivity.SmartSocketActivity;
 import com.xuhong.smarthome.adapter.DevicesListAdapter;
 import com.xuhong.smarthome.utils.SharePreUtils;
+import com.xuhong.smarthome.utils.SoftInputUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,11 +96,14 @@ public class DevicesFragment extends BaseFragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
+                    //扫描添加设备
                     case R.id.menu_id_scanAddDevices:
                         Intent i = new Intent(getActivity(), CaptureActivity.class);
                         startActivityForResult(i, REQUEST_QR_CODE);
                         break;
+                    //手动添加设备
                     case R.id.menu_id_handAddDevices:
+                        startActivity(new Intent(getActivity(), AirLinkAddDevicesActivity.class));
                         break;
                     default:
                         break;
@@ -252,6 +257,7 @@ public class DevicesFragment extends BaseFragment {
         }
     }
 
+
     /**
      * 扫描二维码后开始绑定设备
      *
@@ -259,7 +265,6 @@ public class DevicesFragment extends BaseFragment {
      * @param passcode 设备的passcode
      */
     private void startBindDevices(String did, String passcode) {
-        Log.e("==w", "uid:" + uid + ",token;" + token);
         if (uid != null && token != null) {
             GizWifiSDK.sharedInstance().bindDevice(
                     uid
@@ -275,7 +280,7 @@ public class DevicesFragment extends BaseFragment {
 
         final String[] stringItems = {"解绑此设备", "重命名设备", "查看设备信息"};
         final ActionSheetDialog sheetDialog = new ActionSheetDialog(getActivity(), stringItems, null);
-        sheetDialog.itemTextColor(getResources().getColor(R.color.black0));
+        sheetDialog.itemTextColor(getResources().getColor(R.color.white));
         sheetDialog.isTitleShow(false).show();
         sheetDialog.setOnOperItemClickL(new OnOperItemClickL() {
             @Override
@@ -357,12 +362,20 @@ public class DevicesFragment extends BaseFragment {
         final AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .show();
+
         final EditText rename_et = (EditText) dialog.findViewById(R.id.rename_et);
+        SoftInputUtils.showSoftInput(getActivity());
 
         dialog.findViewById(R.id.tv_cancel_rename).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //如果用户没有输入文字直接点击取消就关闭
+                if (rename_et.getText().toString().isEmpty()) {
+                    dialog.dismiss();
+                    return;
+                }
                 dialog.dismiss();
+                hideKeyBoard();
             }
         });
 
@@ -383,15 +396,15 @@ public class DevicesFragment extends BaseFragment {
         });
     }
 
-    protected void hideKeyBoard() {
+    private void hideKeyBoard() {
         // 隐藏键盘
-        ((InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 
     /**
-     * 设备绑定时间监听
+     * 设备绑定事件监听
      */
     private GizWifiDeviceListener gizWifiDeviceListener = new GizWifiDeviceListener() {
 

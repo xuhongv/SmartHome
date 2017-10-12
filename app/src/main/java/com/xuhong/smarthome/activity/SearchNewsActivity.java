@@ -80,6 +80,8 @@ public class SearchNewsActivity extends BaseActivity {
             }
         }
     };
+
+
     private mRecyclerViewNewListAdapter adapterNewsList;
 
     @Override
