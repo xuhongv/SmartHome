@@ -1,24 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    
+
     <com.xuhong.smarthome.view.GifView
         android:id="@+id/GifView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/linearLayout1"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
-        android:enabled="false"/>
+        android:enabled="false" />
 
     <TextView
-        android:gravity="center"
-        android:text="长按按键二进去配网模式"
+        android:layout_below="@+id/GifView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="长按【KEY2】直到绿灯亮起."
+        android:textColor="@color/black0" />
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_above="@+id/btnNextReady"
+        android:layout_marginTop="35dp">
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/tv_Message" />
+
+        <TextView
+            android:id="@+id/tv_Message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/checkBox"
+            android:layout_alignBottom="@+id/checkBox"
+            android:layout_centerHorizontal="true"
+            android:text="已完成上面的操作" />
+
+    </RelativeLayout>
+
+
+    <com.romainpiel.shimmer.ShimmerButton
+        android:id="@+id/btnNextReady"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:focusable="false"
+        android:text="下一步" />
+
+
+</RelativeLayout>

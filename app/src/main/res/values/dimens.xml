@@ -9,4 +9,9 @@
     <dimen name="standard_textsize">12sp</dimen>
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
+
+
+
+    <dimen name="rippleStrokeWidth">2dp</dimen>
+    <dimen name="rippleRadius">50dp</dimen>
 </resources>

@@ -25,6 +25,7 @@
     </android.support.v7.widget.Toolbar>
 
 
+
     <com.xuhong.smarthome.view.StepsView
         android:id="@+id/stepsView"
         android:layout_width="match_parent"

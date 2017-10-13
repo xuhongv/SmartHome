@@ -1,14 +1,14 @@
 package com.xuhong.smarthome.activity.ConfigActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewParent;
-import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,11 +20,13 @@ import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.BaseActivity;
 import com.xuhong.smarthome.adapter.mPagerAdapter;
 import com.xuhong.smarthome.constant.Constant;
+import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.NetStatusUtil;
 import com.xuhong.smarthome.utils.SharePreUtils;
 import com.xuhong.smarthome.utils.ToastUtils;
 import com.xuhong.smarthome.view.GifView;
 import com.xuhong.smarthome.view.NoScollViewPager;
+import com.xuhong.smarthome.view.RippleView;
 import com.xuhong.smarthome.view.StepsView;
 
 import java.util.ArrayList;
@@ -36,8 +38,11 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
 
     private StepsView stepsView;
     private ShimmerTextView shimmer_tv;
-    private ShimmerButton btnNext;
+    private ShimmerButton btnNext, btnNextReady;
     private Shimmer shimmer;
+    private CheckBox mCheckBox;
+    private TextView tv_Message, tv_Progress, tvShow;
+    private RippleView mRippleView;
 
 
     private EditText etSSID, etPsw;
@@ -47,6 +52,38 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
     private List<View> viewList;
 
     private mPagerAdapter mPagerAdapter;
+
+
+    private static final int HANDLER_CODE_PROGRESS = 102;
+    private int Flag = 0;
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+
+                case HANDLER_CODE_PROGRESS:
+                    L.e("Flag:" + Flag);
+
+                    if (Flag < 100) {
+                        Flag++;
+                        tv_Progress.setText(Flag + "%");
+                        if (Flag == 30) {
+                            tvShow.setText("正在尝试与设备连接....");
+                        }
+                        mHandler.sendEmptyMessageDelayed(HANDLER_CODE_PROGRESS, 600);
+                    } else {
+                        L.e("Flag:连接失败"  );
+                        mRippleView.stopRippleAnimation();
+                        tvShow.setText("连接失败~");
+                    }
+
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -114,9 +151,11 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
         View View1 = getLayoutInflater().inflate(R.layout.viewpager_add_devices_one, null);
         View View2 = getLayoutInflater().inflate(R.layout.viewpager_add_devices_two, null);
         View View3 = getLayoutInflater().inflate(R.layout.viewpager_add_devices_three, null);
+        View View4 = getLayoutInflater().inflate(R.layout.viewpager_add_devices_four, null);
         viewList.add(View1);
         viewList.add(View2);
         viewList.add(View3);
+        viewList.add(View4);
 
         mPagerAdapter = new mPagerAdapter(viewList);
         mViewPager.setAdapter(mPagerAdapter);
@@ -139,6 +178,48 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
         GifView gifView = (GifView) View2.findViewById(R.id.GifView);
         gifView.setMovieResource(R.drawable.airlink);
 
+        btnNextReady = (ShimmerButton) View2.findViewById(R.id.btnNextReady);
+        btnNextReady.setClickable(false);
+        btnNextReady.setBackground(getResources().getDrawable(R.drawable.img_bg_black_shape));
+
+
+        mCheckBox = (CheckBox) View2.findViewById(R.id.checkBox);
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    btnNextReady.setBackground(getResources().getDrawable(R.drawable.img_bg_shape));
+                    btnNextReady.setClickable(true);
+                    btnNextReady.setOnClickListener(AirLinkAddDevicesActivity.this);
+                } else {
+                    btnNextReady.setClickable(false);
+                    btnNextReady.setBackground(getResources().getDrawable(R.drawable.img_bg_black_shape));
+                }
+            }
+        });
+
+        tv_Message = (TextView) View2.findViewById(R.id.tv_Message);
+        tv_Message.setOnClickListener(this);
+
+        //第三个View
+
+        tv_Progress = (TextView) View3.findViewById(R.id.tvShowProgress);
+        tvShow = (TextView) View3.findViewById(R.id.tvShow);
+
+        mRippleView = (RippleView) View3.findViewById(R.id.mRippleView);
+        mRippleView.setAnimationProgressListener(new RippleView.AnimationListener() {
+            @Override
+            public void startAnimation() {
+                mHandler.sendEmptyMessage(HANDLER_CODE_PROGRESS);
+
+            }
+
+            @Override
+            public void EndAnimation() {
+
+            }
+        });
+
 
     }
 
@@ -155,7 +236,7 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
 
                 if (etPsw.getText().toString().isEmpty()) {
 
-                    new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                    new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
                             .setTitleText("温馨提示")
                             .setContentText("您确认该Wf-Fi的密码为空!")
                             .setConfirmText("确定")
@@ -174,6 +255,27 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
                 SharePreUtils.putString(AirLinkAddDevicesActivity.this, Constant.WIFI_NAME, currentSSID);
 
                 break;
+
+
+            case R.id.tv_Message:
+                if (mCheckBox.isChecked()) {
+                    mCheckBox.setChecked(false);
+                    btnNextReady.setClickable(false);
+                    btnNextReady.setBackground(getResources().getDrawable(R.drawable.img_bg_black_shape));
+
+                } else {
+                    mCheckBox.setChecked(true);
+                    btnNextReady.setBackground(getResources().getDrawable(R.drawable.img_bg_shape));
+                    btnNextReady.setClickable(true);
+                    btnNextReady.setOnClickListener(AirLinkAddDevicesActivity.this);
+                }
+
+                break;
+            case R.id.btnNextReady:
+                mViewPager.setCurrentItem(2, true);
+                stepsView.next();
+                mRippleView.startRippleAnimation();
+                break;
         }
     }
 
@@ -181,10 +283,11 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+            new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
                     .setTitleText("警告")
                     .setContentText("您确认放弃配置吗!")
-                    .setConfirmText("不了")
+                    .setConfirmText("放弃")
+                    .setCancelText("不了")
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sDialog) {
