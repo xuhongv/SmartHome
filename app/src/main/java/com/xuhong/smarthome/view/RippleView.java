@@ -85,8 +85,8 @@ public class RippleView extends RelativeLayout {
         rippleParams.addRule(CENTER_IN_PARENT, TRUE);
 
         animatorSet = new AnimatorSet();
-
         animatorSet.setDuration(rippleDurationTime);
+
         //加速插值器
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         ArrayList<Animator> animatorList = new ArrayList<>();

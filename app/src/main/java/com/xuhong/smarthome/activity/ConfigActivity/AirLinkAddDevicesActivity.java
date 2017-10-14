@@ -1,17 +1,37 @@
 package com.xuhong.smarthome.activity.ConfigActivity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.net.wifi.ScanResult;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flyco.dialog.entity.DialogMenuItem;
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.NormalListDialog;
+import com.gizwits.gizwifisdk.api.GizWifiSDK;
+import com.gizwits.gizwifisdk.enumration.GizWifiConfigureMode;
+import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
+import com.gizwits.gizwifisdk.enumration.GizWifiGAgentType;
+import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
 import com.gyf.barlibrary.ImmersionBar;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerButton;
@@ -34,7 +54,10 @@ import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.xuhong.smarthome.constant.Constant.SoftAP_Start;
+
 public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnClickListener {
+
 
     private StepsView stepsView;
     private ShimmerTextView shimmer_tv;
@@ -44,17 +67,25 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
     private TextView tv_Message, tv_Progress, tvShow;
     private RippleView mRippleView;
 
-
     private EditText etSSID, etPsw;
-    private String currentSSID;
+    private String workSSID, workSSIDPsw;
 
     private NoScollViewPager mViewPager;
     private List<View> viewList;
 
     private mPagerAdapter mPagerAdapter;
 
+    private List<GizWifiGAgentType> modeList, modeDataList;
+
+    //是否接收wifiSDk的监听回报
+    private boolean isRecieveWifiEvent = false;
+
 
     private static final int HANDLER_CODE_PROGRESS = 102;
+    private static final int HANDLER_CODE_SUCCESSFUL = 103;
+    private static final int HANDLER_CODE_FAILED = 104;
+    private static final int REQUEST_CODE = 105;
+    private static final int REQUEST_SUCCEED_CODE = 106;
     private int Flag = 0;
 
     @SuppressLint("HandlerLeak")
@@ -65,8 +96,6 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
             switch (msg.what) {
 
                 case HANDLER_CODE_PROGRESS:
-                    L.e("Flag:" + Flag);
-
                     if (Flag < 100) {
                         Flag++;
                         tv_Progress.setText(Flag + "%");
@@ -75,11 +104,58 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
                         }
                         mHandler.sendEmptyMessageDelayed(HANDLER_CODE_PROGRESS, 600);
                     } else {
-                        L.e("Flag:连接失败"  );
                         mRippleView.stopRippleAnimation();
                         tvShow.setText("连接失败~");
                     }
+                    break;
 
+
+                //airlink配置失败回调
+                case HANDLER_CODE_FAILED:
+
+                    ToastUtils.showToast(AirLinkAddDevicesActivity.this, msg.obj.toString());
+
+                    new SweetAlertDialog(AirLinkAddDevicesActivity.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("温馨提示")
+                            .setContentText("配置失败，尝试手动配置吧？")
+                            .setConfirmText("好的")
+                            .setCancelText("不了")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+
+                                }
+                            })
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                    break;
+
+                case HANDLER_CODE_SUCCESSFUL:
+
+                    new SweetAlertDialog(AirLinkAddDevicesActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("温馨提示")
+                            .setContentText("恭喜，配置成功！")
+                            .setConfirmText("OK")
+
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    finish();
+                                }
+                            })
+
+                            .show();
+
+
+                    break;
+
+                case REQUEST_SUCCEED_CODE:
+                    showWifiListDialog();
                     break;
             }
         }
@@ -102,26 +178,21 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
     protected void onResume() {
         super.onResume();
         initData();
+        if (isRecieveWifiEvent) {
+            GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
+        }
     }
 
     private void initData() {
 
         if (NetStatusUtil.isWifiConnected(this)) {
             //获取当前已经连接的Wi-Fi
-            currentSSID = NetStatusUtil.getCurentWifiSSID(this);
+            workSSID = NetStatusUtil.getCurentWifiSSID(this);
         } else {
-            currentSSID = "请先连接到Wi-Fi网络!";
+            workSSID = "请先连接到Wi-Fi网络!";
             etSSID.setFocusable(false);
         }
-
-        String savaWifiSSid = SharePreUtils.getString(this, Constant.WIFI_NAME, null);
-
-        //判断是否
-        if (savaWifiSSid != null && savaWifiSSid.equals(currentSSID)) {
-
-
-        }
-        etSSID.setText(currentSSID);
+        etSSID.setText(workSSID);
 
     }
 
@@ -174,6 +245,36 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
         etSSID = (EditText) View1.findViewById(R.id.etSSID);
         etPsw = (EditText) View1.findViewById(R.id.etPsw);
 
+
+        if (SharePreUtils.getString(AirLinkAddDevicesActivity.this, Constant.WIFI_PW, null) != null) {
+
+            if (SharePreUtils.getString(AirLinkAddDevicesActivity.this, Constant.WIFI_NAME, null) != null){
+
+              if (!SharePreUtils.getString(AirLinkAddDevicesActivity.this, Constant.WIFI_NAME, null).equals(NetStatusUtil.getCurentWifiSSID(this))){
+                  etPsw.setText("");
+                }
+
+            }
+            etPsw.setText(SharePreUtils.getString(AirLinkAddDevicesActivity.this, Constant.WIFI_PW, null));
+        }
+
+
+
+        //密码显示操作
+        CheckBox cbLaws = (CheckBox) View1.findViewById(R.id.cbLaws);
+        cbLaws.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    etPsw.setInputType(0x90);
+                } else {
+                    etPsw.setInputType(0x81);
+                }
+            }
+        });
+
+        View1.findViewById(R.id.imgWiFiList).setOnClickListener(this);
+
         //第二个view
         GifView gifView = (GifView) View2.findViewById(R.id.GifView);
         gifView.setMovieResource(R.drawable.airlink);
@@ -202,7 +303,6 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
         tv_Message.setOnClickListener(this);
 
         //第三个View
-
         tv_Progress = (TextView) View3.findViewById(R.id.tvShowProgress);
         tvShow = (TextView) View3.findViewById(R.id.tvShow);
 
@@ -211,7 +311,7 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
             @Override
             public void startAnimation() {
                 mHandler.sendEmptyMessage(HANDLER_CODE_PROGRESS);
-
+                startAirlink();
             }
 
             @Override
@@ -229,13 +329,19 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
             //下一步
             case R.id.btnNext:
 
-                if (currentSSID.contains("请先连接到Wi-Fi网络!")) {
+                if (workSSID.contains("请先连接到Wi-Fi网络!")) {
                     ToastUtils.showToast(AirLinkAddDevicesActivity.this, "请先连接到Wi-Fi网络，再点击下一步！");
                     break;
                 }
 
-                if (etPsw.getText().toString().isEmpty()) {
+                workSSIDPsw = etPsw.getText().toString();
+                workSSID=etSSID.getText().toString().intern();
+                L.e("etSSID:"+workSSID);
+                SharePreUtils.putString(AirLinkAddDevicesActivity.this, Constant.WIFI_PW, workSSIDPsw);
+                SharePreUtils.putString(AirLinkAddDevicesActivity.this, Constant.WIFI_NAME, workSSID);
 
+
+                if (etPsw.getText().toString().isEmpty()) {
                     new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
                             .setTitleText("温馨提示")
                             .setContentText("您确认该Wf-Fi的密码为空!")
@@ -250,9 +356,10 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
                                 }
                             })
                             .show();
-
+                    return;
                 }
-                SharePreUtils.putString(AirLinkAddDevicesActivity.this, Constant.WIFI_NAME, currentSSID);
+                mViewPager.setCurrentItem(1, true);
+                stepsView.next();
 
                 break;
 
@@ -272,9 +379,15 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
 
                 break;
             case R.id.btnNextReady:
+
                 mViewPager.setCurrentItem(2, true);
                 stepsView.next();
                 mRippleView.startRippleAnimation();
+                break;
+
+            //显示wifi名字列表
+            case R.id.imgWiFiList:
+                checkPermission();
                 break;
         }
     }
@@ -299,4 +412,173 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
         }
         return false;
     }
+
+
+    private void startAirlink() {
+
+        GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
+        isRecieveWifiEvent = true;
+
+        modeDataList = new ArrayList<>();
+        modeList = new ArrayList<>();
+
+
+        modeDataList.add(GizWifiGAgentType.GizGAgentESP);
+        modeDataList.add(GizWifiGAgentType.GizGAgentMXCHIP);
+        modeDataList.add(GizWifiGAgentType.GizGAgentHF);
+        modeDataList.add(GizWifiGAgentType.GizGAgentRTK);
+        modeDataList.add(GizWifiGAgentType.GizGAgentWM);
+        modeDataList.add(GizWifiGAgentType.GizGAgentQCA);
+        modeDataList.add(GizWifiGAgentType.GizGAgentTI);
+        modeDataList.add(GizWifiGAgentType.GizGAgentFSK);
+        modeDataList.add(GizWifiGAgentType.GizGAgentMXCHIP3);
+        modeDataList.add(GizWifiGAgentType.GizGAgentBL);
+        modeDataList.add(GizWifiGAgentType.GizGAgentAtmelEE);
+        modeDataList.add(GizWifiGAgentType.GizGAgentOther);
+
+
+        //这里我仅仅用ESp8266模块,所以固定为第一个
+        modeList.add(modeDataList.get(0));
+
+        //开始配置
+        GizWifiSDK.sharedInstance().setDeviceOnboarding(workSSID, workSSIDPsw,
+                GizWifiConfigureMode.GizWifiAirLink, null, 60, modeList);
+
+        GizWifiSDK.sharedInstance().disableLAN(true);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        GizWifiSDK.sharedInstance().setListener(null);
+        isRecieveWifiEvent = false;
+
+    }
+
+    private void showWifiListDialog() {
+
+
+        List<ScanResult> rsList = NetStatusUtil.getCurrentWifiScanResult(this);
+        List<String> localList = new ArrayList<>();
+        List<ScanResult> resultsList = new ArrayList<>();
+
+        for (ScanResult sss : rsList) {
+            if (!sss.SSID.contains(SoftAP_Start)) {
+                if (!localList.toString().contains(sss.SSID)) {
+                    localList.add(sss.SSID);
+                    resultsList.add(sss);
+                }
+            }
+        }
+
+        final ArrayList<DialogMenuItem> mMenuItems = new ArrayList<>();
+
+        for (int i = 0; i < resultsList.size(); i++) {
+            mMenuItems.add(new DialogMenuItem(resultsList.get(i).SSID, R.drawable.wifi_icon));
+        }
+
+        final NormalListDialog dialog = new NormalListDialog(AirLinkAddDevicesActivity.this, mMenuItems);
+
+        dialog.title("请选择WI-Fi名字")//
+                .titleTextSize_SP(14)//
+                .titleBgColor(getResources().getColor(R.color.yellow0))//
+                .itemPressColor(getResources().getColor(R.color.yellow0))//
+                .itemTextColor(getResources().getColor(R.color.black0))//
+                .itemTextSize(12)//
+                .cornerRadius(0)//
+                .widthScale(0.8f)//
+                .show(R.style.myDialogAnim);
+
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                etSSID.setText(mMenuItems.get(position).mOperName);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void checkPermission() {
+        //是否大于6.0版本
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //检查是否已经授权
+            int Code_ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+            //授权结果判断
+            if (Code_ACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+            } else {
+                mHandler.sendEmptyMessage(REQUEST_SUCCEED_CODE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0) {
+                List<String> deniedPermission = new ArrayList<>();
+                for (int i = 0; i < grantResults.length; i++) {
+                    int grantResult = grantResults[i];
+                    String permission = permissions[i];
+                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                        deniedPermission.add(permission);
+                    }
+                }
+                L.e("deniedPermission:" + deniedPermission);
+                if (deniedPermission.isEmpty()) {
+                    mHandler.sendEmptyMessage(105);
+                } else {
+                    //Toast.makeText(this,"您拒绝了部分权限！可以在设置—应用详情授权，否则无法搜索出蓝牙设备哦。",Toast.LENGTH_LONG).show();
+                    mHandler.sendEmptyMessage(105);
+                }
+
+            }
+        }
+    }
+
+    /**
+     * 配网模式回调
+     */
+    private GizWifiSDKListener gizWifiSDKListener = new GizWifiSDKListener() {
+
+
+        /**
+         * 设备配置回调
+         *
+         * @param result
+         *            错误码
+         * @param mac
+         *            MAC
+         * @param did
+         *            DID
+         * @param productKey
+         *            PK
+         */
+        public void didSetDeviceOnboarding(GizWifiErrorCode result, String mac, String did, String productKey) {
+
+            L.e("gizWifiSDKListener!!!!" + result.getResult());
+
+            if (GizWifiErrorCode.GIZ_SDK_DEVICE_CONFIG_IS_RUNNING == result) {
+                return;
+            }
+
+            if (mRippleView != null) {
+                mRippleView.stopRippleAnimation();
+            }
+
+            Message message = mHandler.obtainMessage();
+
+            if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {
+                message.what = HANDLER_CODE_SUCCESSFUL;
+            } else {
+                message.what = HANDLER_CODE_FAILED;
+                message.obj = toastError(result);
+            }
+
+            mHandler.sendMessage(message);
+
+        }
+    };
 }
