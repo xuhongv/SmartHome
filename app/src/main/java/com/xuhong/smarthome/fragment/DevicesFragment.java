@@ -280,7 +280,6 @@ public class DevicesFragment extends BaseFragment {
 
         final String[] stringItems = {"解绑此设备", "重命名设备", "查看设备信息"};
         final ActionSheetDialog sheetDialog = new ActionSheetDialog(getActivity(), stringItems, null);
-        sheetDialog.itemTextColor(getResources().getColor(R.color.white));
         sheetDialog.isTitleShow(false).show();
         sheetDialog.setOnOperItemClickL(new OnOperItemClickL() {
             @Override
