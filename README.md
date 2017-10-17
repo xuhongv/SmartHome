@@ -6,8 +6,6 @@
  
  ![image](http://h5xuhong.oss-cn-hongkong.aliyuncs.com/smartHome/TAB1.png)
  
- 
- 
  #### 用到的框架：
  
  -  沉浸式封装： compile 'com.gyf.barlibrary:barlibrary:2.2.6'
