@@ -11,9 +11,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -36,7 +34,8 @@ import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
 import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.ConfigActivity.AirLinkAddDevicesActivity;
-import com.xuhong.smarthome.activity.DevicesControlActivity.SmartSocketActivity;
+import com.xuhong.smarthome.activity.DevicesControlActivity.SmartLightActivity;
+import com.xuhong.smarthome.activity.DevicesControlActivity.SocPetActivity;
 import com.xuhong.smarthome.adapter.DevicesListAdapter;
 import com.xuhong.smarthome.utils.SharePreUtils;
 import com.xuhong.smarthome.utils.SoftInputUtils;
@@ -47,7 +46,6 @@ import java.util.List;
 import io.github.xudaojie.qrcodelib.CaptureActivity;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 
 public class DevicesFragment extends BaseFragment {
@@ -415,11 +413,22 @@ public class DevicesFragment extends BaseFragment {
             }
 
             if (isFirstBind && GizWifiErrorCode.GIZ_SDK_SUCCESS == result) {
-                Intent intent = new Intent(getActivity(), SmartSocketActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("GizWifiDevice", device);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                //根据product key加载不同的页面
+                if (device.getProductKey().equals("71b4ebd7f42d4985992734a9d82acda8")){
+                    Intent intent = new Intent(getActivity(), SmartLightActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("GizWifiDevice", device);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }else if (device.getProductKey().equals("e22bb903f02e4146827bf75a641a122b")){
+                    Intent intent = new Intent(getActivity(), SocPetActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("GizWifiDevice", device);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+
+
             }
         }
     };

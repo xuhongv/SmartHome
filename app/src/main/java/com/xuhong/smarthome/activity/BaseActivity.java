@@ -53,7 +53,6 @@ public class BaseActivity extends AppCompatActivity {
         mImmersionBar.init();
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

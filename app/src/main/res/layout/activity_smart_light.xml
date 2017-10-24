@@ -22,10 +22,28 @@
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
 
+    <RelativeLayout
+        android:id="@+id/rl_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/toolbar">
+
+        <com.xuhong.smarthome.view.ColorTempCircularSeekBar
+            android:id="@+id/csbSeekbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.xuhong.smarthome.view.ColorCircularSeekBar
+            android:id="@+id/csbSeekbar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_seekbar"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -33,18 +51,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="50dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <CheckBox
-                android:focusableInTouchMode="false"
-                android:button="@null"
                 android:id="@+id/cbStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selector_plug_status" />
+                android:background="@drawable/selector_plug_status"
+                android:button="@null"
+                android:focusableInTouchMode="false" />
 
             <TextView
                 android:id="@+id/tvStatus"
@@ -54,6 +73,7 @@
                 android:text="插头已开启"
                 android:textStyle="bold" />
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

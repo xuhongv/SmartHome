@@ -42,7 +42,6 @@
     <string name="text_terms">创建账号既代表你同意\n使用条款和隐私条约</string>
 
 
-
     <!-- Error Toast -->
     <string name="GIZ_SDK_PARAM_FORM_INVALID">SDK\'s intenal data form is invalid</string>
     <string name="GIZ_SDK_CLIENT_NOT_AUTHEN">SDK is starting</string>

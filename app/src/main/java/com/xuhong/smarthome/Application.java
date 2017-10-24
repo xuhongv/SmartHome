@@ -10,6 +10,7 @@ import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
 import com.xuhong.smarthome.activity.BaseActivity;
 import com.xuhong.smarthome.constant.Constant;
+import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.SharePreUtils;
 
 import java.util.List;
@@ -40,6 +41,11 @@ public class Application extends android.app.Application {
         GizWifiSDK.sharedInstance().setListener(listener);
         //注册机智云SDK
         GizWifiSDK.sharedInstance().startWithAppID(this, "ea46989a46044d79ac43b1558f0bd101");
+        //获取版本
+        String toString = GizWifiSDK.sharedInstance().getVersion().toString();
+
+        L.e("SDK版本："+toString);
+
     }
 
     private GizWifiSDKListener listener = new GizWifiSDKListener() {

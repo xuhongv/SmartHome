@@ -9,20 +9,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.gizwits.gizwifisdk.api.GizDeviceGroup;
-import com.gizwits.gizwifisdk.api.GizDeviceScene;
-import com.gizwits.gizwifisdk.api.GizDeviceSceneItem;
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
-import com.gizwits.gizwifisdk.enumration.GizDeviceSceneStatus;
 import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.utils.L;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SmartSocketActivity extends BaseDevicesControlActivity implements View.OnClickListener {
+public class SmartLightActivity extends BaseDevicesControlActivity implements View.OnClickListener {
 
 
     //数据点
@@ -46,6 +41,7 @@ public class SmartSocketActivity extends BaseDevicesControlActivity implements V
     private TextView mTvShareDevices;
     private ImageView mIvCountDowm;
     private TextView mTvDevicesLog;
+
 
 
     @SuppressLint("HandlerLeak")
@@ -72,7 +68,7 @@ public class SmartSocketActivity extends BaseDevicesControlActivity implements V
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_smart_socket;
+        return R.layout.activity_smart_light;
     }
 
     @Override
@@ -95,7 +91,6 @@ public class SmartSocketActivity extends BaseDevicesControlActivity implements V
         mTvShareDevices = (TextView) findViewById(R.id.tvShareDevices);
         mIvCountDowm = (ImageView) findViewById(R.id.ivCountDowm);
         mTvDevicesLog = (TextView) findViewById(R.id.tvDevicesLog);
-
 
     }
 
@@ -143,12 +138,10 @@ public class SmartSocketActivity extends BaseDevicesControlActivity implements V
                     sendCommand(FLAG_ONOFF, false);
                 }
                 break;
-
-
         }
     }
 
-    private void sendCommand(String key1, Object value1) {
+    public void sendCommand(String key1, Object value1) {
         if (value1 == null) {
             return;
         }
@@ -156,4 +149,8 @@ public class SmartSocketActivity extends BaseDevicesControlActivity implements V
         hashMap.put(key1, value1);
         mDevice.write(hashMap, 0);
     }
+
+
+
+
 }

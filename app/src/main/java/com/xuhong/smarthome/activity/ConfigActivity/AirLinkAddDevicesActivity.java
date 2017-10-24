@@ -123,7 +123,8 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
-
+                                   ToastUtils.showToast(AirLinkAddDevicesActivity.this,"抱歉，softAP模式配网暂未加入！");
+                                   finish();
                                 }
                             })
                             .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -166,11 +167,8 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arilink_add_devices);
-
         initView();
         initData();
-
-
     }
 
 
@@ -248,16 +246,15 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
 
         if (SharePreUtils.getString(AirLinkAddDevicesActivity.this, Constant.WIFI_PW, null) != null) {
 
-            if (SharePreUtils.getString(AirLinkAddDevicesActivity.this, Constant.WIFI_NAME, null) != null){
+            if (SharePreUtils.getString(AirLinkAddDevicesActivity.this, Constant.WIFI_NAME, null) != null) {
 
-              if (!SharePreUtils.getString(AirLinkAddDevicesActivity.this, Constant.WIFI_NAME, null).equals(NetStatusUtil.getCurentWifiSSID(this))){
-                  etPsw.setText("");
+                if (!SharePreUtils.getString(AirLinkAddDevicesActivity.this, Constant.WIFI_NAME, null).equals(NetStatusUtil.getCurentWifiSSID(this))) {
+                    etPsw.setText("");
                 }
 
             }
             etPsw.setText(SharePreUtils.getString(AirLinkAddDevicesActivity.this, Constant.WIFI_PW, null));
         }
-
 
 
         //密码显示操作
@@ -335,8 +332,8 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
                 }
 
                 workSSIDPsw = etPsw.getText().toString();
-                workSSID=etSSID.getText().toString().intern();
-                L.e("etSSID:"+workSSID);
+                workSSID = etSSID.getText().toString().intern();
+                L.e("etSSID:" + workSSID);
                 SharePreUtils.putString(AirLinkAddDevicesActivity.this, Constant.WIFI_PW, workSSIDPsw);
                 SharePreUtils.putString(AirLinkAddDevicesActivity.this, Constant.WIFI_NAME, workSSID);
 
@@ -417,6 +414,8 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
     private void startAirlink() {
 
         GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
+        L.e("gizWifiSDKListener start!" );
+
         isRecieveWifiEvent = true;
 
         modeDataList = new ArrayList<>();
@@ -542,7 +541,6 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
      * 配网模式回调
      */
     private GizWifiSDKListener gizWifiSDKListener = new GizWifiSDKListener() {
-
 
         /**
          * 设备配置回调

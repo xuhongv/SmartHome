@@ -29,7 +29,6 @@
     <!-- 允许闪光灯 -->
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
-
     <application
         android:name=".Application"
         android:allowBackup="true"
@@ -39,15 +38,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup,android:icon">
-        <!--主界面-->
+
+        <!-- 主界面 -->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask" />
-
         <activity android:name=".activity.SearchNewsActivity" />
-
         <activity android:name=".activity.WebViewActivity" />
-
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden" />
@@ -77,10 +74,11 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
 
-        <activity android:name=".activity.DevicesControlActivity.SmartSocketActivity" />
-        <!--airlink配网模式-->
-        <activity android:name=".activity.ConfigActivity.AirLinkAddDevicesActivity"/>
+        <activity android:name=".activity.DevicesControlActivity.SmartLightActivity" />
+        <!-- airlink配网模式 -->
+        <activity android:name=".activity.ConfigActivity.AirLinkAddDevicesActivity" />
         <activity android:name="io.github.xudaojie.qrcodelib.CaptureActivity" />
+        <activity android:name=".activity.DevicesControlActivity.SocPetActivity"></activity>
     </application>
 
 </manifest>

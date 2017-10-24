@@ -20,6 +20,9 @@ import com.gizwits.gizwifisdk.listener.GizWifiDeviceListener;
 import com.gyf.barlibrary.ImmersionBar;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.BaseActivity;
+import com.xuhong.smarthome.utils.L;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public abstract class BaseDevicesControlActivity extends BaseActivity {
@@ -45,32 +48,30 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         });
         TextView tvName = (TextView) toolbar.findViewById(R.id.tvName);
         ImmersionBar.setTitleBar(this, toolbar);
+
         Intent intent = getIntent();
         mDevice = intent.getParcelableExtra("GizWifiDevice");
         mDevice.setListener(gizWifiDeviceListener);
-        //tvName.setText(mDevice.getAlias() == null ? mDevice.getProductName() : mDevice.getAlias());
-        tvName.setText("智能插座");
+        tvName.setText(mDevice.getAlias() == null ? mDevice.getProductName() : mDevice.getAlias());
 
 
     }
 
+    public void showAlerDialog(GizWifiDeviceNetStatus netStatus) {
 
-    public void showAlerDialog( GizWifiDeviceNetStatus netStatus){
+        String mTitle = null;
 
-        String mTitle =null;
-
-        if (netStatus==GizWifiDeviceNetStatus.GizDeviceControlled){
+        if (netStatus == GizWifiDeviceNetStatus.GizDeviceControlled) {
             return;
         }
 
-        if (netStatus==GizWifiDeviceNetStatus.GizDeviceOffline){
-            mTitle="设备已离线！";
+        if (netStatus == GizWifiDeviceNetStatus.GizDeviceOffline) {
+            mTitle = "设备已离线！";
         }
 
-        if (netStatus==GizWifiDeviceNetStatus.GizDeviceUnavailable){
-            mTitle="设备不可控！";
+        if (netStatus == GizWifiDeviceNetStatus.GizDeviceUnavailable) {
+            mTitle = "设备不可控！";
         }
-
 
 
         final View view = getLayoutInflater().inflate(R.layout.dialog_alert, null);
@@ -95,8 +96,6 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
 
     }
 
-
-
     /**
      * this activity layout res
      * 设置layout布局,在子类重写该方法.
@@ -107,8 +106,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
 
     protected abstract void bindView();
 
-
-    GizWifiDeviceListener gizWifiDeviceListener = new GizWifiDeviceListener() {
+    private GizWifiDeviceListener gizWifiDeviceListener = new GizWifiDeviceListener() {
 
         /** 用于设备订阅 */
         public void didSetSubscribe(GizWifiErrorCode result, GizWifiDevice device, boolean isSubscribed) {
@@ -149,6 +147,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
      * @param isSubscribed 订阅状态
      */
     protected void didSetSubscribe(GizWifiErrorCode result, GizWifiDevice device, boolean isSubscribed) {
+        L.e("设备订阅回调:" + result);
     }
 
     /**
@@ -161,6 +160,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
      */
     protected void didReceiveData(GizWifiErrorCode result, GizWifiDevice device,
                                   java.util.concurrent.ConcurrentHashMap<String, Object> dataMap, int sn) {
+        L.e("设备状态回调:" + result);
     }
 
     /**
@@ -187,6 +187,42 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
      * 设备状态变化回调
      */
     protected void didUpdateNetStatus(GizWifiDevice device, GizWifiDeviceNetStatus netStatus) {
+        L.e(" 设备状态变化回调:"+netStatus);
+    }
+
+
+    /**
+     * 发送指令,下发单个数据点的命令可以用这个方法
+     *
+     * @param key   数据点对应的标识名
+     * @param value 需要改变的值
+     */
+    protected void sendCommand(String key, Object value) {
+        if (value == null) {
+            return;
+        }
+        int sn = 5;
+        ConcurrentHashMap<String, Object> hashMap = new ConcurrentHashMap<>();
+        hashMap.put(key, value);
+        // 同时下发多个数据点需要一次性在map中放置全部需要控制的key，value值
+        // hashMap.put(key2, value2);
+        // hashMap.put(key3, value3);
+        mDevice.write(hashMap, sn);
+        L.i("下发命令：" + hashMap.toString());
+    }
+
+
+    protected void sendRgbCmd(String keyR, Object valueR, String keyG, Object valueG, String keyB, Object valueB) {
+        if (valueR == null || valueG == null || valueB == null) {
+            return;
+        }
+        int sn = 5;
+        ConcurrentHashMap<String, Object> hashMap = new ConcurrentHashMap<>();
+        hashMap.put(keyR, valueR);
+        hashMap.put(keyG, valueG);
+        hashMap.put(keyB, valueB);
+        mDevice.write(hashMap, sn);
+        L.i("下发命令：" + hashMap.toString());
     }
 
 
