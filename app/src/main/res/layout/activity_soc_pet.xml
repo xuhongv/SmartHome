@@ -44,21 +44,11 @@
             android:orientation="vertical">
 
 
-            <!-- 环形进度条布局开始 -->
+            <!-- 环形进度条布局 -->
             <RelativeLayout
                 android:id="@+id/rl_seekbar"
                 android:layout_width="match_parent"
-                android:layout_height="280dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:text="Rgb灯控制："
-                    android:textColor="@color/black0"
-                    android:textSize="13sp" />
-
+                android:layout_height="300dp">
                 <com.xuhong.smarthome.view.ColorTempCircularSeekBar
                     android:id="@+id/csbSeekbar"
                     android:layout_width="wrap_content"
@@ -72,7 +62,7 @@
 
             </RelativeLayout>
 
-
+            <!-- 开灯布局 -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -88,7 +78,7 @@
                     android:textColor="@color/black0" />
 
                 <Switch
-                    android:id="@+id/swRight"
+                    android:id="@+id/swLight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tvNullOpen" />
@@ -96,10 +86,11 @@
 
             </RelativeLayout>
 
-
+            <!-- 红色调节开始 -->
             <RelativeLayout
+
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="20dp">
 
                 <TextView
@@ -109,20 +100,25 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:text="红色调节："
-                    android:textColor="@color/black0" />
+                    android:textColor="@color/red0" />
 
                 <SeekBar
+                    android:id="@+id/sbRed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/tvNullRed" />
+                    android:layout_toRightOf="@+id/tvNullRed"
+                    android:progressDrawable="@drawable/progress_red"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/diandian" />
 
 
             </RelativeLayout>
 
+            <!-- 蓝色调节布局 -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="20dp">
 
                 <TextView
@@ -132,21 +128,25 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:text="绿色调节："
-                    android:textColor="@color/black0" />
+                    android:textColor="#32f924" />
 
                 <SeekBar
+                    android:id="@+id/sbGreen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/tvNullGreen" />
+                    android:layout_toRightOf="@+id/tvNullGreen"
+                    android:progressDrawable="@drawable/progress_green"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/diandian" />
 
 
             </RelativeLayout>
 
-
+            <!-- 蓝色调节布局 -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="20dp">
 
                 <TextView
@@ -156,22 +156,26 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:text="蓝色调节："
-                    android:textColor="@color/black0" />
+                    android:textColor="#202aed" />
 
                 <SeekBar
+                    android:id="@+id/sbBlue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/tvNullBlue" />
+                    android:layout_toRightOf="@+id/tvNullBlue"
+                    android:progressDrawable="@drawable/progress_blue"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/diandian" />
 
 
             </RelativeLayout>
 
-
+            <!-- 红绿蓝布局 -->
             <LinearLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp">
@@ -250,13 +254,72 @@
 
             </LinearLayout>
 
+            <!-- 分割线 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.3dp"
                 android:background="@color/black0" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
-            <!-- 温度布局开始 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="马达调节:"
+                    android:textColor="@color/black0"
+                    android:textSize="13sp" />
+
+
+                <com.xuhong.smarthome.view.MotorControlView
+                    android:id="@+id/mMotorView"
+                    android:layout_width="320dp"
+                    android:layout_height="230dp"
+                    android:layout_centerHorizontal="true" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <Button
+                    android:id="@+id/btMotoReduce"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="54dp"
+                    android:layout_toStartOf="@+id/view"
+                    android:background="@drawable/ic_motor_reduce" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true" />
+
+
+                <Button
+                    android:id="@+id/btMotorAdd"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="54dp"
+                    android:layout_toEndOf="@+id/view"
+                    android:background="@drawable/ic_motor_add" />
+            </RelativeLayout>
+
+
+            <!-- 分割线 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/black0" />
+
+            <!-- 温度布局 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -277,6 +340,7 @@
                         android:layout_centerInParent="true" />
 
                     <TextView
+                        android:id="@+id/tvTemper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
@@ -290,15 +354,16 @@
 
             </LinearLayout>
 
+            <!-- 分割线 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.3dp"
                 android:background="@color/black0" />
 
-            <!-- 湿度布局开始 -->
+            <!-- 湿度布局-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="140dp"
                 android:layout_marginTop="20dp">
 
                 <RelativeLayout
@@ -317,6 +382,7 @@
 
 
                     <TextView
+                        android:id="@+id/tvHumidness"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="当前湿度：28%"
@@ -326,6 +392,29 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
+            <!-- 分割线 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/black0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="红外感应："
+                android:textColor="@color/black0" />
+
+            <com.xuhong.smarthome.view.InfraredView
+                android:id="@+id/mInfraredView"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
+                app:waveCenterIcon="@drawable/diandian"
+                app:waveColor="@color/red1"
+                app:waveText="正在感应" />
 
         </LinearLayout>
 

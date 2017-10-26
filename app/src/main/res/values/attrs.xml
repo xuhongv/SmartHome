@@ -29,5 +29,14 @@
         <attr name="valueColor" format="color" />
         <attr name="valueSize" format="dimension" />
     </declare-styleable>
+
+
+    <declare-styleable name="InfraredView">
+        <attr name="waveColor" format="color|reference" />
+        <attr name="waveCount" format="integer" />
+        <attr name="waveCenterIcon" format="reference" />
+        <attr name="waveText" format="string" />
+
+    </declare-styleable>
     
 </resources>  
