@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.flyco.dialog.entity.DialogMenuItem;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
+import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.api.GizWifiSDK;
 import com.gizwits.gizwifisdk.enumration.GizWifiConfigureMode;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
@@ -94,7 +95,6 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-
                 case HANDLER_CODE_PROGRESS:
                     if (Flag < 100) {
                         Flag++;
@@ -123,8 +123,8 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
-                                   ToastUtils.showToast(AirLinkAddDevicesActivity.this,"抱歉，softAP模式配网暂未加入！");
-                                   finish();
+                                    ToastUtils.showToast(AirLinkAddDevicesActivity.this, "抱歉，softAP模式配网暂未加入！");
+                                    finish();
                                 }
                             })
                             .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -176,9 +176,7 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
     protected void onResume() {
         super.onResume();
         initData();
-        if (isRecieveWifiEvent) {
-            GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
-        }
+        GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
     }
 
     private void initData() {
@@ -309,8 +307,8 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
             public void startAnimation() {
                 mHandler.sendEmptyMessage(HANDLER_CODE_PROGRESS);
                 startAirlink();
-            }
 
+            }
             @Override
             public void EndAnimation() {
 
@@ -380,6 +378,7 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
                 mViewPager.setCurrentItem(2, true);
                 stepsView.next();
                 mRippleView.startRippleAnimation();
+
                 break;
 
             //显示wifi名字列表
@@ -413,14 +412,12 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
 
     private void startAirlink() {
 
-        GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
-        L.e("gizWifiSDKListener start!" );
+       //L.e("startAirlink start!");
 
         isRecieveWifiEvent = true;
 
         modeDataList = new ArrayList<>();
         modeList = new ArrayList<>();
-
 
         modeDataList.add(GizWifiGAgentType.GizGAgentESP);
         modeDataList.add(GizWifiGAgentType.GizGAgentMXCHIP);
@@ -439,11 +436,13 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
         //这里我仅仅用ESp8266模块,所以固定为第一个
         modeList.add(modeDataList.get(0));
 
+        L.e("配置的etSSID:" + workSSID);
+        L.e("配置的etPas:" + workSSIDPsw);
+
+        GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
         //开始配置
         GizWifiSDK.sharedInstance().setDeviceOnboarding(workSSID, workSSIDPsw,
                 GizWifiConfigureMode.GizWifiAirLink, null, 60, modeList);
-
-        GizWifiSDK.sharedInstance().disableLAN(true);
 
     }
 
@@ -503,9 +502,10 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //检查是否已经授权
             int Code_ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+            int Code_ACCESS_COARSE_LOCATION = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
             //授权结果判断
-            if (Code_ACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+            if (Code_ACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED && Code_ACCESS_COARSE_LOCATION != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE);
             } else {
                 mHandler.sendEmptyMessage(REQUEST_SUCCEED_CODE);
             }
@@ -529,7 +529,6 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
                 if (deniedPermission.isEmpty()) {
                     mHandler.sendEmptyMessage(105);
                 } else {
-                    //Toast.makeText(this,"您拒绝了部分权限！可以在设置—应用详情授权，否则无法搜索出蓝牙设备哦。",Toast.LENGTH_LONG).show();
                     mHandler.sendEmptyMessage(105);
                 }
 
@@ -542,21 +541,13 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
      */
     private GizWifiSDKListener gizWifiSDKListener = new GizWifiSDKListener() {
 
-        /**
-         * 设备配置回调
-         *
-         * @param result
-         *            错误码
-         * @param mac
-         *            MAC
-         * @param did
-         *            DID
-         * @param productKey
-         *            PK
-         */
-        public void didSetDeviceOnboarding(GizWifiErrorCode result, String mac, String did, String productKey) {
 
-            L.e("gizWifiSDKListener!!!!" + result.getResult());
+        // 设备配置回调
+        @Override
+        public void didDiscovered(GizWifiErrorCode result, List<GizWifiDevice> deviceList) {
+            super.didDiscovered(result, deviceList);
+
+            L.e("gizWifiSDKListener new !!!!" + result.getResult());
 
             if (GizWifiErrorCode.GIZ_SDK_DEVICE_CONFIG_IS_RUNNING == result) {
                 return;
@@ -576,7 +567,7 @@ public class AirLinkAddDevicesActivity extends BaseActivity implements View.OnCl
             }
 
             mHandler.sendMessage(message);
-
         }
+
     };
 }

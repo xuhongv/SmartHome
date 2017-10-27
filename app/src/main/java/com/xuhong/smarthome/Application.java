@@ -1,6 +1,7 @@
 package com.xuhong.smarthome;
 
 import android.content.Context;
+import android.os.Message;
 import android.util.Log;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
@@ -44,7 +45,7 @@ public class Application extends android.app.Application {
         //获取版本
         String toString = GizWifiSDK.sharedInstance().getVersion().toString();
 
-        L.e("SDK版本："+toString);
+        L.e("机智云的SDK版本："+toString);
 
     }
 

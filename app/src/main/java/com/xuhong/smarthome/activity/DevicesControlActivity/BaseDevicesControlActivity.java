@@ -22,6 +22,7 @@ import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.BaseActivity;
 import com.xuhong.smarthome.utils.L;
 
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -52,9 +53,8 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         Intent intent = getIntent();
         mDevice = intent.getParcelableExtra("GizWifiDevice");
         mDevice.setListener(gizWifiDeviceListener);
-        tvName.setText(mDevice.getAlias() == null ? mDevice.getProductName() : mDevice.getAlias());
-
-
+        tvName.setText(Objects.equals(mDevice.getAlias(), "") || mDevice.getAlias() == null ? mDevice.getProductName() : mDevice.getAlias());
+        getStatusOfDevice();
     }
 
     public void showAlerDialog(GizWifiDeviceNetStatus netStatus) {
@@ -187,7 +187,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
      * 设备状态变化回调
      */
     protected void didUpdateNetStatus(GizWifiDevice device, GizWifiDeviceNetStatus netStatus) {
-        L.e(" 设备状态变化回调:"+netStatus);
+        L.e(" 设备状态变化回调:" + netStatus);
     }
 
 
@@ -204,11 +204,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         int sn = 5;
         ConcurrentHashMap<String, Object> hashMap = new ConcurrentHashMap<>();
         hashMap.put(key, value);
-        // 同时下发多个数据点需要一次性在map中放置全部需要控制的key，value值
-        // hashMap.put(key2, value2);
-        // hashMap.put(key3, value3);
         mDevice.write(hashMap, sn);
-        L.i("下发命令：" + hashMap.toString());
     }
 
 
@@ -222,7 +218,39 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         hashMap.put(keyG, valueG);
         hashMap.put(keyB, valueB);
         mDevice.write(hashMap, sn);
-        L.i("下发命令：" + hashMap.toString());
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 退出页面，取消设备订阅
+        mDevice.setSubscribe(false);
+        mDevice.setListener(null);
+    }
+    /**
+     * Description:页面加载后弹出等待框，等待设备可被控制状态回调，如果一直不可被控，等待一段时间后自动退出界面
+     */
+    private void getStatusOfDevice() {
+        // 设备是否可控
+        if (isDeviceCanBeControlled()) {
+            // 可控则查询当前设备状态
+            mDevice.getDeviceStatus();
+        } else {
+            // 显示等待栏
+            //progressDialog.show();
+            if (mDevice.isLAN()) {
+                // 小循环10s未连接上设备自动退出
+                //  mHandler.postDelayed(mRunnable, 10000);
+            } else {
+                // 大循环20s未连接上设备自动退出
+                //  mHandler.postDelayed(mRunnable, 20000);
+            }
+        }
+    }
+
+    private boolean isDeviceCanBeControlled() {
+        return mDevice.getNetStatus() == GizWifiDeviceNetStatus.GizDeviceControlled;
     }
 
 

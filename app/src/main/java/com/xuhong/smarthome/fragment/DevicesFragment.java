@@ -37,11 +37,13 @@ import com.xuhong.smarthome.activity.ConfigActivity.AirLinkAddDevicesActivity;
 import com.xuhong.smarthome.activity.DevicesControlActivity.SmartLightActivity;
 import com.xuhong.smarthome.activity.DevicesControlActivity.SocPetActivity;
 import com.xuhong.smarthome.adapter.DevicesListAdapter;
+import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.SharePreUtils;
 import com.xuhong.smarthome.utils.SoftInputUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import io.github.xudaojie.qrcodelib.CaptureActivity;
 
@@ -132,16 +134,17 @@ public class DevicesFragment extends BaseFragment {
 
         dividerItemDecoration = new DividerItemDecoration(
                 getActivity(), DividerItemDecoration.VERTICAL);
+
         deviceslist = GizWifiSDK.sharedInstance().getDeviceList();
-        for (GizWifiDevice gizWifiDevice : deviceslist) {
-            isFirstBind = false;
-            String productKey = gizWifiDevice.getProductKey();
-            if (productKey.equals("71b4ebd7f42d4985992734a9d82acda8")) {
-                gizWifiDevice.setSubscribe("b67d3b74b7f34e5b8acb0f468f7870cd", true);
-            } else {
-                gizWifiDevice.setSubscribe(true);
-            }
-        }
+//        for (GizWifiDevice gizWifiDevice : deviceslist) {
+//            isFirstBind = false;
+//            String productKey = gizWifiDevice.getProductKey();
+//            if (productKey.equals("71b4ebd7f42d4985992734a9d82acda8")) {
+//                gizWifiDevice.setSubscribe("b67d3b74b7f34e5b8acb0f468f7870cd", true);
+//            } else {
+//                gizWifiDevice.setSubscribe(true);
+//            }
+//        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         adapter = new DevicesListAdapter(getActivity(), deviceslist);
@@ -154,6 +157,9 @@ public class DevicesFragment extends BaseFragment {
             @Override
             public void onClick(GizWifiDevice mGizWifiDevice) {
                 isFirstBind = true;
+                if (!mGizWifiDevice.isBind()){
+
+                }
                 mGizWifiDevice.setListener(gizWifiDeviceListener);
                 String productKey = mGizWifiDevice.getProductKey();
                 if (productKey.equals("71b4ebd7f42d4985992734a9d82acda8")) {
@@ -185,6 +191,7 @@ public class DevicesFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         // 每次返回都要注册一次sdk监听器，保证sdk状态能正确回调
+        L.e("设备界面列表：onResume");
         GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
     }
 
@@ -211,13 +218,15 @@ public class DevicesFragment extends BaseFragment {
             didDevicesCloudBack(result, deviceList);
         }
 
-        /** 用于用户匿名登录 */
-        public void didUserLogin(GizWifiErrorCode result, java.lang.String uid, java.lang.String token) {
-        }
-
         /** 用于设备解绑 */
         public void didUnbindDevice(GizWifiErrorCode result, java.lang.String did) {
-            Toast.makeText(getActivity(), "删除成功！", Toast.LENGTH_SHORT).show();
+            L.e("解绑：" + result);
+            if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {
+                Toast.makeText(getActivity(), "删除成功！", Toast.LENGTH_SHORT).show();
+                GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
+            }else {
+                Toast.makeText(getActivity(), "删除失败！错误码："+result, Toast.LENGTH_SHORT).show();
+            }
         }
 
         /** 用于设备绑定 */
@@ -405,6 +414,13 @@ public class DevicesFragment extends BaseFragment {
      */
     private GizWifiDeviceListener gizWifiDeviceListener = new GizWifiDeviceListener() {
 
+
+        @Override
+        public void didReceiveData(GizWifiErrorCode result, GizWifiDevice device, ConcurrentHashMap<String, Object> dataMap, int sn) {
+            super.didReceiveData(result, device, dataMap, sn);
+            L.e("设备列表的状态回调:" + result);
+        }
+
         @Override
         public void didSetSubscribe(GizWifiErrorCode result, GizWifiDevice device, boolean isSubscribed) {
 
@@ -414,22 +430,21 @@ public class DevicesFragment extends BaseFragment {
 
             if (isFirstBind && GizWifiErrorCode.GIZ_SDK_SUCCESS == result) {
                 //根据product key加载不同的页面
-                if (device.getProductKey().equals("71b4ebd7f42d4985992734a9d82acda8")){
+                if (device.getProductKey().equals("71b4ebd7f42d4985992734a9d82acda8")) {
                     Intent intent = new Intent(getActivity(), SmartLightActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("GizWifiDevice", device);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                }else if (device.getProductKey().equals("e22bb903f02e4146827bf75a641a122b")){
+                } else if (device.getProductKey().equals("e22bb903f02e4146827bf75a641a122b")) {
                     Intent intent = new Intent(getActivity(), SocPetActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("GizWifiDevice", device);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
-
-
             }
+
         }
     };
 }

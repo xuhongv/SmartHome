@@ -38,6 +38,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
@@ -46,9 +47,8 @@
 
             <!-- 环形进度条布局 -->
             <RelativeLayout
-                android:id="@+id/rl_seekbar"
                 android:layout_width="match_parent"
-                android:layout_height="300dp">
+                android:layout_height="220dp">
                 <com.xuhong.smarthome.view.ColorTempCircularSeekBar
                     android:id="@+id/csbSeekbar"
                     android:layout_width="wrap_content"
@@ -64,6 +64,7 @@
 
             <!-- 开灯布局 -->
             <RelativeLayout
+                android:id="@+id/rl_seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginStart="20dp">
@@ -74,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:text="开灯："
+                    android:text="开红色灯："
                     android:textColor="@color/black0" />
 
                 <Switch
@@ -186,7 +187,7 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/btRed"
+                        android:id="@+id/btYellow"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_centerHorizontal="true"
@@ -197,8 +198,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerInParent="true"
-                        android:text="红灯"
-                        android:textColor="@color/red0"
+                        android:text="黄灯"
+                        android:textColor="#f7db09"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
@@ -210,7 +211,7 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/btGreen"
+                        android:id="@+id/btPurple"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_centerHorizontal="true"
@@ -221,8 +222,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerInParent="true"
-                        android:text="绿灯"
-                        android:textColor="#32f924"
+                        android:text="紫灯"
+                        android:textColor="#d825fc"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
@@ -234,7 +235,7 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/btBlue"
+                        android:id="@+id/btPink"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_centerHorizontal="true"
@@ -245,8 +246,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerInParent="true"
-                        android:text="蓝灯"
-                        android:textColor="#202aed"
+                        android:text="粉灯"
+                        android:textColor="#f1fe00e5"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
@@ -336,7 +337,7 @@
                     <com.xuhong.smarthome.view.TemperatureView
                         android:id="@+id/temperatureView"
                         android:layout_width="90dp"
-                        android:layout_height="150dp"
+                        android:layout_height="170dp"
                         android:layout_centerInParent="true" />
 
                     <TextView
@@ -345,7 +346,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:text="当前温度：26°"
+                        android:text="当前温度："
                         android:textColor="@color/black0"
                         android:textSize="13sp" />
 
@@ -385,7 +386,7 @@
                         android:id="@+id/tvHumidness"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="当前湿度：28%"
+                        android:text="当前湿度："
                         android:textColor="@color/black0"
                         android:textSize="13sp" />
 

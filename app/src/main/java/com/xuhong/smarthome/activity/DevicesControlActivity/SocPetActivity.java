@@ -1,7 +1,9 @@
 package com.xuhong.smarthome.activity.DevicesControlActivity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Message;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
@@ -9,6 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
+import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.utils.L;
@@ -20,9 +23,8 @@ import com.xuhong.smarthome.view.TemperatureView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Handler;
 
-public class SocPetActivity extends BaseDevicesControlActivity {
+public class SocPetActivity extends BaseDevicesControlActivity implements View.OnClickListener {
 
 
     //色彩进度条
@@ -66,6 +68,11 @@ public class SocPetActivity extends BaseDevicesControlActivity {
     private static final String KEY_LIGHT_R = "LED_R";
     private static final String KEY_LIGHT_B = "LED_B";
     private static final String KEY_LIGHT_G = "LED_G";
+    private static final String KEY_HUMIDITY = "Humidity";
+    private static final String KEY_MOTOR = "Motor_Speed";
+    private static final String KEY_INFRARED = "Infrared";
+    private static final String KEY_LED_COLOR = "LED_Color";
+    private static final String KEY_TEMPERTURE = "Temperature";
 
 
     //数据点临时存储的数值
@@ -73,25 +80,36 @@ public class SocPetActivity extends BaseDevicesControlActivity {
     private int tempLightRed = 0;
     private int tempLightGreen = 0;
     private int tempLightBlue = 0;
+    private int tempTemperture = 0;
 
 
     //Code
     private static final int CODE_HANDLER_UI = 105;
 
 
+    @SuppressLint("HandlerLeak")
     private android.os.Handler mHandler = new android.os.Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case CODE_HANDLER_UI:
-                    updateColor();
-                    updateColortemp();
+                    updataUI();
                     break;
             }
 
         }
     };
+
+    private void updataUI() {
+        L.e("rtempLightRed:" + tempLightRed + ",tempLightGreen:" + tempLightGreen + ",tempLightBlue:" + tempLightBlue);
+        circularSeekBar.setInnerColor(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
+        colorTempCircularSeekBar.setInnerColor(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
+        mSwLight.setChecked(tempSwitch);
+        mTemperatureView.setProgress(tempTemperture + 40);
+        mTvTemper.setText("当前温度：" + tempTemperture + "°");
+
+    }
 
 
     @Override
@@ -135,13 +153,22 @@ public class SocPetActivity extends BaseDevicesControlActivity {
 
         //湿度
         mWaveLoadingView = (cn.fanrunqi.waveprogress.WaveProgressView) findViewById(R.id.WaveLoadingView);
-        mWaveLoadingView.setCurrent(28, "28%/良好");
+        mWaveLoadingView.setCurrent(0, "未知");
 
 
         //温度
         mTemperatureView = (TemperatureView) findViewById(R.id.temperatureView);
 
         //rgb灯
+
+
+        mBtRed = (Button) findViewById(R.id.btYellow);
+        mBtRed.setOnClickListener(this);
+        mBtGreen = (Button) findViewById(R.id.btPurple);
+        mBtGreen.setOnClickListener(this);
+        mBtBlue = (Button) findViewById(R.id.btPink);
+        mBtBlue.setOnClickListener(this);
+
         mSwLight = (Switch) findViewById(R.id.swLight);
         mSwLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -159,6 +186,11 @@ public class SocPetActivity extends BaseDevicesControlActivity {
         mMotorView = (MotorControlView) findViewById(R.id.mMotorView);
         mMotorView.setValueList(integerList);
         mMotorView.setValue(5, null, 500);
+
+
+        //文字栏
+        mTvHumidness = (TextView) findViewById(R.id.tvHumidness);
+        mTvTemper = (TextView) findViewById(R.id.tvTemper);
 
 
     }
@@ -184,6 +216,9 @@ public class SocPetActivity extends BaseDevicesControlActivity {
         sendRgbCmd("LED_R", red,
                 "LED_G", green, "LED_B", blue);
 
+        L.e("1 收到的数据：" + colorTempCircularSeekBar.getInnerColor());
+        L.e("1 收到的数据：" + circularSeekBar.getInnerColor());
+
 //        data_R = Color.red(color);
 //        color_num_g = Color.green(color);
 //        color_num_b = Color.blue(color);
@@ -192,26 +227,11 @@ public class SocPetActivity extends BaseDevicesControlActivity {
     /* 色温*/
     public void cColorTemp(int color_num) {
         sendRgbCmd("Temperature_R", Color.red(color_num), "Temperature_G", Color.green(color_num), "Temperature_B", Color.blue(color_num));
-
+        L.e("2 收到的数据：" + colorTempCircularSeekBar.getInnerColor());
+        L.e("3 收到的数据：" + circularSeekBar.getInnerColor());
 //        color_num_temp_r = Color.red(color_num);
 //        color_num_temp_g = Color.green(color_num);
 //        color_num_temp_b = Color.blue(color_num);
-    }
-
-    /*
-     * 更新色彩
-	 */
-    private void updateColor() {
-        circularSeekBar.setInnerColor(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
-
-    }
-
-    /*
-     * 更新色温
-     */
-    private void updateColortemp() {
-        colorTempCircularSeekBar.setInnerColor(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
-
     }
 
 
@@ -222,7 +242,9 @@ public class SocPetActivity extends BaseDevicesControlActivity {
 
         if (dataMap.get("data") != null) {
             ConcurrentHashMap<String, Object> map = (ConcurrentHashMap<String, Object>) dataMap.get("data");
+
             for (String dataKey : map.keySet()) {
+
                 if (dataKey.equals(KEY_SWITCH)) {
                     tempSwitch = (Boolean) map.get(dataKey);
                 }
@@ -237,8 +259,28 @@ public class SocPetActivity extends BaseDevicesControlActivity {
                     tempLightBlue = (Integer) map.get(dataKey);
                 }
 
+                if (dataKey.equals(KEY_TEMPERTURE)) {
+                    tempTemperture = (Integer) map.get(dataKey);
+                }
             }
+            mHandler.sendEmptyMessage(CODE_HANDLER_UI);
         }
 
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btYellow:
+                sendCommand(KEY_LED_COLOR, 1);
+                break;
+            case R.id.btPink:
+                sendCommand(KEY_LED_COLOR, 3);
+                break;
+            case R.id.btPurple:
+                sendCommand(KEY_LED_COLOR, 2);
+                break;
+        }
     }
 }
