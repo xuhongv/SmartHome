@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/black0"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
         </android.support.v7.widget.Toolbar>
@@ -38,7 +38,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
@@ -48,11 +47,8 @@
             <!-- 环形进度条布局 -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp">
-                <com.xuhong.smarthome.view.ColorTempCircularSeekBar
-                    android:id="@+id/csbSeekbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                android:layout_height="300dp">
+
 
                 <com.xuhong.smarthome.view.ColorCircularSeekBar
                     android:id="@+id/csbSeekbar2"
@@ -287,14 +283,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp">
 
-                <Button
-                    android:id="@+id/btMotoReduce"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="54dp"
-                    android:layout_toStartOf="@+id/view"
-                    android:background="@drawable/ic_motor_reduce" />
+                <RelativeLayout
+                    android:id="@+id/rlMotorReduce"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toStartOf="@+id/view">
+
+                    <Button
+                        android:layout_marginEnd="54dp"
+                        android:id="@+id/btMotoReduce"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/ic_motor_reduce" />
+
+                </RelativeLayout>
+
 
                 <View
                     android:id="@+id/view"
@@ -302,15 +307,22 @@
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true" />
 
-
-                <Button
-                    android:id="@+id/btMotorAdd"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                <RelativeLayout
+                    android:id="@+id/rlMotorAdd"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="54dp"
                     android:layout_toEndOf="@+id/view"
-                    android:background="@drawable/ic_motor_add" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:layout_marginStart="54dp"
+                        android:id="@+id/btMotorAdd"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/ic_motor_add" />
+
+                </RelativeLayout>
+
             </RelativeLayout>
 
 

@@ -275,10 +275,6 @@ public class ColorCircularSeekBar extends View {
      * Inits the drawable.
      */
     public void initDrawable() {
-//		progressMark = BitmapFactory.decodeResource(mContext.getResources(),
-//				R.drawable.comd1_light_sewen_bg2);
-//		progressMarkPressed = BitmapFactory.decodeResource(
-//				mContext.getResources(), R.drawable.comd1_light_sewen_bg2);
         progressMark = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.test_comd1_light_sewen_bg2);
         progressMarkPressed = BitmapFactory.decodeResource(
@@ -719,6 +715,7 @@ public class ColorCircularSeekBar extends View {
             }
 
             int CircleColor = interpCircleColor(mCircleColors, degrees);
+
             innerColor.setColor(CircleColor);
 
             setAngle(Math.round(degrees));
@@ -801,7 +798,8 @@ public class ColorCircularSeekBar extends View {
 
         int colorFilter = colorFilter(color);
 
-        L.e("圈圈的：" + colorFilter);
+        L.e("setInnerColor：" + colorFilter);
+
         // 颜色格式不符合，不做响应
         if (colorFilter == 0) {
             return;
@@ -811,7 +809,6 @@ public class ColorCircularSeekBar extends View {
         // set外圈的角度
         float degree = fromColor2Degree(colorFilter);
         int progress = (int) (degree * 100 / (float) 360);
-        L.e("progress:"+progress);
         setProgress(progress);
     }
 

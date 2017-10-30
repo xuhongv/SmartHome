@@ -28,10 +28,6 @@
         android:layout_height="300dp"
         android:layout_below="@+id/toolbar">
 
-        <com.xuhong.smarthome.view.ColorTempCircularSeekBar
-            android:id="@+id/csbSeekbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <com.xuhong.smarthome.view.ColorCircularSeekBar
             android:id="@+id/csbSeekbar2"

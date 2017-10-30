@@ -5,18 +5,17 @@ import android.graphics.Color;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
-import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.view.ColorCircularSeekBar;
-import com.xuhong.smarthome.view.ColorTempCircularSeekBar;
+import com.xuhong.smarthome.view.InfraredView;
 import com.xuhong.smarthome.view.MotorControlView;
 import com.xuhong.smarthome.view.TemperatureView;
 
@@ -24,14 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SocPetActivity extends BaseDevicesControlActivity implements View.OnClickListener {
+public class SocPetActivity extends BaseDevicesControlActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
 
-    //色彩进度条
+    //色彩
     private ColorCircularSeekBar circularSeekBar;
-
-    //色温进度条
-    private ColorTempCircularSeekBar colorTempCircularSeekBar;
 
     //湿度
     private cn.fanrunqi.waveprogress.WaveProgressView mWaveLoadingView;
@@ -45,6 +41,7 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
     private MotorControlView mMotorView;
     private Button mBtMotoReduce;
     private Button mBtMotorAdd;
+    private RelativeLayout rlMotorAdd, rlMotorReduce;
 
     //灯的开关
     private Switch mSwLight;
@@ -81,6 +78,9 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
     private int tempLightGreen = 0;
     private int tempLightBlue = 0;
     private int tempTemperture = 0;
+    private int tempHumidity = 0;
+    private boolean tempIsInfrared = false;
+    private int tempMotorSpeed = 0;
 
 
     //Code
@@ -100,14 +100,59 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
 
         }
     };
+    private List<Integer> integerList;
 
+    //更新UI
     private void updataUI() {
-        L.e("rtempLightRed:" + tempLightRed + ",tempLightGreen:" + tempLightGreen + ",tempLightBlue:" + tempLightBlue);
+
+
+        if (tempLightRed == 254) {
+            tempLightRed = 255;
+
+        }
+        if (tempLightGreen == 254) {
+            tempLightGreen = 255;
+
+        }
+        if (tempLightBlue == 254) {
+            tempLightBlue = 255;
+        }
+
+
         circularSeekBar.setInnerColor(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
-        colorTempCircularSeekBar.setInnerColor(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
+        mSbRed.setProgress(tempLightRed);
+        mSbGreen.setProgress(tempLightGreen);
+        mSbBlue.setProgress(tempLightBlue);
         mSwLight.setChecked(tempSwitch);
+
         mTemperatureView.setProgress(tempTemperture + 40);
         mTvTemper.setText("当前温度：" + tempTemperture + "°");
+
+        //湿度
+        if (tempHumidity < 50) {
+            mWaveLoadingView.setCurrent(tempHumidity, "干燥！");
+            mWaveLoadingView.setMaxProgress(100);
+            mWaveLoadingView.setWaveColor("#F08B88");
+        } else if (tempHumidity > 60) {
+            mWaveLoadingView.setCurrent(tempHumidity, "舒适！");
+            mWaveLoadingView.setWaveColor("#45C01A");
+        } else {
+            mWaveLoadingView.setCurrent(tempHumidity, "潮湿！");
+            mWaveLoadingView.setWaveColor("#5be4ef");
+        }
+
+        mTvHumidness.setText("当前湿度：" + tempHumidity);
+
+        //红外
+        if (!tempIsInfrared) {
+            mMInfraredView.setShowText("努力感应...");
+        } else {
+            mMInfraredView.setShowText("感应到了...");
+        }
+
+        //马达
+        mMotorView.setValue(tempMotorSpeed, null, 500);
+
 
     }
 
@@ -134,21 +179,17 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
             }
 
         });
-        //色温的进度条
-        colorTempCircularSeekBar = (ColorTempCircularSeekBar) findViewById(R.id.csbSeekbar);
-        colorTempCircularSeekBar.postInvalidateDelayed(2000);
-        colorTempCircularSeekBar.setMaxProgress(100);
-        colorTempCircularSeekBar.setProgress(30);
-        colorTempCircularSeekBar.setMProgress(0);
-        colorTempCircularSeekBar.postInvalidateDelayed(100);
-        colorTempCircularSeekBar.setSeekBarChangeListener(new ColorTempCircularSeekBar.OnSeekChangeListener() {
 
-            @Override
-            public void onProgressChange(ColorTempCircularSeekBar view, int color) {
-                cColorTemp(color);
-            }
-
-        });
+        //拖动条
+        mSbRed = (SeekBar) findViewById(R.id.sbRed);
+        mSbRed.setOnSeekBarChangeListener(this);
+        mSbGreen = (SeekBar) findViewById(R.id.sbGreen);
+        mSbGreen.setOnSeekBarChangeListener(this);
+        mSbBlue = (SeekBar) findViewById(R.id.sbBlue);
+        mSbBlue.setOnSeekBarChangeListener(this);
+        mSbRed.setMax(254);
+        mSbGreen.setMax(254);
+        mSbBlue.setMax(254);
 
 
         //湿度
@@ -160,8 +201,6 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
         mTemperatureView = (TemperatureView) findViewById(R.id.temperatureView);
 
         //rgb灯
-
-
         mBtRed = (Button) findViewById(R.id.btYellow);
         mBtRed.setOnClickListener(this);
         mBtGreen = (Button) findViewById(R.id.btPurple);
@@ -169,16 +208,12 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
         mBtBlue = (Button) findViewById(R.id.btPink);
         mBtBlue.setOnClickListener(this);
 
-        mSwLight = (Switch) findViewById(R.id.swLight);
-        mSwLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-            }
-        });
+        mSwLight = (Switch) findViewById(R.id.swLight);
+        mSwLight.setOnClickListener(this);
 
         //马达
-        List<Integer> integerList = new ArrayList<>();
+        integerList = new ArrayList<>();
         for (int i = -5; i < 6; i++) {
             integerList.add(i);
         }
@@ -186,6 +221,21 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
         mMotorView = (MotorControlView) findViewById(R.id.mMotorView);
         mMotorView.setValueList(integerList);
         mMotorView.setValue(5, null, 500);
+
+
+        mBtMotoReduce = (Button) findViewById(R.id.btMotoReduce);
+        mBtMotorAdd = (Button) findViewById(R.id.btMotorAdd);
+        mBtMotoReduce.setOnClickListener(this);
+        mBtMotorAdd.setOnClickListener(this);
+
+        rlMotorAdd = (RelativeLayout) findViewById(R.id.rlMotorAdd);
+        rlMotorAdd.setOnClickListener(this);
+        rlMotorReduce = (RelativeLayout) findViewById(R.id.rlMotorReduce);
+        rlMotorReduce.setOnClickListener(this);
+
+
+        //红外
+        mMInfraredView = (InfraredView) findViewById(R.id.mInfraredView);
 
 
         //文字栏
@@ -198,40 +248,20 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
     /* 色彩*/
     public void cColor(int color) {
 
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
+        tempLightRed = Color.red(color);
+        tempLightGreen = Color.green(color);
+        tempLightBlue = Color.blue(color);
 
-        if (red == 255) {
-            red = 254;
+        if (tempLightRed == 255) {
+            tempLightRed = 254;
         }
-        if (green == 255) {
-            green = 254;
+        if (tempLightGreen == 255) {
+            tempLightGreen = 254;
         }
-        if (blue == 255) {
-            blue = 254;
+        if (tempLightBlue == 255) {
+            tempLightBlue = 254;
         }
-
-
-        sendRgbCmd("LED_R", red,
-                "LED_G", green, "LED_B", blue);
-
-        L.e("1 收到的数据：" + colorTempCircularSeekBar.getInnerColor());
-        L.e("1 收到的数据：" + circularSeekBar.getInnerColor());
-
-//        data_R = Color.red(color);
-//        color_num_g = Color.green(color);
-//        color_num_b = Color.blue(color);
-    }
-
-    /* 色温*/
-    public void cColorTemp(int color_num) {
-        sendRgbCmd("Temperature_R", Color.red(color_num), "Temperature_G", Color.green(color_num), "Temperature_B", Color.blue(color_num));
-        L.e("2 收到的数据：" + colorTempCircularSeekBar.getInnerColor());
-        L.e("3 收到的数据：" + circularSeekBar.getInnerColor());
-//        color_num_temp_r = Color.red(color_num);
-//        color_num_temp_g = Color.green(color_num);
-//        color_num_temp_b = Color.blue(color_num);
+        sendRgbCmd(KEY_LIGHT_R, tempLightRed, KEY_LIGHT_G, tempLightGreen, KEY_LIGHT_B, tempLightBlue);
     }
 
 
@@ -262,7 +292,21 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
                 if (dataKey.equals(KEY_TEMPERTURE)) {
                     tempTemperture = (Integer) map.get(dataKey);
                 }
+
+                if (dataKey.equals(KEY_HUMIDITY)) {
+                    tempHumidity = (Integer) map.get(dataKey);
+                }
+
+                if (dataKey.equals(KEY_INFRARED)) {
+                    tempIsInfrared = (boolean) map.get(dataKey);
+                }
+
+                if (dataKey.equals(KEY_MOTOR)) {
+                    tempMotorSpeed = (Integer) map.get(dataKey);
+                }
             }
+
+
             mHandler.sendEmptyMessage(CODE_HANDLER_UI);
         }
 
@@ -281,6 +325,41 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
             case R.id.btPurple:
                 sendCommand(KEY_LED_COLOR, 2);
                 break;
+            case R.id.btMotoReduce:
+            case R.id.rlMotorReduce:
+                sendCommand(KEY_MOTOR, tempMotorSpeed-1);
+                break;
+            case R.id.btMotorAdd:
+            case R.id.rlMotorAdd:
+                sendCommand(KEY_MOTOR, tempMotorSpeed+1);
+                break;
         }
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        switch (seekBar.getId()) {
+            case R.id.sbRed:
+                sendCommand(KEY_LIGHT_R, seekBar.getProgress());
+                break;
+            case R.id.sbGreen:
+                sendCommand(KEY_LIGHT_G, seekBar.getProgress());
+                break;
+            case R.id.sbBlue:
+                sendCommand(KEY_LIGHT_B, seekBar.getProgress());
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
     }
 }

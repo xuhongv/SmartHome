@@ -80,6 +80,8 @@ dependencies {
     compile 'cn.pedant.sweetalert:library:1.3'
     //水波纹
     compile 'cn.fanrunqi:waveprogress:1.0.1'
+    //Qmui
+    compile 'com.qmuiteam:qmui:1.0.4'
 
 
 

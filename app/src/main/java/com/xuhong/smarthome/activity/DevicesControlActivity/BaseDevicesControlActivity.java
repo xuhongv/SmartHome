@@ -1,29 +1,41 @@
 package com.xuhong.smarthome.activity.DevicesControlActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AlertDialogLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.gizwits.gizwifisdk.listener.GizWifiDeviceListener;
 import com.gyf.barlibrary.ImmersionBar;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.BaseActivity;
+import com.xuhong.smarthome.activity.ConfigActivity.AirLinkAddDevicesActivity;
 import com.xuhong.smarthome.utils.L;
+import com.xuhong.smarthome.utils.SoftInputUtils;
 
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+
+import io.github.xudaojie.qrcodelib.CaptureActivity;
 
 
 public abstract class BaseDevicesControlActivity extends BaseActivity {
@@ -34,6 +46,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
 
     //设备
     public GizWifiDevice mDevice;
+    private TextView tvName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +60,29 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
                 finish();
             }
         });
-        TextView tvName = (TextView) toolbar.findViewById(R.id.tvName);
+        tvName = (TextView) toolbar.findViewById(R.id.tvName);
+
+        toolbar.inflateMenu(R.menu.menu_devices_detail);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    //设备重命名
+                    case R.id.menu_Devices_Rename:
+                        showRenameDialog(mDevice);
+                        break;
+                    //设备详情
+                    case R.id.menu_Devices_Details:
+
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
         ImmersionBar.setTitleBar(this, toolbar);
 
         Intent intent = getIntent();
@@ -56,6 +91,55 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         tvName.setText(Objects.equals(mDevice.getAlias(), "") || mDevice.getAlias() == null ? mDevice.getProductName() : mDevice.getAlias());
         getStatusOfDevice();
     }
+
+    //重命名
+    private void showRenameDialog(final GizWifiDevice mGizWifiDevice) {
+
+        final View view = getLayoutInflater().inflate(R.layout.dialog_rename, null);
+        final android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(BaseDevicesControlActivity.this)
+                .setView(view)
+                .show();
+
+        final EditText rename_et = (EditText) dialog.findViewById(R.id.rename_et);
+        SoftInputUtils.showSoftInput(BaseDevicesControlActivity.this);
+
+        dialog.findViewById(R.id.tv_cancel_rename).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //如果用户没有输入文字直接点击取消就关闭
+                if (rename_et.getText().toString().isEmpty()) {
+                    dialog.dismiss();
+                    return;
+                }
+                dialog.dismiss();
+                hideKeyBoard();
+            }
+        });
+
+        dialog.findViewById(R.id.tv_sure_rename).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = rename_et.getText().toString();
+                if (name.isEmpty()) {
+                    Toast.makeText(BaseDevicesControlActivity.this, "输入不能为空!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    return;
+                }
+                mGizWifiDevice.setCustomInfo(null, name);
+                hideKeyBoard();
+                dialog.dismiss();
+
+            }
+        });
+    }
+
+    private void hideKeyBoard() {
+        // 隐藏键盘
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+
 
     public void showAlerDialog(GizWifiDeviceNetStatus netStatus) {
 
@@ -181,6 +265,10 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
      * @param device 当前设备
      */
     protected void didSetCustomInfo(GizWifiErrorCode result, GizWifiDevice device) {
+        L.e(" 修改设备信息回调:" + result);
+        if (result==GizWifiErrorCode.GIZ_SDK_SUCCESS){
+            tvName.setText(Objects.equals(mDevice.getAlias(), "") || mDevice.getAlias() == null ? mDevice.getProductName() : mDevice.getAlias());
+        }
     }
 
     /**
@@ -228,6 +316,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         mDevice.setSubscribe(false);
         mDevice.setListener(null);
     }
+
     /**
      * Description:页面加载后弹出等待框，等待设备可被控制状态回调，如果一直不可被控，等待一段时间后自动退出界面
      */

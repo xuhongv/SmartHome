@@ -49,6 +49,8 @@ public class InfraredView extends View {
     private boolean isRunning = true;
     private Paint mTextPaint;
 
+
+
     //显示的文字
     private String showText = "正在感应...";
 
@@ -215,5 +217,8 @@ public class InfraredView extends View {
     public float getFontHeight(Paint paint) {
         Paint.FontMetrics fm = paint.getFontMetrics();
         return fm.descent - fm.ascent;
+    }
+    public void setShowText(String showText) {
+        this.showText = showText;
     }
 }

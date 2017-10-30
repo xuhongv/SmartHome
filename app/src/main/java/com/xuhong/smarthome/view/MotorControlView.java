@@ -312,7 +312,6 @@ public class MotorControlView extends View {
     public void setValueList(List<Integer> list) {
         valueList.clear();
         valueList.addAll(list);
-
     }
 
     public void setValueNameList(List<String> list) {
