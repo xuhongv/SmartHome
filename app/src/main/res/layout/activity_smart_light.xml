@@ -25,7 +25,7 @@
     <RelativeLayout
         android:id="@+id/rl_seekbar"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:layout_below="@+id/toolbar">
 
 
@@ -33,6 +33,7 @@
             android:id="@+id/csbSeekbar2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
     </RelativeLayout>
 
 
@@ -73,7 +74,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="120dp">
 
             <RelativeLayout
                 android:id="@+id/all_one"
@@ -84,8 +85,8 @@
 
                 <CheckBox
                     android:id="@+id/cbSwitch"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:layout_centerInParent="true"
                     android:background="@drawable/selector_plug_power"
                     android:button="@null" />
@@ -96,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/cbSwitch"
                     android:layout_centerInParent="true"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8dp"
                     android:text="开关"
                     android:textColor="#ed0909"
                     android:textSize="15sp"
@@ -112,12 +113,13 @@
                 android:layout_weight="1">
 
 
-                <ImageView
+                <CheckBox
                     android:id="@+id/ivTimer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/ic_timer" />
+                    android:background="@drawable/selector_smartlight_blue"
+                    android:button="@null" />
 
                 <TextView
                     android:id="@+id/tvShareDevices"
@@ -125,9 +127,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/ivTimer"
                     android:layout_centerInParent="true"
-                    android:layout_marginTop="15dp"
-                    android:text="定时"
-                    android:textColor="#444"
+                    android:layout_marginTop="5dp"
+                    android:text="蓝灯"
+                    android:textColor="#0951ed"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -141,12 +143,13 @@
                 android:layout_gravity="bottom"
                 android:layout_weight="1">
 
-                <ImageView
+                <CheckBox
                     android:id="@+id/ivCountDowm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/ic_count_dowm" />
+                    android:background="@drawable/selector_smartlight_blue"
+                    android:button="@null" />
 
                 <TextView
                     android:id="@+id/tvDevicesLog"
@@ -154,9 +157,37 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/ivCountDowm"
                     android:layout_centerInParent="true"
-                    android:layout_marginTop="15dp"
-                    android:text="倒计时"
-                    android:textColor="#444"
+                    android:layout_marginTop="5dp"
+                    android:text="紫灯"
+                    android:textColor="#d825fc"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="1">
+
+                <CheckBox
+                    android:id="@+id/cbPink"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/selector_smartlight_blue"
+                    android:button="@null" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cbPink"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="5dp"
+                    android:text="粉灯"
+                    android:textColor="#f1fe00e5"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -164,6 +195,73 @@
             </RelativeLayout>
 
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="1">
+
+                <CheckBox
+                    android:id="@+id/cbTimer"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/selector_smartlight_timer"
+                    android:button="@null" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cbTimer"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="5dp"
+                    android:text="定时"
+                    android:textColor="@color/black2"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="1">
+
+                <CheckBox
+                    android:id="@+id/cb"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/selector_smartlight_blue"
+                    android:button="@null" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cb"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="5dp"
+                    android:text="三色渐变"
+                    android:textColor="@color/black2"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

@@ -834,13 +834,6 @@ public class ColorCircularSeekBar extends View {
         if (mColor[min] != 0 || mColor[max] != 0xff)
             return result;
 
-//		if (min == max) {
-//			result = Color.argb(255, 255, 0, 0);// 红色
-//		} else {
-//			mColor[min] = 0;
-//			mColor[max] = 0xff;
-//			result = Color.argb(255, mColor[2], mColor[1], mColor[0]);
-//		}
         result = Color.argb(255, mColor[2], mColor[1], mColor[0]);
 
         return result;

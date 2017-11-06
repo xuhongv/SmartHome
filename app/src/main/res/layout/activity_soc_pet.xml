@@ -50,8 +50,9 @@
                 android:layout_height="300dp">
 
 
-                <com.xuhong.smarthome.view.ColorCircularSeekBar
-                    android:id="@+id/csbSeekbar2"
+
+                <com.xuhong.smarthome.view.SeekBarColorPicker
+                    android:id="@+id/csbSeekbar3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

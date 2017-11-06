@@ -21,10 +21,10 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
 
 
     //数据点
-    private static final String FLAG_ONOFF = "OnOff";
-    private static final String FLAG_TIME_ON_MINUTE = "Time_On_Minute";
-    private static final String FLAG_Time_OFF_MINUTE = "Time_Off_Minute";
-    private static final String FLAG_IS_TIME_ONOFF = "Time_OnOff";
+    private static final String DATA_ONOFF = "OnOff";
+    private static final String DATA_TIME_ON_MINUTE = "Time_On_Minute";
+    private static final String DATA_Time_OFF_MINUTE = "Time_Off_Minute";
+    private static final String DATA_IS_TIME_ONOFF = "Time_OnOff";
 
     private static final int CODE_HANDLER_UPADATA_UI = 102;
 
@@ -37,7 +37,6 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
     private CheckBox mCbSwitch;
     private TextView mTvSwitch;
     private TextView tvStatus;
-    private ImageView mIvTimer;
     private TextView mTvShareDevices;
     private ImageView mIvCountDowm;
     private TextView mTvDevicesLog;
@@ -87,9 +86,9 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
 
         mTvSwitch = (TextView) findViewById(R.id.tvSwitch);
         tvStatus = (TextView) findViewById(R.id.tvStatus);
-        mIvTimer = (ImageView) findViewById(R.id.ivTimer);
+        //mIvTimer = (ImageView) findViewById(R.id.ivTimer);
         mTvShareDevices = (TextView) findViewById(R.id.tvShareDevices);
-        mIvCountDowm = (ImageView) findViewById(R.id.ivCountDowm);
+        //mIvCountDowm = (ImageView) findViewById(R.id.ivCountDowm);
         mTvDevicesLog = (TextView) findViewById(R.id.tvDevicesLog);
 
     }
@@ -107,7 +106,7 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
         if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS && dataMap.get("data") != null) {
             ConcurrentHashMap<String, Object> map = (ConcurrentHashMap<String, Object>) dataMap.get("data");
             for (String dataKey : map.keySet()) {
-                if (dataKey.equals(FLAG_ONOFF)) {
+                if (dataKey.equals(DATA_ONOFF)) {
                     isOpenoff = (Boolean) map.get(dataKey);
                 }
             }
@@ -133,9 +132,9 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
         switch (view.getId()) {
             case R.id.cbSwitch:
                 if (mCbSwitch.isChecked()) {
-                    sendCommand(FLAG_ONOFF, true);
+                    sendCommand(DATA_ONOFF, true);
                 } else {
-                    sendCommand(FLAG_ONOFF, false);
+                    sendCommand(DATA_ONOFF, false);
                 }
                 break;
         }
@@ -149,7 +148,6 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
         hashMap.put(key1, value1);
         mDevice.write(hashMap, 0);
     }
-
 
 
 

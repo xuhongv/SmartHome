@@ -41,6 +41,7 @@ import com.xuhong.smarthome.activity.DevicesControlActivity.BaseDevicesControlAc
 import com.xuhong.smarthome.activity.DevicesControlActivity.SmartLightActivity;
 import com.xuhong.smarthome.activity.DevicesControlActivity.SocPetActivity;
 import com.xuhong.smarthome.adapter.DevicesListAdapter;
+import com.xuhong.smarthome.constant.Constant;
 import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.SharePreUtils;
 import com.xuhong.smarthome.utils.SoftInputUtils;
@@ -429,15 +430,15 @@ public class DevicesFragment extends BaseFragment {
                 return;
             }
 
+            //根据product key加载不同的页面
             if (isFirstBind && GizWifiErrorCode.GIZ_SDK_SUCCESS == result) {
-                //根据product key加载不同的页面
-                if (device.getProductKey().equals("71b4ebd7f42d4985992734a9d82acda8")) {
+                if (device.getProductKey().equals(Constant.GOKIT_SMARTLIGHT_PK)) {
                     Intent intent = new Intent(getActivity(), SmartLightActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("GizWifiDevice", device);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                } else if (device.getProductKey().equals("e22bb903f02e4146827bf75a641a122b")) {
+                } else if (device.getProductKey().equals(Constant.GOKIT_PET_PK)) {
                     Intent intent = new Intent(getActivity(), SocPetActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("GizWifiDevice", device);

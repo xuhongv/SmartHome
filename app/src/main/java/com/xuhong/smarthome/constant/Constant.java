@@ -29,8 +29,11 @@ public class Constant {
     //版本获取
     public static String GET_APP_VERSION = "http://smarthomesample.oss-cn-hongkong.aliyuncs.com/appVersion.txt";
 
+    //微信宠物屋的Product Key
+    public static String GOKIT_PET_PK="e22bb903f02e4146827bf75a641a122b";
 
-
+    //智能灯的roduct Key
+    public static String GOKIT_SMARTLIGHT_PK="71b4ebd7f42d4985992734a9d82acda8";
 
 
 

@@ -17,6 +17,7 @@ import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.view.ColorCircularSeekBar;
 import com.xuhong.smarthome.view.InfraredView;
 import com.xuhong.smarthome.view.MotorControlView;
+import com.xuhong.smarthome.view.SeekBarColorPicker;
 import com.xuhong.smarthome.view.TemperatureView;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
 
 
     //色彩
-    private ColorCircularSeekBar circularSeekBar;
+    private SeekBarColorPicker seekBarColorPicker;
 
     //湿度
     private cn.fanrunqi.waveprogress.WaveProgressView mWaveLoadingView;
@@ -119,7 +120,7 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
         }
 
 
-        circularSeekBar.setInnerColor(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
+        seekBarColorPicker.setInnerColor(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
         mSbRed.setProgress(tempLightRed);
         mSbGreen.setProgress(tempLightGreen);
         mSbBlue.setProgress(tempLightBlue);
@@ -166,18 +167,13 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
     protected void bindView() {
 
         //色彩的进度条
-        circularSeekBar = (ColorCircularSeekBar) findViewById(R.id.csbSeekbar2);
-        circularSeekBar.postInvalidateDelayed(2000);
-        circularSeekBar.setMaxProgress(100);
-        circularSeekBar.setProgress(30);
-        circularSeekBar.setMProgress(0);
-        circularSeekBar.postInvalidateDelayed(100);
-        circularSeekBar.setSeekBarChangeListener(new ColorCircularSeekBar.OnSeekChangeListener() {
+
+        seekBarColorPicker = (SeekBarColorPicker) findViewById(R.id.csbSeekbar3);
+        seekBarColorPicker.setSeekBarColorPickerChangeListener(new SeekBarColorPicker.SeekBarColorPickerChangeListener() {
             @Override
-            public void onProgressChange(ColorCircularSeekBar view, int color) {
+            public void onProgressChange(SeekBarColorPicker seekBarColorPicker, int color) {
                 cColor(color);
             }
-
         });
 
         //拖动条
