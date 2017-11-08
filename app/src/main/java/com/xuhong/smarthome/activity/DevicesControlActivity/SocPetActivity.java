@@ -14,7 +14,6 @@ import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.utils.L;
-import com.xuhong.smarthome.view.ColorCircularSeekBar;
 import com.xuhong.smarthome.view.InfraredView;
 import com.xuhong.smarthome.view.MotorControlView;
 import com.xuhong.smarthome.view.SeekBarColorPicker;
@@ -106,21 +105,8 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
     //更新UI
     private void updataUI() {
 
+        seekBarColorPicker.setColorByInt(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
 
-        if (tempLightRed == 254) {
-            tempLightRed = 255;
-
-        }
-        if (tempLightGreen == 254) {
-            tempLightGreen = 255;
-
-        }
-        if (tempLightBlue == 254) {
-            tempLightBlue = 255;
-        }
-
-
-        seekBarColorPicker.setInnerColor(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
         mSbRed.setProgress(tempLightRed);
         mSbGreen.setProgress(tempLightGreen);
         mSbBlue.setProgress(tempLightBlue);
@@ -167,15 +153,14 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
     protected void bindView() {
 
         //色彩的进度条
-
         seekBarColorPicker = (SeekBarColorPicker) findViewById(R.id.csbSeekbar3);
+        seekBarColorPicker.setGizwitLight(true);
         seekBarColorPicker.setSeekBarColorPickerChangeListener(new SeekBarColorPicker.SeekBarColorPickerChangeListener() {
             @Override
-            public void onProgressChange(SeekBarColorPicker seekBarColorPicker, int color) {
+            public void onProgressChange(SeekBarColorPicker seekBarColorPicker, int color, String htmlColor) {
                 cColor(color);
             }
         });
-
         //拖动条
         mSbRed = (SeekBar) findViewById(R.id.sbRed);
         mSbRed.setOnSeekBarChangeListener(this);
@@ -241,22 +226,13 @@ public class SocPetActivity extends BaseDevicesControlActivity implements View.O
 
     }
 
-    /* 色彩*/
+
     public void cColor(int color) {
 
         tempLightRed = Color.red(color);
         tempLightGreen = Color.green(color);
         tempLightBlue = Color.blue(color);
 
-        if (tempLightRed == 255) {
-            tempLightRed = 254;
-        }
-        if (tempLightGreen == 255) {
-            tempLightGreen = 254;
-        }
-        if (tempLightBlue == 255) {
-            tempLightBlue = 254;
-        }
         sendRgbCmd(KEY_LIGHT_R, tempLightRed, KEY_LIGHT_G, tempLightGreen, KEY_LIGHT_B, tempLightBlue);
     }
 

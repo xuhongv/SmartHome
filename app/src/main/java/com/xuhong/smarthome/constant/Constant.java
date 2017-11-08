@@ -17,6 +17,12 @@ public class Constant {
      */
     public static final String REGEX_EMAIL = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
 
+
+    //轮播图地址
+    public static String BANNER_PIC_ONE="";
+    public static String BANNER_PIC_TWO="";
+    public static String BANNER_PIC_THREE="";
+
     //极速数据的AppKey
     public static String JUSU_APPKEY = "852f41031d9f70b8";
 
@@ -35,12 +41,8 @@ public class Constant {
     //智能灯的roduct Key
     public static String GOKIT_SMARTLIGHT_PK="71b4ebd7f42d4985992734a9d82acda8";
 
-
-
-
-
-
-
+   //七彩灯，不含定时
+    public static String GOKIT_COLORLIGHT_PK="0d534a4fc48c4ba9b30a5e3f75e29d07";
 
 
 

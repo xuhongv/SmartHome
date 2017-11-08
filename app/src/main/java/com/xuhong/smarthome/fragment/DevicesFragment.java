@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +37,10 @@ import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.ConfigActivity.AirLinkAddDevicesActivity;
 import com.xuhong.smarthome.activity.DevicesControlActivity.BaseDevicesControlActivity;
@@ -46,8 +52,12 @@ import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.SharePreUtils;
 import com.xuhong.smarthome.utils.SoftInputUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import io.github.xudaojie.qrcodelib.CaptureActivity;
@@ -55,14 +65,13 @@ import io.github.xudaojie.qrcodelib.CaptureActivity;
 import static android.app.Activity.RESULT_OK;
 
 
-public class DevicesFragment extends BaseFragment {
+public class DevicesFragment extends BaseFragment implements OnRefreshLoadmoreListener {
 
 
     private Toolbar toolbarl;
 
     private RecyclerView rVMyDevices;
     private DividerItemDecoration dividerItemDecoration;
-
     private DevicesListAdapter adapter;
 
     private boolean isFirstBind = false;
@@ -72,6 +81,11 @@ public class DevicesFragment extends BaseFragment {
     private String product_key;
     private String did;
     private String passcode;
+
+    private RefreshLayout mRefreshLayout;
+    private ClassicsHeader mClassicsHeader;
+    private Drawable mDrawableProgress;
+    private static boolean isFirstEnter = true;
 
 
     //设备列表
@@ -93,6 +107,8 @@ public class DevicesFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         ImmersionBar.setTitleBar(getActivity(), toolbarl);
+
+
         toolbarl.inflateMenu(R.menu.menu_devices_add);
         toolbarl.setOverflowIcon(getActivity().getResources().getDrawable(R.drawable.ic_toolbar_devices_add));
         toolbarl.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -128,7 +144,20 @@ public class DevicesFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         toolbarl = (Toolbar) view.findViewById(R.id.toolbar);
-        rVMyDevices = (RecyclerView) view.findViewById(R.id.rVMyDevices);
+        rVMyDevices = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mRefreshLayout = (RefreshLayout)view.findViewById(R.id.refreshLayout);
+        mRefreshLayout.setOnRefreshLoadmoreListener(this);
+        int deta = new Random().nextInt(7 * 24 * 60 * 60 * 1000);
+
+        mClassicsHeader = (ClassicsHeader)mRefreshLayout.getRefreshHeader();
+        mClassicsHeader.setLastUpdateTime(new Date(System.currentTimeMillis()-deta));
+        mClassicsHeader.setTimeFormat(new SimpleDateFormat("更新于 MM-dd HH:mm", Locale.CHINA));
+        mClassicsHeader.setSpinnerStyle(SpinnerStyle.Translate);
+        mDrawableProgress = mClassicsHeader.getProgressView().getDrawable();
+        if (mDrawableProgress instanceof LayerDrawable) {
+            mDrawableProgress = ((LayerDrawable) mDrawableProgress).getDrawable(0);
+        }
+
     }
 
     @Override
@@ -310,6 +339,13 @@ public class DevicesFragment extends BaseFragment {
         });
     }
 
+
+    //下拉刷新回调
+    @Override
+    public void onRefresh(RefreshLayout refreshLayout) {
+        GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
+    }
+
     //删除弹窗振动
     private class CustomBaseDialog extends BaseDialog<CustomBaseDialog> {
 
@@ -444,6 +480,12 @@ public class DevicesFragment extends BaseFragment {
                     bundle.putParcelable("GizWifiDevice", device);
                     intent.putExtras(bundle);
                     startActivity(intent);
+                } else if (device.getProductKey().equals(Constant.GOKIT_COLORLIGHT_PK)) {
+                    Intent intent = new Intent(getActivity(), SmartLightActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("GizWifiDevice", device);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             }
 
@@ -453,6 +495,11 @@ public class DevicesFragment extends BaseFragment {
     private void showRenameDialog() {
 
     }
+
+    @Override
+    public void onLoadmore(RefreshLayout refreshLayout) {
+    }
+
 }
 
 

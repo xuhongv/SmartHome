@@ -1,19 +1,26 @@
 package com.xuhong.smarthome;
 
 import android.content.Context;
-import android.os.Message;
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.api.GizWifiSDK;
 import com.gizwits.gizwifisdk.enumration.GizEventType;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
-import com.xuhong.smarthome.activity.BaseActivity;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
+import com.scwang.smartrefresh.layout.api.RefreshHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+
 import com.xuhong.smarthome.constant.Constant;
 import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.SharePreUtils;
+import com.squareup.leakcanary.LeakCanary;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
@@ -21,6 +28,17 @@ import cn.bmob.v3.Bmob;
 
 public class Application extends android.app.Application {
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
+            @NonNull
+            @Override
+            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+                layout.setPrimaryColorsId(R.color.colorPrimary, android.R.color.white);//全局设置主题颜色
+                return new ClassicsHeader(context).setTimeFormat(new SimpleDateFormat("更新于 %s"));
+            }
+        });
+    }
 
     private Context mContext;
 
@@ -43,9 +61,10 @@ public class Application extends android.app.Application {
         //注册机智云SDK
         GizWifiSDK.sharedInstance().startWithAppID(this, "ea46989a46044d79ac43b1558f0bd101");
         //获取版本
-        String toString = GizWifiSDK.sharedInstance().getVersion().toString();
+        String toString = GizWifiSDK.sharedInstance().getVersion();
 
         L.e("机智云的SDK版本："+toString);
+
 
     }
 

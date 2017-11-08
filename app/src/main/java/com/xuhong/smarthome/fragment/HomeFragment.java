@@ -133,7 +133,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     protected void initView(View view) {
 
 
-
         mBanner = (BGABanner) view.findViewById(R.id.banner_main_depth);
         llSearch = (LinearLayout) view.findViewById(R.id.llSearch);
         llSearch.setOnClickListener(this);

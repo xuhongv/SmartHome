@@ -23,7 +23,6 @@ import android.util.TypedValue;
 
 public class SeekBarColorPicker extends View {
 
-
     //圆环的画笔
     private Paint paintCircleRing;
 
@@ -54,7 +53,11 @@ public class SeekBarColorPicker extends View {
 
     private float markPointX, markPointY;
 
+    //默认角度
     private int angle = 0;
+
+    //开启机智云的rgb灯模式,默认不开启
+    private boolean isGizwitLight = false;
 
     public SeekBarColorPicker(Context context) {
         super(context);
@@ -223,14 +226,35 @@ public class SeekBarColorPicker extends View {
 
             //改变内部圆的颜色
             int CircleColor = interpCircleColor(mCircleColors, degrees);
+
+            if (isGizwitLight) {
+
+                int data_LED_R = Color.red(CircleColor);
+                int data_LED_G = Color.green(CircleColor);
+                int data_LED_B = Color.blue(CircleColor);
+
+                if (data_LED_R == 255) {
+                    data_LED_R = 254;
+                }
+                if (data_LED_G == 255) {
+                    data_LED_G = 254;
+                }
+                if (data_LED_B == 255) {
+                    data_LED_B = 254;
+                }
+                CircleColor = Color.argb(255, data_LED_R, data_LED_G, data_LED_B);
+            }
+
             paintInnerColor.setColor(CircleColor);
 
             //角度四舍五入
             this.angle = Math.round(degrees);
             invalidate();
+
         } else {
             if (mSeekBarColorPickerChangeListener != null) {
-                mSeekBarColorPickerChangeListener.onProgressChange(this, paintInnerColor.getColor());
+                String toHexString = Integer.toHexString(paintInnerColor.getColor());
+                mSeekBarColorPickerChangeListener.onProgressChange(this, paintInnerColor.getColor(), "#" + toHexString.substring(2, toHexString.length()));
             }
             invalidate();
         }
@@ -250,25 +274,11 @@ public class SeekBarColorPicker extends View {
 
         int c0 = colors[i];
         int c1 = colors[i + 1];
-        int a = ave(Color.alpha(c0), Color.alpha(c1), p  );
+        int a = ave(Color.alpha(c0), Color.alpha(c1), p);
         int r = ave(Color.red(c0), Color.red(c1), p);
         int g = ave(Color.green(c0), Color.green(c1), p);
         int b = ave(Color.blue(c0), Color.blue(c1), p);
         return Color.argb(a, r, g, b);
-    }
-
-    public void setInnerColor(int color) {
-
-        int colorFilter = colorFilter(color);
-        // 颜色格式不符合，不做响应
-        if (colorFilter == 0) {
-            return;
-        }
-        // set内圈的颜色
-        paintInnerColor.setColor(colorFilter);
-        // set外圈的角度
-        float degree = fromColor2Degree(colorFilter);
-        this.angle = Math.round(degree);
     }
 
     private float fromColor2Degree(int color) {
@@ -336,6 +346,7 @@ public class SeekBarColorPicker extends View {
             return result;
 
         result = Color.argb(255, mColor[2], mColor[1], mColor[0]);
+
         return result;
     }
 
@@ -372,8 +383,9 @@ public class SeekBarColorPicker extends View {
         return angle;
     }
 
+
     public interface SeekBarColorPickerChangeListener {
-        void onProgressChange(SeekBarColorPicker seekBarColorPicker, int color);
+        void onProgressChange(SeekBarColorPicker seekBarColorPicker, int color, String htmlColor);
     }
 
     public void setSeekBarColorPickerChangeListener(SeekBarColorPickerChangeListener mSeekBarColorPickerChangeListener) {
@@ -381,5 +393,100 @@ public class SeekBarColorPicker extends View {
     }
 
     private SeekBarColorPickerChangeListener mSeekBarColorPickerChangeListener;
+
+    /**
+     * 通过int设置color
+     *
+     * @param color 整型
+     */
+    public void setColorByInt(int color) {
+
+
+        if (isGizwitLight) {
+
+            int data_LED_R = Color.red(color);
+            int data_LED_G = Color.green(color);
+            int data_LED_B = Color.blue(color);
+
+            if (data_LED_R == 254) {
+                data_LED_R = 255;
+            }
+            if (data_LED_G == 254) {
+                data_LED_G = 255;
+            }
+            if (data_LED_B == 254) {
+                data_LED_B = 255;
+            }
+            color = Color.argb(255, data_LED_R, data_LED_G, data_LED_B);
+        }
+
+        int colorFilter = colorFilter(color);
+        // 颜色格式不符合，不做响应
+        if (colorFilter == 0) {
+            return;
+        }
+        // set内圈的颜色
+        paintInnerColor.setColor(colorFilter);
+        // set外圈的角度
+        float degree = fromColor2Degree(colorFilter);
+        this.angle = Math.round(degree);
+
+    }
+
+    /**
+     * html的十六进制方式转换rgb
+     *
+     * @param htmlRGB 比如#eee03e
+     */
+    public void setColorByhtmlRGB(String htmlRGB) {
+
+        if (htmlRGB.indexOf("#") != 0) {
+            return;
+        }
+
+        if (htmlRGB.length() != 7) {
+            return;
+        }
+
+        int red = Integer.parseInt(htmlRGB.substring(1, 3), 16);
+        int green = Integer.parseInt(htmlRGB.substring(3, 5), 16);
+        int blue = Integer.parseInt(htmlRGB.substring(5, 7), 16);
+
+        int result = Color.argb(255, red, green, blue);
+
+        if (isGizwitLight) {
+
+            int data_LED_R = Color.red(result);
+            int data_LED_G = Color.green(result);
+            int data_LED_B = Color.blue(result);
+
+            if (data_LED_R == 254) {
+                data_LED_R = 255;
+            }
+            if (data_LED_G == 254) {
+                data_LED_G = 255;
+            }
+            if (data_LED_B == 254) {
+                data_LED_B = 255;
+            }
+            result = Color.argb(255, data_LED_R, data_LED_G, data_LED_B);
+        }
+
+        // set内圈的颜色
+        paintInnerColor.setColor(result);
+
+        // set外圈的角度
+        float degree = fromColor2Degree(result);
+        this.angle = Math.round(degree);
+    }
+
+
+    public boolean isGizwitLight() {
+        return isGizwitLight;
+    }
+
+    public void setGizwitLight(boolean gizwitLight) {
+        isGizwitLight = gizwitLight;
+    }
 
 }

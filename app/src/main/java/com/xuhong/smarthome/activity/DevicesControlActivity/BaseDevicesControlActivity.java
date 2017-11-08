@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AlertDialogLayout;
@@ -35,6 +36,7 @@ import com.xuhong.smarthome.utils.SoftInputUtils;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.github.xudaojie.qrcodelib.CaptureActivity;
 
 
@@ -48,11 +50,16 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
     public GizWifiDevice mDevice;
     private TextView tvName;
 
+    private SweetAlertDialog pDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
+
         bindView();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +96,13 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         mDevice = intent.getParcelableExtra("GizWifiDevice");
         mDevice.setListener(gizWifiDeviceListener);
         tvName.setText(Objects.equals(mDevice.getAlias(), "") || mDevice.getAlias() == null ? mDevice.getProductName() : mDevice.getAlias());
+        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("同步设备状态中...");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+
         getStatusOfDevice();
     }
 
@@ -140,7 +154,6 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
     }
 
 
-
     public void showAlerDialog(GizWifiDeviceNetStatus netStatus) {
 
         String mTitle = null;
@@ -158,24 +171,18 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         }
 
 
-        final View view = getLayoutInflater().inflate(R.layout.dialog_alert, null);
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
 
-        new AlertDialog.Builder(this)
-                .setCancelable(false)//屏幕外点击无效
-                .setView(view)
-                .show();
-
-//        RotateAnimation rotateAnimation = new RotateAnimation(0, 90, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-//        rotateAnimation.setDuration(300);
-//        rotateAnimation.setInterpolator(new BounceInterpolator());
-//        view.startAnimation(rotateAnimation);
-
-
-//        ProgressDialog dialog =new ProgressDialog(this);
-//        dialog.setView(view);
-//        dialog.setMessage("设备已经离线");
-//        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//        dialog.show();
+        sweetAlertDialog.setTitleText("温馨提示");
+        sweetAlertDialog.setContentText(mTitle);
+        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+                finish();
+            }
+        });
+        sweetAlertDialog.show();
 
 
     }
@@ -216,6 +223,10 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
 
         /** 用于设备状态变化 */
         public void didUpdateNetStatus(GizWifiDevice device, GizWifiDeviceNetStatus netStatus) {
+
+            if (netStatus == GizWifiDeviceNetStatus.GizDeviceControlled) {
+                pDialog.dismissWithAnimation();
+            }
             BaseDevicesControlActivity.this.didUpdateNetStatus(device, netStatus);
         }
 
@@ -231,7 +242,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
      * @param isSubscribed 订阅状态
      */
     protected void didSetSubscribe(GizWifiErrorCode result, GizWifiDevice device, boolean isSubscribed) {
-        L.e("设备订阅回调:" + result);
+        L.e("设备订阅回调 didSetSubscribe result:" + result);
     }
 
     /**
@@ -244,7 +255,14 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
      */
     protected void didReceiveData(GizWifiErrorCode result, GizWifiDevice device,
                                   java.util.concurrent.ConcurrentHashMap<String, Object> dataMap, int sn) {
-        L.e("设备状态回调:" + result);
+        L.e("设备状态回调 didReceiveData result: " + result);
+        if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {
+            pDialog.dismissWithAnimation();
+        } else {
+            if (!pDialog.isShowing()) {
+                pDialog.show();
+            }
+        }
     }
 
     /**
@@ -266,7 +284,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
      */
     protected void didSetCustomInfo(GizWifiErrorCode result, GizWifiDevice device) {
         L.e(" 修改设备信息回调:" + result);
-        if (result==GizWifiErrorCode.GIZ_SDK_SUCCESS){
+        if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {
             tvName.setText(Objects.equals(mDevice.getAlias(), "") || mDevice.getAlias() == null ? mDevice.getProductName() : mDevice.getAlias());
         }
     }
@@ -305,6 +323,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         hashMap.put(keyR, valueR);
         hashMap.put(keyG, valueG);
         hashMap.put(keyB, valueB);
+        L.d("发送Rgb数据："+hashMap.toString());
         mDevice.write(hashMap, sn);
     }
 
@@ -325,6 +344,8 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         if (isDeviceCanBeControlled()) {
             // 可控则查询当前设备状态
             mDevice.getDeviceStatus();
+            pDialog.dismissWithAnimation();
+
         } else {
             // 显示等待栏
             //progressDialog.show();

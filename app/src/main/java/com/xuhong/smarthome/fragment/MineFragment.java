@@ -25,6 +25,7 @@ import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.squareup.picasso.Picasso;
 import com.xuhong.smarthome.R;
+import com.xuhong.smarthome.activity.AboutActivity;
 import com.xuhong.smarthome.activity.AlterUserInfActivity;
 import com.xuhong.smarthome.activity.LoginActivity;
 import com.xuhong.smarthome.bean.User;
@@ -98,7 +99,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         pullView = (PullScrollView) view.findViewById(R.id.pullView);
         pullView.setZoomView(ivHeaderBg);
 
-
         getUserInf();
 
     }
@@ -150,15 +150,16 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.OVUserInf:
-               startActivity(new Intent(getActivity(),AlterUserInfActivity.class));
+                startActivity(new Intent(getActivity(), AlterUserInfActivity.class));
                 break;
             case R.id.OVCarText:
                 break;
             case R.id.OVDayHappy:
-
                 break;
-
             case R.id.OVVegetable:
+                break;
+            case R.id.OVAbout:
+                startActivity(new Intent(getActivity(), AboutActivity.class));
                 break;
         }
     }

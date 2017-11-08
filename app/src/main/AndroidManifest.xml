@@ -28,8 +28,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <!-- 允许闪光灯 -->
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:name=".Application"
@@ -45,11 +44,9 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
-
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity android:name=".activity.SearchNewsActivity" />
         <activity android:name=".activity.WebViewActivity" />
-
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden" />
@@ -83,7 +80,8 @@
         <!-- airlink配网模式 -->
         <activity android:name=".activity.ConfigActivity.AirLinkAddDevicesActivity" />
         <activity android:name="io.github.xudaojie.qrcodelib.CaptureActivity" />
-        <activity android:name=".activity.DevicesControlActivity.SocPetActivity"></activity>
+        <activity android:name=".activity.DevicesControlActivity.SocPetActivity" />
+        <activity android:name=".activity.AboutActivity"></activity>
     </application>
 
 </manifest>

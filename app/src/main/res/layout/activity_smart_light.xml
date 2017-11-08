@@ -1,269 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/ic_gb"
-    android:orientation="vertical">
+    android:background="@mipmap/ic_gb">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:navigationIcon="@drawable/ic_back_black">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/black0"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </android.support.v7.widget.Toolbar>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:navigationIcon="@drawable/ic_back_black">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/black0"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_seekbar"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_below="@+id/toolbar">
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rl_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+            <com.xuhong.smarthome.view.SeekBarColorPicker
+                android:id="@+id/mSeekbarColorPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
 
 
-        <com.xuhong.smarthome.view.ColorCircularSeekBar
-            android:id="@+id/csbSeekbar2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_seekbar"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+                <RelativeLayout
+                    android:id="@+id/all_one"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1">
+
+                    <CheckBox
+                        android:id="@+id/cbSwitch"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/selector_plug_power"
+                        android:button="@null" />
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cbSwitch"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="1dp"
+                        android:text="开关"
+                        android:textColor="#ed0909"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1">
+
+
+                    <CheckBox
+                        android:id="@+id/cbYellow"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/selector_smartlight_blue"
+                        android:button="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cbYellow"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="5dp"
+                        android:text="黄灯"
+                        android:textColor="#edcb09"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1">
+
+                    <CheckBox
+                        android:id="@+id/cbPurple"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/selector_smartlight_purple"
+                        android:button="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cbPurple"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="5dp"
+                        android:text="紫灯"
+                        android:textColor="#d825fc"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1">
+
+                    <CheckBox
+                        android:id="@+id/cbPink"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/selector_smartlight_pink"
+                        android:button="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cbPink"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="5dp"
+                        android:text="粉灯"
+                        android:textColor="#f1fe00e5"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1">
+
+                    <CheckBox
+                        android:id="@+id/cbTimer"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/selector_smartlight_timer"
+                        android:button="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cbTimer"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="2dp"
+                        android:text="定时"
+                        android:textColor="@color/black2"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1">
+
+                    <CheckBox
+                        android:id="@+id/cbThree"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/selector_smartlight_three"
+                        android:button="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cbThree"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="2dp"
+                        android:text="三色渐变"
+                        android:textColor="@color/black2"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_seekbar"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <CheckBox
-                android:id="@+id/cbStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector_plug_status"
-                android:button="@null"
-                android:focusableInTouchMode="false" />
-
-            <TextView
-                android:id="@+id/tvStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="插头已开启"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp">
-
-            <RelativeLayout
-                android:id="@+id/all_one"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:layout_weight="1">
-
-                <CheckBox
-                    android:id="@+id/cbSwitch"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/selector_plug_power"
-                    android:button="@null" />
-
-                <TextView
-                    android:id="@+id/tvSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/cbSwitch"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="8dp"
-                    android:text="开关"
-                    android:textColor="#ed0909"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:layout_weight="1">
-
-
-                <CheckBox
-                    android:id="@+id/ivTimer"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/selector_smartlight_blue"
-                    android:button="@null" />
-
-                <TextView
-                    android:id="@+id/tvShareDevices"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ivTimer"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="5dp"
-                    android:text="蓝灯"
-                    android:textColor="#0951ed"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:layout_weight="1">
-
-                <CheckBox
-                    android:id="@+id/ivCountDowm"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/selector_smartlight_blue"
-                    android:button="@null" />
-
-                <TextView
-                    android:id="@+id/tvDevicesLog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ivCountDowm"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="5dp"
-                    android:text="紫灯"
-                    android:textColor="#d825fc"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:layout_weight="1">
-
-                <CheckBox
-                    android:id="@+id/cbPink"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/selector_smartlight_blue"
-                    android:button="@null" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/cbPink"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="5dp"
-                    android:text="粉灯"
-                    android:textColor="#f1fe00e5"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:layout_weight="1">
-
-                <CheckBox
-                    android:id="@+id/cbTimer"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/selector_smartlight_timer"
-                    android:button="@null" />
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/cbTimer"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="5dp"
-                    android:text="定时"
-                    android:textColor="@color/black2"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:layout_weight="1">
-
-                <CheckBox
-                    android:id="@+id/cb"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/selector_smartlight_blue"
-                    android:button="@null" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/cb"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="5dp"
-                    android:text="三色渐变"
-                    android:textColor="@color/black2"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

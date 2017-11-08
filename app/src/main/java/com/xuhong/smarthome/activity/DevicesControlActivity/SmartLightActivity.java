@@ -1,12 +1,11 @@
 package com.xuhong.smarthome.activity.DevicesControlActivity;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
@@ -14,6 +13,7 @@ import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.utils.L;
+import com.xuhong.smarthome.view.SeekBarColorPicker;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,26 +21,34 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
 
 
     //数据点
-    private static final String DATA_ONOFF = "OnOff";
-    private static final String DATA_TIME_ON_MINUTE = "Time_On_Minute";
-    private static final String DATA_Time_OFF_MINUTE = "Time_Off_Minute";
-    private static final String DATA_IS_TIME_ONOFF = "Time_OnOff";
+    private static final String KEY_LED_COLOR = "LED_Color";
+    private static final String KEY_LIGHT_R = "LED_R";
+    private static final String KEY_LIGHT_B = "LED_B";
+    private static final String KEY_LIGHT_G = "LED_G";
+
+
+    private static final String DATA_TIME_ON_MINUTE = "timesOpen";
+    private static final String DATA_TIME_OFF_MINUTE = "timesOff";
+
 
     private static final int CODE_HANDLER_UPADATA_UI = 102;
 
 
-    //临时存储
-    private boolean isOpenoff;
-    //ui
-    private CheckBox mCbStatus;
-    private LinearLayout mLlIndex;
-    private CheckBox mCbSwitch;
-    private TextView mTvSwitch;
-    private TextView tvStatus;
-    private TextView mTvShareDevices;
-    private ImageView mIvCountDowm;
-    private TextView mTvDevicesLog;
+    //数据点临时存储的数值
+    private boolean tempSwitch = false;
+    private int tempLightRed = 0;
+    private int tempLightGreen = 0;
+    private int tempLightBlue = 0;
 
+
+    //ui
+    private com.xuhong.smarthome.view.SeekBarColorPicker mMSeekbarColorPicker;
+    private CheckBox mCbSwitch;
+    private CheckBox mCbBlue;
+    private CheckBox mCbPurple;
+    private CheckBox mCbPink;
+    private CheckBox mCbTimer;
+    private CheckBox mCbThree;
 
 
     @SuppressLint("HandlerLeak")
@@ -48,19 +56,13 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == CODE_HANDLER_UPADATA_UI) {
-                if (isOpenoff) {
-                    mCbStatus.setChecked(true);
+                mMSeekbarColorPicker.setColorByInt(Color.argb(255, tempLightRed, tempLightGreen, tempLightBlue));
+
+                if (tempLightRed == 0 && tempLightGreen == 0 && tempLightBlue == 0) {
                     mCbSwitch.setChecked(true);
-                    tvStatus.setText("插头已经关闭");
-                    tvStatus.setTextColor(getResources().getColor(R.color.red0));
                 } else {
-                    mCbStatus.setChecked(false);
                     mCbSwitch.setChecked(false);
-                    tvStatus.setText("插头已经开启");
-                    tvStatus.setTextColor(getResources().getColor(R.color.green2));
                 }
-
-
             }
         }
     };
@@ -73,24 +75,40 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
     @Override
     protected void bindView() {
 
-        //把状态显示图片设置为点击没反应
-        mCbStatus = (CheckBox) findViewById(R.id.cbStatus);
-        mCbStatus.setClickable(false);
+        //色环
+        mMSeekbarColorPicker = (com.xuhong.smarthome.view.SeekBarColorPicker) findViewById(R.id.mSeekbarColorPicker);
+        mMSeekbarColorPicker.setGizwitLight(true);
+        mMSeekbarColorPicker.setSeekBarColorPickerChangeListener(new SeekBarColorPicker.SeekBarColorPickerChangeListener() {
+            @Override
+            public void onProgressChange(SeekBarColorPicker seekBarColorPicker, int color, String htmlColor) {
+                cColor(color);
+            }
+        });
 
-        //开关按钮
+
         mCbSwitch = (CheckBox) findViewById(R.id.cbSwitch);
         mCbSwitch.setOnClickListener(this);
 
+        mCbBlue = (CheckBox) findViewById(R.id.cbYellow);
+        mCbBlue.setOnClickListener(this);
+        mCbPurple = (CheckBox) findViewById(R.id.cbPurple);
+        mCbPurple.setOnClickListener(this);
+        mCbPink = (CheckBox) findViewById(R.id.cbPink);
+        mCbPink.setOnClickListener(this);
 
-        mLlIndex = (LinearLayout) findViewById(R.id.llIndex);
+        mCbTimer = (CheckBox) findViewById(R.id.cbTimer);
+        mCbTimer.setOnClickListener(this);
+        mCbThree = (CheckBox) findViewById(R.id.cbThree);
+        mCbThree.setOnClickListener(this);
 
-        mTvSwitch = (TextView) findViewById(R.id.tvSwitch);
-        tvStatus = (TextView) findViewById(R.id.tvStatus);
-        //mIvTimer = (ImageView) findViewById(R.id.ivTimer);
-        mTvShareDevices = (TextView) findViewById(R.id.tvShareDevices);
-        //mIvCountDowm = (ImageView) findViewById(R.id.ivCountDowm);
-        mTvDevicesLog = (TextView) findViewById(R.id.tvDevicesLog);
+    }
 
+
+    public void cColor(int color) {
+        tempLightRed = Color.red(color);
+        tempLightGreen = Color.green(color);
+        tempLightBlue = Color.blue(color);
+        sendRgbCmd(KEY_LIGHT_R, tempLightRed, KEY_LIGHT_G, tempLightGreen, KEY_LIGHT_B, tempLightBlue);
     }
 
 
@@ -102,13 +120,26 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
 
     @Override
     protected void didReceiveData(GizWifiErrorCode result, GizWifiDevice device, ConcurrentHashMap<String, Object> dataMap, int sn) {
+
         L.e("设备界面回调数据：" + dataMap.toString());
+
         if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS && dataMap.get("data") != null) {
             ConcurrentHashMap<String, Object> map = (ConcurrentHashMap<String, Object>) dataMap.get("data");
+
             for (String dataKey : map.keySet()) {
-                if (dataKey.equals(DATA_ONOFF)) {
-                    isOpenoff = (Boolean) map.get(dataKey);
+
+                if (dataKey.equals(KEY_LIGHT_B)) {
+                    tempLightBlue = (Integer) map.get(dataKey);
                 }
+
+                if (dataKey.equals(KEY_LIGHT_G)) {
+                    tempLightGreen = (Integer) map.get(dataKey);
+                }
+
+                if (dataKey.equals(KEY_LIGHT_R)) {
+                    tempLightRed = (Integer) map.get(dataKey);
+                }
+
             }
             mHandler.sendEmptyMessage(CODE_HANDLER_UPADATA_UI);
         }
@@ -130,25 +161,34 @@ public class SmartLightActivity extends BaseDevicesControlActivity implements Vi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.cbSwitch:
                 if (mCbSwitch.isChecked()) {
-                    sendCommand(DATA_ONOFF, true);
+                    sendRgbCmd(KEY_LIGHT_R, 0, KEY_LIGHT_G, 0, KEY_LIGHT_B, 0);
                 } else {
-                    sendCommand(DATA_ONOFF, false);
+                    sendRgbCmd(KEY_LIGHT_R, 155, KEY_LIGHT_G, 155, KEY_LIGHT_B, 155);
                 }
                 break;
+            case R.id.cbPurple:
+                sendCommand(KEY_LED_COLOR, 2);
+                break;
+            case R.id.cbYellow:
+                sendCommand(KEY_LED_COLOR, 1);
+                break;
+            case R.id.cbPink:
+                sendCommand(KEY_LED_COLOR, 3);
+                break;
         }
+
     }
 
     public void sendCommand(String key1, Object value1) {
         if (value1 == null) {
             return;
         }
-        ConcurrentHashMap<String, Object> hashMap = new ConcurrentHashMap<String, Object>();
+        ConcurrentHashMap<String, Object> hashMap = new ConcurrentHashMap<>();
         hashMap.put(key1, value1);
         mDevice.write(hashMap, 0);
     }
-
-
 
 }
