@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/assist_yellow"
+        app:navigationIcon="@drawable/ic_back_black"
+        app:title="声明" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="20dp"
+                android:text="@string/statement_title"
+                android:textColor="@color/black3" />
+
+            <TextView
+                style="@style/Setting.Title"
+                android:text="使用说明" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/statement_userinfo"
+                android:textColor="@color/black3"
+                android:textSize="12sp" />
+
+            <TextView
+                style="@style/Setting.Title"
+                android:text="侵权申明" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/statement_qq"
+                android:textColor="@color/black3"
+                android:textSize="12sp" />
+
+            <TextView
+                style="@style/Setting.Title"
+                android:text="所有权和知识产权" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/statement_syqhzscq"
+                android:textColor="@color/black3"
+                android:textSize="12sp" />
+
+            <TextView
+                style="@style/Setting.Title"
+                android:text="联系" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/statement_mail"
+                android:textColor="@color/black3"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="middle"
+                android:gravity="center_horizontal"
+                android:lines="1"
+                android:paddingBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="15dp"
+                android:text="----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+                android:textColor="@color/colorPrimary"
+                android:textSize="10sp" />
+
+            <TextView
+                style="@style/Setting.Title"
+                android:text="重点" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/statement_import"
+                android:textColor="@color/black3"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingTop="20dp"
+                android:text="Xuhong | http://xuhonys.cn/web/index.html"
+                android:textColor="@color/black3"
+                android:textSize="10sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

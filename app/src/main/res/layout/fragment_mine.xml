@@ -8,7 +8,6 @@
         android:id="@+id/pullView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:orientation="vertical"
         android:scrollbars="none">
 
@@ -26,7 +25,7 @@
                 <ImageView
                     android:id="@+id/ivHeaderBg"
                     android:layout_width="match_parent"
-                    android:layout_height="245dp" />
+                    android:layout_height="240dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -129,9 +128,7 @@
                             android:layout_height="match_parent"
                             android:layout_centerInParent="true"
                             android:background="@color/black1"
-
                             />
-
 
                     </RelativeLayout>
 
@@ -164,7 +161,7 @@
             <com.lqr.optionitemview.OptionItemView
                 android:id="@+id/OVUserInf"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:background="@drawable/shape_bg_click"
                 app:left_src="@mipmap/ic_location"
                 app:left_text="个人资料"
@@ -175,20 +172,21 @@
                 app:right_text_size="12sp" />
 
             <com.lqr.optionitemview.OptionItemView
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:id="@+id/OVVegetable"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:background="@drawable/shape_bg_click"
                 app:left_src="@mipmap/ic_location"
+                app:right_src="@mipmap/ic_next"
                 app:left_text="菜谱大全"
                 app:left_text_color="@color/black1"
-                app:right_src="@mipmap/ic_next" />
+                />
 
             <com.lqr.optionitemview.OptionItemView
                 android:id="@+id/OVCarText"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:background="@drawable/shape_bg_click"
                 app:left_src="@mipmap/ic_location"
                 app:left_text="驾考题库"
@@ -198,7 +196,7 @@
             <com.lqr.optionitemview.OptionItemView
                 android:id="@+id/OVDayHappy"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:background="@drawable/shape_bg_click"
                 app:left_src="@mipmap/ic_location"
                 app:left_text="每日一笑"
@@ -206,9 +204,29 @@
                 app:right_src="@mipmap/ic_next" />
 
             <com.lqr.optionitemview.OptionItemView
+                android:id="@+id/OVQRScan"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_bg_click"
+                app:left_src="@mipmap/ic_location"
+                app:left_text="二维码扫描"
+                app:left_text_color="@color/black1"
+                app:right_src="@mipmap/ic_next" />
+
+            <com.lqr.optionitemview.OptionItemView
+                android:id="@+id/OVBox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_bg_click"
+                app:left_src="@mipmap/ic_location"
+                app:left_text="快递查询"
+                app:left_text_color="@color/black1"
+                app:right_src="@mipmap/ic_next" />
+
+            <com.lqr.optionitemview.OptionItemView
                 android:id="@+id/OVAbout"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/shape_bg_click"
                 app:left_src="@mipmap/ic_location"

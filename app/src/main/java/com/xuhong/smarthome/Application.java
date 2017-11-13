@@ -18,10 +18,8 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.xuhong.smarthome.constant.Constant;
 import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.SharePreUtils;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import cn.bmob.v3.Bmob;
 
@@ -80,11 +78,15 @@ public class Application extends android.app.Application {
         @Override
         public void didUserLogin(GizWifiErrorCode result, String uid, String token) {
             super.didUserLogin(result, uid, token);
+            L.e("机智云的SDK匿名登录结果："+result);
             if (result == GizWifiErrorCode.GIZ_SDK_SUCCESS) {
                 SharePreUtils.putString(getContext(), "_uid", uid);
                 SharePreUtils.putString(getContext(), "_token", token);
             }
         }
+
+
+
     };
 
 

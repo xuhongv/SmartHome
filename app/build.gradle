@@ -85,8 +85,6 @@ dependencies {
     //refesh
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-alpha-9'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.4-alpha-9'
-    compile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-
 
 
 }

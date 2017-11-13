@@ -81,7 +81,9 @@
         <activity android:name=".activity.ConfigActivity.AirLinkAddDevicesActivity" />
         <activity android:name="io.github.xudaojie.qrcodelib.CaptureActivity" />
         <activity android:name=".activity.DevicesControlActivity.SocPetActivity" />
-        <activity android:name=".activity.AboutActivity"></activity>
+        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.StatementActivity" />
+        <activity android:name=".activity.AboutAuthorActivity"></activity>
     </application>
 
 </manifest>

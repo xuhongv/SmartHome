@@ -1,5 +1,6 @@
 package com.xuhong.smarthome.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +14,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,9 +24,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flyco.animation.Attention.Swing;
+import com.flyco.animation.BaseAnimatorSet;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
+import com.flyco.animation.SlideExit.SlideBottomExit;
+import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.utils.CornerUtils;
 import com.flyco.dialog.widget.ActionSheetDialog;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.flyco.dialog.widget.base.BaseDialog;
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.api.GizWifiSDK;
@@ -35,15 +40,14 @@ import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.gizwits.gizwifisdk.listener.GizWifiDeviceListener;
 import com.gizwits.gizwifisdk.listener.GizWifiSDKListener;
 import com.gyf.barlibrary.ImmersionBar;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.xuhong.smarthome.R;
+import com.xuhong.smarthome.activity.AboutActivity;
 import com.xuhong.smarthome.activity.ConfigActivity.AirLinkAddDevicesActivity;
-import com.xuhong.smarthome.activity.DevicesControlActivity.BaseDevicesControlActivity;
 import com.xuhong.smarthome.activity.DevicesControlActivity.SmartLightActivity;
 import com.xuhong.smarthome.activity.DevicesControlActivity.SocPetActivity;
 import com.xuhong.smarthome.adapter.DevicesListAdapter;
@@ -91,25 +95,28 @@ public class DevicesFragment extends BaseFragment implements OnRefreshLoadmoreLi
     //设备列表
     private List<GizWifiDevice> deviceslist = new ArrayList<>();
 
+    @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
+            if (msg.what == 105) {
+                if (tipDialog != null) {
+                    tipDialog.dismiss();
+                }
+            }
         }
     };
     private String uid;
     private String token;
+    private QMUITipDialog tipDialog;
 
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         ImmersionBar.setTitleBar(getActivity(), toolbarl);
-
-
-        toolbarl.inflateMenu(R.menu.menu_devices_add);
+        toolbarl.inflateMenu(R.menu.menu_devices_add_login_out);
         toolbarl.setOverflowIcon(getActivity().getResources().getDrawable(R.drawable.ic_toolbar_devices_add));
         toolbarl.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 
@@ -125,6 +132,15 @@ public class DevicesFragment extends BaseFragment implements OnRefreshLoadmoreLi
                     //手动添加设备
                     case R.id.menu_id_handAddDevices:
                         startActivity(new Intent(getActivity(), AirLinkAddDevicesActivity.class));
+                        break;
+                    //登录机智云账号
+                    case R.id.menu_id_login_in:
+                        tipDialog = new QMUITipDialog.Builder(getActivity())
+                                .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                .setTipWord("sorry，暂未加入此功能！")
+                                .create();
+                        tipDialog.show();
+                        mHandler.sendEmptyMessageDelayed(105, 1500);
                         break;
                     default:
                         break;
@@ -145,18 +161,20 @@ public class DevicesFragment extends BaseFragment implements OnRefreshLoadmoreLi
     protected void initView(View view) {
         toolbarl = (Toolbar) view.findViewById(R.id.toolbar);
         rVMyDevices = (RecyclerView) view.findViewById(R.id.recyclerView);
-        mRefreshLayout = (RefreshLayout)view.findViewById(R.id.refreshLayout);
+        mRefreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
+        mRefreshLayout.setEnableLoadmore(false);
         mRefreshLayout.setOnRefreshLoadmoreListener(this);
         int deta = new Random().nextInt(7 * 24 * 60 * 60 * 1000);
 
-        mClassicsHeader = (ClassicsHeader)mRefreshLayout.getRefreshHeader();
-        mClassicsHeader.setLastUpdateTime(new Date(System.currentTimeMillis()-deta));
+        mClassicsHeader = (ClassicsHeader) mRefreshLayout.getRefreshHeader();
+        mClassicsHeader.setLastUpdateTime(new Date(System.currentTimeMillis() - deta));
         mClassicsHeader.setTimeFormat(new SimpleDateFormat("更新于 MM-dd HH:mm", Locale.CHINA));
         mClassicsHeader.setSpinnerStyle(SpinnerStyle.Translate);
         mDrawableProgress = mClassicsHeader.getProgressView().getDrawable();
         if (mDrawableProgress instanceof LayerDrawable) {
             mDrawableProgress = ((LayerDrawable) mDrawableProgress).getDrawable(0);
         }
+
 
     }
 
@@ -292,7 +310,6 @@ public class DevicesFragment extends BaseFragment implements OnRefreshLoadmoreLi
         }
     }
 
-
     /**
      * 扫描二维码后开始绑定设备
      *
@@ -312,7 +329,6 @@ public class DevicesFragment extends BaseFragment implements OnRefreshLoadmoreLi
         }
     }
 
-
     private void showDevicesInfDialog(final GizWifiDevice mGizWifiDevice) {
 
         final String[] stringItems = {"解绑此设备", "重命名设备", "查看设备信息"};
@@ -329,7 +345,7 @@ public class DevicesFragment extends BaseFragment implements OnRefreshLoadmoreLi
                         renameDevicesDialog(mGizWifiDevice);
                         break;
                     case 2:
-                        showRenameDialog();
+                        showDialogDevicesInf(mGizWifiDevice);
                         break;
                     default:
                         break;
@@ -339,11 +355,43 @@ public class DevicesFragment extends BaseFragment implements OnRefreshLoadmoreLi
         });
     }
 
-
     //下拉刷新回调
     @Override
     public void onRefresh(RefreshLayout refreshLayout) {
+        L.e("设备列表下拉刷新回调");
         GizWifiSDK.sharedInstance().setListener(gizWifiSDKListener);
+
+        tipDialog = new QMUITipDialog.Builder(getActivity())
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                .setTipWord("正在刷新...")
+                .create();
+        tipDialog.show();
+
+        if (!GizWifiSDK.sharedInstance().getDeviceList().isEmpty()) {
+            mRefreshLayout.finishRefresh();
+            deviceslist.clear();
+            deviceslist.addAll(GizWifiSDK.sharedInstance().getDeviceList());
+            adapter.notifyDataSetChanged();
+            tipDialog.dismiss();
+            tipDialog = new QMUITipDialog.Builder(getActivity())
+                    .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                    .setTipWord("刷新成功")
+                    .create();
+            tipDialog.show();
+            mHandler.sendEmptyMessageDelayed(105, 1700);
+        } else {
+            mRefreshLayout.finishRefresh();
+            deviceslist.clear();
+            adapter.notifyDataSetChanged();
+            tipDialog.dismiss();
+            tipDialog = new QMUITipDialog.Builder(getActivity())
+                    .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                    .setTipWord("暂无设备")
+                    .create();
+            tipDialog.show();
+            mHandler.sendEmptyMessageDelayed(105, 1700);
+        }
+
     }
 
     //删除弹窗振动
@@ -440,12 +488,39 @@ public class DevicesFragment extends BaseFragment implements OnRefreshLoadmoreLi
         });
     }
 
+
+    //获取设备信息
+    private void showDialogDevicesInf(GizWifiDevice mGizWifiDevice) {
+
+        BaseAnimatorSet mBasIn = new BounceTopEnter();
+        BaseAnimatorSet mBasOut = new SlideBottomExit();
+
+        final MaterialDialog dialog = new MaterialDialog(getActivity());
+        dialog.btnNum(1)
+                .content("ProductKey:" + mGizWifiDevice.getProductKey()
+                        + "\n MacAddress:" + mGizWifiDevice.getMacAddress()
+                        + "\n ProductName:" + mGizWifiDevice.getProductName()
+                        + "\n IPAddress:" + mGizWifiDevice.getIPAddress()
+                        + "\n NetStatus:" + mGizWifiDevice.getNetStatus()
+                )
+                .btnText("确定")//
+                .showAnim(mBasIn)//
+                .dismissAnim(mBasOut)//
+                .show();
+
+        dialog.setOnBtnClickL(new OnBtnClickL() {
+            @Override
+            public void onBtnClick() {
+                dialog.dismiss();
+            }
+        });
+    }
+
     private void hideKeyBoard() {
         // 隐藏键盘
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
-
 
     /**
      * 设备绑定事件监听
@@ -498,7 +573,9 @@ public class DevicesFragment extends BaseFragment implements OnRefreshLoadmoreLi
 
     @Override
     public void onLoadmore(RefreshLayout refreshLayout) {
+        mRefreshLayout.finishLoadmore();
     }
+
 
 }
 

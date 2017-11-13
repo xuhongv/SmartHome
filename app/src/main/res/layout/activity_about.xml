@@ -1,27 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.xuhong.smarthome.view.BubbleView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mBubbleView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@mipmap/ic_newbg"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.xuhong.smarthome.view.PullScrollView
+        android:id="@+id/mPullScrollView"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:navigationIcon="@drawable/ic_back_yellow">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="none">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="关于软件"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-    </android.support.v7.widget.Toolbar>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="@color/assist_yellow"
+                app:navigationIcon="@drawable/ic_back_black">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="关于"
+                    android:textColor="@color/black0"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </android.support.v7.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/toolbar">
+
+                <RelativeLayout
+                    android:id="@+id/rll"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp">
+
+                    <ImageView
+                        android:id="@+id/ivLogo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/ic_logo" />
 
 
-</LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ivLogo"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:text="智能管家，做最好你的Ta..."
+                        android:textColor="@color/player_yellow"
+                        android:textSize="20sp"
+                        android:textStyle="italic" />
+
+                </RelativeLayout>
+
+                <com.lqr.optionitemview.OptionItemView
+                    android:id="@+id/OIViewUpdata"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/rll"
+                    android:background="@drawable/shape_bg_click"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:left_src="@mipmap/ic_location"
+                    app:left_text="检测更新"
+                    app:left_text_color="@color/player_yellow"
+                    app:right_text_size="12sp" />
+
+                <com.lqr.optionitemview.OptionItemView
+                    android:id="@+id/OIViewState"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/OIViewUpdata"
+                    android:background="@drawable/shape_bg_click"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:left_src="@mipmap/ic_location"
+                    app:left_text="开源声明"
+                    app:left_text_color="@color/player_yellow"
+                    app:right_src="@mipmap/ic_next" />
+
+                <com.lqr.optionitemview.OptionItemView
+                    android:id="@+id/OIViewOpinion"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/OIViewState"
+                    android:background="@drawable/shape_bg_click"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:left_src="@mipmap/ic_location"
+                    app:left_text="意见反馈"
+                    app:left_text_color="@color/player_yellow"
+                    app:right_src="@mipmap/ic_next" />
+
+                <com.lqr.optionitemview.OptionItemView
+                    android:id="@+id/OIViewAbout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/OIViewOpinion"
+                    android:background="@drawable/shape_bg_click"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:left_src="@mipmap/ic_location"
+                    app:left_text="关于作者"
+                    app:left_text_color="@color/player_yellow"
+                    app:right_src="@mipmap/ic_next" />
+
+                <com.lqr.optionitemview.OptionItemView
+                    android:id="@+id/OIViewShare"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/OIViewAbout"
+                    android:background="@drawable/shape_bg_click"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:left_src="@mipmap/ic_location"
+                    app:left_text="分享"
+                    app:left_text_color="@color/player_yellow"
+                    app:right_src="@mipmap/ic_next" />
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+    </com.xuhong.smarthome.view.PullScrollView>
+
+    <TextView
+        android:id="@+id/tvNull"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="CopyRight@小徐 智能管家"
+        android:textColor="@color/black1"
+        android:textSize="12sp" />
+
+</com.xuhong.smarthome.view.BubbleView>
+
+
+

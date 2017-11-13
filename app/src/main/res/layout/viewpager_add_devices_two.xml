@@ -26,17 +26,20 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/btnNextReady"
         android:layout_marginTop="35dp">
 
         <CheckBox
+            android:button="@null"
+            android:background="@drawable/selector_checkbox"
             android:id="@+id/checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/tv_Message" />
 
         <TextView
+            android:layout_marginLeft="10dp"
             android:id="@+id/tv_Message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
