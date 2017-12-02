@@ -20,6 +20,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flyco.animation.BaseAnimatorSet;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
+import com.flyco.animation.SlideExit.SlideBottomExit;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.gizwits.gizwifisdk.api.GizWifiDevice;
 import com.gizwits.gizwifisdk.enumration.GizWifiDeviceNetStatus;
 import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
@@ -82,7 +87,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
                         break;
                     //设备详情
                     case R.id.menu_Devices_Details:
-
+                        showDialogDevicesInf(mDevice);
                         break;
                     default:
                         break;
@@ -105,6 +110,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
 
         getStatusOfDevice();
     }
+
 
     //重命名
     private void showRenameDialog(final GizWifiDevice mGizWifiDevice) {
@@ -146,6 +152,35 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
             }
         });
     }
+
+
+    //获取设备信息
+    private void showDialogDevicesInf(GizWifiDevice mGizWifiDevice) {
+
+        BaseAnimatorSet mBasIn = new BounceTopEnter();
+        BaseAnimatorSet mBasOut = new SlideBottomExit();
+
+        final MaterialDialog dialog = new MaterialDialog(this);
+        dialog.btnNum(1)
+                .content("ProductKey:" + mGizWifiDevice.getProductKey()
+                        + "\n MacAddress:" + mGizWifiDevice.getMacAddress()
+                        + "\n ProductName:" + mGizWifiDevice.getProductName()
+                        + "\n IPAddress:" + mGizWifiDevice.getIPAddress()
+                        + "\n NetStatus:" + mGizWifiDevice.getNetStatus()
+                )
+                .btnText("确定")//
+                .showAnim(mBasIn)//
+                .dismissAnim(mBasOut)//
+                .show();
+
+        dialog.setOnBtnClickL(new OnBtnClickL() {
+            @Override
+            public void onBtnClick() {
+                dialog.dismiss();
+            }
+        });
+    }
+
 
     private void hideKeyBoard() {
         // 隐藏键盘
@@ -323,7 +358,7 @@ public abstract class BaseDevicesControlActivity extends BaseActivity {
         hashMap.put(keyR, valueR);
         hashMap.put(keyG, valueG);
         hashMap.put(keyB, valueB);
-        L.d("发送Rgb数据："+hashMap.toString());
+        L.d("发送Rgb数据：" + hashMap.toString());
         mDevice.write(hashMap, sn);
     }
 

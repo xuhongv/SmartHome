@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "26.0.0"
     useLibrary 'org.apache.http.legacy'
-    defaultConfig {
+    defaultConfig   {
         applicationId "com.xuhong.smarthome"
         minSdkVersion 19
         targetSdkVersion 25
@@ -15,6 +15,8 @@ android {
             // 设置支持的SO库架构
             abiFilters 'armeabi', 'x86' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
+        renderscriptTargetApi 25
+        renderscriptSupportModeEnabled true
     }
 
     buildTypes {
@@ -85,6 +87,8 @@ dependencies {
     //refesh
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-alpha-9'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.4-alpha-9'
+    //blurPopupWindow
+    compile 'com.kyleduo.blurpopupwindow:blurpopupwindow:1.0.8'
 
 
 }

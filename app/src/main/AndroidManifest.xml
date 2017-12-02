@@ -45,8 +45,11 @@
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
         <activity android:name=".activity.SearchNewsActivity" />
+
         <activity android:name=".activity.WebViewActivity" />
+
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden" />
@@ -59,6 +62,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.ForgetPasswordActivity" />
         <activity android:name=".activity.AlterUserInfActivity" />
@@ -83,7 +87,8 @@
         <activity android:name=".activity.DevicesControlActivity.SocPetActivity" />
         <activity android:name=".activity.AboutActivity" />
         <activity android:name=".activity.StatementActivity" />
-        <activity android:name=".activity.AboutAuthorActivity"></activity>
+        <activity android:name=".activity.AboutAuthorActivity"/>
+        <activity android:name=".activity.MyDevicesListActivity"/>
     </application>
 
 </manifest>

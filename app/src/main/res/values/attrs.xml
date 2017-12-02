@@ -38,5 +38,10 @@
         <attr name="waveText" format="string" />
 
     </declare-styleable>
+
+
+    <declare-styleable name="ShadowContainer">
+        <attr name="sc_shadowColor" format="color"/>
+    </declare-styleable>
     
 </resources>  

@@ -1,35 +1,19 @@
 package com.xuhong.smarthome.fragment;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gizwits.gizwifisdk.api.GizWifiDevice;
-import com.gizwits.gizwifisdk.enumration.GizWifiErrorCode;
 import com.squareup.picasso.Picasso;
 import com.xuhong.smarthome.R;
 import com.xuhong.smarthome.activity.AboutActivity;
 import com.xuhong.smarthome.activity.AlterUserInfActivity;
 import com.xuhong.smarthome.activity.LoginActivity;
+import com.xuhong.smarthome.activity.MyDevicesListActivity;
 import com.xuhong.smarthome.bean.User;
-import com.xuhong.smarthome.utils.L;
 import com.xuhong.smarthome.utils.TakePictureManager;
 import com.xuhong.smarthome.utils.ToastUtils;
 import com.xuhong.smarthome.view.AnimotionPopupWindow;
@@ -46,8 +30,6 @@ import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
-
-import static android.app.Activity.RESULT_OK;
 
 
 public class MineFragment extends BaseFragment implements View.OnClickListener {
@@ -78,8 +60,12 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     protected void initView(View view) {
 
         mTvDevices = (TextView) view.findViewById(R.id.tvDevices);
+        mTvDevices.setOnClickListener(this);
         mTvShareDevices = (TextView) view.findViewById(R.id.tvShareDevices);
+        mTvShareDevices.setOnClickListener(this);
         mTvDevicesLog = (TextView) view.findViewById(R.id.tvDevicesLog);
+        mTvDevicesLog.setOnClickListener(this);
+
         mOVUserInf = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVUserInf);
         mOVUserInf.setOnClickListener(this);
         mOVCarText = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVCarText);
@@ -87,7 +73,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mOVDayHappy = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVDayHappy);
         mOVDayHappy.setOnClickListener(this);
         mOVAbout = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVAbout);
-        OVVegetable = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVVegetable);
+        OVVegetable = (com.lqr.optionitemview.OptionItemView) view.findViewById(R.id.OVWeather);
         mOVAbout.setOnClickListener(this);
         OVVegetable.setOnClickListener(this);
 
@@ -113,6 +99,21 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onClick(final View v) {
         switch (v.getId()) {
+
+
+            //我的设备
+            case R.id.tvDevices:
+                startActivity(new Intent(getActivity(), MyDevicesListActivity.class));
+                break;
+
+            //设备分享
+            case R.id.tvShareDevices:
+                break;
+
+                //设备日志
+            case  R.id.tvDevicesLog:
+                break;
+
             case R.id.ivIcon:
                 //判断是否已经登录
                 if (BmobUser.getCurrentUser(User.class) == null) {
@@ -156,7 +157,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.OVDayHappy:
                 break;
-            case R.id.OVVegetable:
+                //天气预报
+            case R.id.OVWeather:
                 break;
             case R.id.OVAbout:
                 startActivity(new Intent(getActivity(), AboutActivity.class));

@@ -173,13 +173,13 @@
 
             <com.lqr.optionitemview.OptionItemView
                 android:layout_marginTop="10dp"
-                android:id="@+id/OVVegetable"
+                android:id="@+id/OVWeather"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/shape_bg_click"
                 app:left_src="@mipmap/ic_location"
                 app:right_src="@mipmap/ic_next"
-                app:left_text="菜谱大全"
+                app:left_text="天气预报"
                 app:left_text_color="@color/black1"
                 />
 
